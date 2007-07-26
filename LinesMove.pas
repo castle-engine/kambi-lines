@@ -32,7 +32,7 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
 implementation
 
 uses OpenGLh, GLWindow, KambiGLUtils, GLWinModes, KambiUtils, Math, DrawingGame,
-  LinesWindow, LinesGame;
+  LinesWindow, LinesGame, KambiTimeUtils;
 
 procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
 var
@@ -43,7 +43,7 @@ var
   Ball: TVector2Single;
   Pos1: Integer;
   CompSpeed: Single;
-  RenderStartTime: TPerfTimerResult;
+  RenderStartTime: TTimerResult;
 begin
   BF := Board[Move.A[0], Move.A[1]];
   Board[Move.A[0], Move.A[1]] := bfEmpty;
@@ -57,9 +57,6 @@ begin
 
       glAlphaFunc(GL_GREATER, 0.5);
 
-      { We will calculate CompSpeed on our own, so we will need PerfTimer. }
-      Check(PerfTimerInit, 'performance timer not supported on this hardware');
-
       { Dobra, teraz robimy animacje w OpenGLu przesuwajacej sie kulki.
         Najwazniejsza rzecza tutaj jest zmienna Position : przybiera ona
         wartosci od 0 do Way.Length. Wartosc 0 oznacza ze kulka jest na pozycji
@@ -68,7 +65,7 @@ begin
       Position := 0;
       while Position < MoveWay.Length do
       begin
-        RenderStartTime := PerfTime;
+        RenderStartTime := Timer;
 
         { draw animation frame }
         glRasterPos2i(ScreenX0, ScreenY0);
@@ -99,7 +96,7 @@ begin
           OnDraw was nil. So Glw.FPSCompSpeed would indicate that computer speed was huge,
           while in fact we just did the drawing outside OnDraw...
           So we calculate CompSpeed ourselves below. }
-        CompSpeed := ((PerfTime - RenderStartTime) / PerfTimerFreq) * 50;
+        CompSpeed := ((Timer - RenderStartTime) / TimerFrequency) * 50;
 
         Position += 0.2 * CompSpeed;
       end;

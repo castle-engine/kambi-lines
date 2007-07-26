@@ -83,7 +83,7 @@ begin
         Format('By default, game will run in window sized %dx%d.',
           [GameScreenWidth, GameScreenHeight]) +nl+
         nl+
-        SCamelotProgramHelpSuffix(DisplayProgramName, Version, true));
+        SVrmlEngineProgramHelpSuffix(DisplayProgramName, Version, true));
       ProgramBreak;
      end;
   1: begin

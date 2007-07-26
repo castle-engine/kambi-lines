@@ -36,7 +36,7 @@ begin
    '  H = show highscores' + nl +
    '  Escape = exit' + nl +
    nl+
-   SCamelotProgramHelpSuffix(DisplayProgramName, Version, false),
+   SVrmlEngineProgramHelpSuffix(DisplayProgramName, Version, false),
    taLeft);
 end;
 
