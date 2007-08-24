@@ -43,12 +43,12 @@ var
   Ball: TVector2Single;
   Pos1: Integer;
   CompSpeed: Single;
-  RenderStartTime: TTimerResult;
+  RenderStartTime: TKamTimerResult;
 begin
   BF := Board[Move.A[0], Move.A[1]];
   Board[Move.A[0], Move.A[1]] := bfEmpty;
   DrawGame;
-  dlBoardImage := SaveScreenToDispList_noflush(GL_BACK);
+  dlBoardImage := SaveScreenToDisplayList_noflush(GL_BACK);
   try
     SavedMode := TGLMode.Create(glw, GL_COLOR_BUFFER_BIT, false);
     try
@@ -65,7 +65,7 @@ begin
       Position := 0;
       while Position < MoveWay.Length do
       begin
-        RenderStartTime := Timer;
+        RenderStartTime := KamTimer;
 
         { draw animation frame }
         glRasterPos2i(ScreenX0, ScreenY0);
@@ -96,7 +96,7 @@ begin
           OnDraw was nil. So Glw.FPSCompSpeed would indicate that computer speed was huge,
           while in fact we just did the drawing outside OnDraw...
           So we calculate CompSpeed ourselves below. }
-        CompSpeed := ((Timer - RenderStartTime) / TimerFrequency) * 50;
+        CompSpeed := ((KamTimer - RenderStartTime) / KamTimerFrequency) * 50;
 
         Position += 0.2 * CompSpeed;
       end;

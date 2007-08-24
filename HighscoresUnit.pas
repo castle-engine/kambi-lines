@@ -239,7 +239,7 @@ end;
 
 procedure InitGL(glwin: TGLWindow);
 begin
- dlImgHighscr := LoadImageToDispList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
+ dlImgHighscr := LoadImageToDisplayList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
 end;
 
 { unit init/fini ------------------------------------------------------------- }

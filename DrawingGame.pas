@@ -295,21 +295,21 @@ const
 var bf: TNonEmptyBF;
     i: Integer;   
 begin
- dlGameImage := LoadImageToDispList(ImagesPath +'game.png', [TRGBImage], [], 0, 0);
- dlColrowImage := LoadImageToDispList(ImagesPath +'colrow.png', [TRGBImage], [], 0, 0);
- dlMasterImage := LoadImageToDispList(ImagesPath +'master.png', [TRGBImage], [], 0, 0);
- dlPretenderImage := LoadImageToDispList(ImagesPath +'pretender.png', [TRGBImage], [], 0, 0);
- dlMasterAltImage := LoadImageToDispList(ImagesPath +'master_alt.png', [TRGBImage], [], 0, 0);
- dlPretenderAltImage := LoadImageToDispList(ImagesPath +'pretender_alt.png', [TRGBImage], [], 0, 0);
- dlHighlightOneBFImage := LoadImageToDispList(ImagesPath +'bf_highlight.png', [TRGBImage], [], 0, 0);
- dlButtonImage := LoadImageToDispList(ImagesPath +'button.png', [TRGBImage], [], 0, 0);
- dlFrameLImage := LoadImageToDispList(ImagesPath +'frame_l.png', [TRGBImage], [], 0, 0);
- dlFrameMImage := LoadImageToDispList(ImagesPath +'frame_m.png', [TRGBImage], [], 0, 0);
- dlFrameRImage := LoadImageToDispList(ImagesPath +'frame_r.png', [TRGBImage], [], 0, 0);
+ dlGameImage := LoadImageToDisplayList(ImagesPath +'game.png', [TRGBImage], [], 0, 0);
+ dlColrowImage := LoadImageToDisplayList(ImagesPath +'colrow.png', [TRGBImage], [], 0, 0);
+ dlMasterImage := LoadImageToDisplayList(ImagesPath +'master.png', [TRGBImage], [], 0, 0);
+ dlPretenderImage := LoadImageToDisplayList(ImagesPath +'pretender.png', [TRGBImage], [], 0, 0);
+ dlMasterAltImage := LoadImageToDisplayList(ImagesPath +'master_alt.png', [TRGBImage], [], 0, 0);
+ dlPretenderAltImage := LoadImageToDisplayList(ImagesPath +'pretender_alt.png', [TRGBImage], [], 0, 0);
+ dlHighlightOneBFImage := LoadImageToDisplayList(ImagesPath +'bf_highlight.png', [TRGBImage], [], 0, 0);
+ dlButtonImage := LoadImageToDisplayList(ImagesPath +'button.png', [TRGBImage], [], 0, 0);
+ dlFrameLImage := LoadImageToDisplayList(ImagesPath +'frame_l.png', [TRGBImage], [], 0, 0);
+ dlFrameMImage := LoadImageToDisplayList(ImagesPath +'frame_m.png', [TRGBImage], [], 0, 0);
+ dlFrameRImage := LoadImageToDisplayList(ImagesPath +'frame_r.png', [TRGBImage], [], 0, 0);
 
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
-   dlNonEmptyBFImages[i, bf] := LoadImageToDispList(ImagesPath +
+   dlNonEmptyBFImages[i, bf] := LoadImageToDisplayList(ImagesPath +
      NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png', 
        [TAlphaImage], [], 0, 0);
 
