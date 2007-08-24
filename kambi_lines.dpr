@@ -160,7 +160,7 @@ end.
 
 {
   Local Variables:
-  kam-compile-release-command-win32: "clean_glwindow_unit && fpcrelease"
-  kam-compile-release-command-unix: "clean_glwindow_unit && fpcreleaseb -dGLWINDOW_XLIB"
+  kam-compile-release-command-unix:  "./compile_unix.sh && mv -fv kambi_lines ~/bin/"
+  kam-compile-release-command-win32: "./compile_win32.sh"
   End:
 }
