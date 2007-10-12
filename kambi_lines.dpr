@@ -39,7 +39,7 @@ program kambi_lines;
     Tym samym uznaje ze w zasadzie zrobilem wszystko co chcialem zrobic
     w tym programie i ten program UWAZAM ZA SKONCZONY.
   1 lipca kulki wrzucone na www/camelot z minimalna dokumentacja:
-    jak zainstalowac pod linuxem i win32 i o parametrze --fullscreen.
+    jak zainstalowac pod linuxem i windows i o parametrze --fullscreen.
 }
 
 { TODO:
@@ -160,7 +160,7 @@ end.
 
 {
   Local Variables:
-  kam-compile-release-command-unix:  "./compile_unix.sh && mv -fv kambi_lines ~/bin/"
-  kam-compile-release-command-win32: "./compile_win32.sh"
+  kam-compile-release-command-unix:    "./compile_unix.sh && mv -fv kambi_lines ~/bin/"
+  kam-compile-release-command-windows: "./compile_windows.sh"
   End:
 }
