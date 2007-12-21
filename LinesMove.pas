@@ -1,5 +1,5 @@
 {
-  Copyright 2003-2006 Michalis Kamburelis.
+  Copyright 2003-2007 Michalis Kamburelis.
 
   This file is part of "kambi_lines".
 
@@ -32,7 +32,7 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
 implementation
 
 uses OpenGLh, GLWindow, KambiGLUtils, GLWinModes, KambiUtils, Math, DrawingGame,
-  LinesWindow, LinesGame, KambiTimeUtils;
+  LinesWindow, LinesGame, KambiTimeUtils, GLImages;
 
 procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
 var

@@ -75,7 +75,8 @@ procedure DrawHighscores;
 implementation
 
 uses VectorMath, LinesWindow, GLWindow, GLWinMessages, OpenGLh,
-  KambiGLUtils, Images, GLWinInputs, KambiStringUtils, KambiFilesUtils;
+  KambiGLUtils, Images, GLWinInputs, KambiStringUtils, KambiFilesUtils,
+  GLImages;
 
 {$define read_implementation}
 {$I DynArray_1.inc}

@@ -1,5 +1,5 @@
 {
-  Copyright 2003-2005 Michalis Kamburelis.
+  Copyright 2003-2005,2007 Michalis Kamburelis.
 
   This file is part of "kambi_lines".
 
@@ -63,7 +63,7 @@ implementation
 
 uses SysUtils, LinesWindow, GLWindow, KambiGLUtils, Images,
   HighscoresUnit, KambiUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
-  BFNT_BitstreamVeraSans_Bold_m14_Unit, GLWinInputs;
+  BFNT_BitstreamVeraSans_Bold_m14_Unit, GLWinInputs, GLImages;
 
 var
   dlGameImage, dlColrowImage,
