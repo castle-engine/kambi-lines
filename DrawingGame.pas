@@ -24,7 +24,7 @@ unit DrawingGame;
 
 interface
 
-uses OpenGLh, VectorMath, LinesGame, LinesBoard;
+uses GL, GLU, GLExt, VectorMath, LinesGame, LinesBoard;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie glwindow, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.

@@ -74,7 +74,7 @@ procedure DrawHighscores;
 
 implementation
 
-uses VectorMath, LinesWindow, GLWindow, GLWinMessages, OpenGLh,
+uses VectorMath, LinesWindow, GLWindow, GLWinMessages, GL, GLU, GLExt,
   KambiGLUtils, Images, GLWinInputs, KambiStringUtils, KambiFilesUtils,
   GLImages;
 

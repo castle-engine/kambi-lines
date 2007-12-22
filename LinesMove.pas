@@ -31,7 +31,7 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
 
 implementation
 
-uses OpenGLh, GLWindow, KambiGLUtils, GLWinModes, KambiUtils, Math, DrawingGame,
+uses GL, GLU, GLExt, GLWindow, KambiGLUtils, GLWinModes, KambiUtils, Math, DrawingGame,
   LinesWindow, LinesGame, KambiTimeUtils, GLImages;
 
 procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);

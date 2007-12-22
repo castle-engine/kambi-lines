@@ -55,7 +55,7 @@ program kambi_lines;
 
 {$apptype GUI}
 
-uses SysUtils, OpenGLh, GLWindow, LinesWindow, KambiUtils, HighscoresUnit,
+uses SysUtils, GL, GLU, GLExt, GLWindow, LinesWindow, KambiUtils, HighscoresUnit,
   GetPlayerActionUnit, GLWinMessages, KambiGLUtils, LinesBoard,
   VectorMath, LinesMove, LinesGame, OpenGLBmpFonts, GLWinInputs,
   ParseParametersUnit, KambiClassUtils;

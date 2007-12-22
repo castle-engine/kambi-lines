@@ -42,7 +42,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
 
 implementation
 
-uses SysUtils, OpenGLh, LinesWindow, GLWindow, KambiGLUtils, KambiUtils,
+uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, KambiGLUtils, KambiUtils,
   Images, GLWinMessages, Classes, HighscoresUnit, GLWinModes,
   DrawingGame, LinesGame, GLWinInputs, LinesHelp, Areas,
   KambiStringUtils;

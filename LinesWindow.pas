@@ -63,7 +63,7 @@ function ScreenY0: Integer;
 
 implementation
 
-uses SysUtils, KambiUtils, OpenGLh, KambiGLUtils, 
+uses SysUtils, KambiUtils, GL, GLU, GLExt, KambiGLUtils, 
   BFNT_ArialCELatin2_m14_Unit, ParseParametersUnit, KambiFilesUtils;
 
 var
