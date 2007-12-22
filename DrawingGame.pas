@@ -24,7 +24,7 @@ unit DrawingGame;
 
 interface
 
-uses GL, GLU, GLExt, VectorMath, LinesGame, LinesBoard;
+uses GL, GLU, KambiGLUtils, VectorMath, LinesGame, LinesBoard;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie glwindow, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.
@@ -48,7 +48,7 @@ const
   BoardFieldImageShiftY = 3;
   BoardFieldImage0X = BoardField0X + BoardFieldImageShiftX;
   BoardFieldImage0Y = BoardField0Y + BoardFieldImageShiftY;
-  
+
   { zsynchronizowane z button.png. W interfejsie, bo uzywane tez w GetPlayerActionUnit. }
   ImgButtonWidth = 31;
   ImgButtonHeight = 25;
@@ -61,7 +61,7 @@ var dlNonEmptyBFImages: array[TBallsImageSet, TNonEmptyBF]of TGLuint;
 
 implementation
 
-uses SysUtils, LinesWindow, GLWindow, KambiGLUtils, Images,
+uses SysUtils, LinesWindow, GLWindow, Images,
   HighscoresUnit, KambiUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
   BFNT_BitstreamVeraSans_Bold_m14_Unit, GLWinInputs, GLImages;
 
@@ -85,10 +85,10 @@ const
   NextColorsImage0X = 276;
   NextColorsImage0Y = 324;
   NextColorsFieldWidth = BoardFieldWidth;
-  
+
   StatusUpTextY = 329;
   PlayerNamesY = 80;
-  
+
   ImgGameWidth = 640;
   ImgGameHeight = 350;
 
@@ -129,7 +129,7 @@ const
                  BoardField0Y + BoardFieldHeight * BF[1]);
    glCallList(dlHighlightOneBFImage);
   end;
-  
+
   procedure DrawText(x, y: Integer; const s: string; const Color: TVector3Byte);
   begin
    glColorv(Color);
@@ -141,20 +141,20 @@ const
   begin
    DrawText(x-LinesFont.TextWidth(s), y, s, Color);
   end;
-  
+
   procedure DrawPlayerName(const s: string; MiddleX: Integer);
   var x: Integer;
   begin
    { jezeli PlayerNamesFont.TextWidth(s) to x := 0. Nie bedzie to zbyt ladne,
      ale przynajmniej bedzie cos widac. }
-   x := Max(MiddleX - PlayerNamesFont.TextWidth(s) div 2, 0);   
+   x := Max(MiddleX - PlayerNamesFont.TextWidth(s) div 2, 0);
    glColor3ub(255, 255, 255);
    glRasterPos2i(x, PlayerNamesY);
    PlayerNamesFont.PrintAndMove(s);
   end;
-  
+
 var ButtonsAndFramesX: Integer;
-  
+
   procedure DrawButton(y: Integer; const s: string);
   begin
    glRasterPos2i(ButtonsAndFramesX, y);
@@ -165,7 +165,7 @@ var ButtonsAndFramesX: Integer;
    ButtonCaptionFont.Print(s);
    ButtonsAndFramesX += ImgButtonWidth;
   end;
-  
+
   procedure DrawFrame(const y: Integer; const s: string; const FrameTextColor: TVector3Byte);
   const CaptionHorizMargin = 6;
   var x0, i: Integer;
@@ -183,10 +183,10 @@ var ButtonsAndFramesX: Integer;
    glRasterPos2i(ButtonsAndFramesX, y);
    glCallList(dlFrameRImage);
    ButtonsAndFramesX += ImgFrameRWidth;
-   
+
    DrawText(x0+ImgFrameLWidth + CaptionHorizMargin, y+6, s, FrameTextColor);
   end;
-  
+
   procedure DrawButtonAndFrame(const y: Integer;
     const ButCaption, FrameCaption: string; const FrameTextColor: TVector3Byte);
   begin
@@ -209,7 +209,7 @@ var i, j: Integer;
 begin
  if (glw.Width > GameScreenWidth) or (glw.Height > GameScreenHeight) then
   glClear(GL_COLOR_BUFFER_BIT);
-  
+
  glRasterPos2i(0, 0);
  glCallList(dlGameImage);
 
@@ -258,7 +258,7 @@ begin
     glCallList(dlNonEmptyBFImages[BallsImageSet, NextColors[i]]);
    end;
  finally glDisable(GL_ALPHA_TEST) end;
- 
+
  ButtonsAndFramesX := 20;
  { TODO: zmieniajac ponizsze musze tez zmienic generowanie Areas w
    GetPlayerActionUnit.}
@@ -267,13 +267,13 @@ begin
  DrawButtonAndFrame(StatusButtonsY, 'S', 'Special balls', TextOnOffColors[AllowSpecialBalls]);
  DrawButtonAndFrame(StatusButtonsY, 'N', 'Next', TextOnOffColors[ShowNextColors]);
  DrawButtonAndFrame(StatusButtonsY, 'R', 'Restart', TextColor);
- 
+
  DrawTextRPad(120, StatusUpTextY, IntToStr(KingScore^.Score), TextScoreColor);
  DrawTextRPad(570, StatusUpTextY, IntToStr(PlayerScore), TextScoreColor);
- 
+
  if BonusScoreMultiplier > 1 then
   DrawText(18, 45, 'ACTIVE BONUS: x '+IntToStr(BonusScoreMultiplier), Vector3Byte(100, 255, 100));
- 
+
  DrawPlayerName(KingScore^.PlayerName, 80);
  DrawPlayerName('Pretender', 555);
 end;
@@ -293,7 +293,7 @@ const
    'ball_violet', 'ball_red', 'ball_blue',
    'ball_blue_yellow', 'ball_red_white', 'ball_joker');
 var bf: TNonEmptyBF;
-    i: Integer;   
+    i: Integer;
 begin
  dlGameImage := LoadImageToDisplayList(ImagesPath +'game.png', [TRGBImage], [], 0, 0);
  dlColrowImage := LoadImageToDisplayList(ImagesPath +'colrow.png', [TRGBImage], [], 0, 0);
@@ -310,7 +310,7 @@ begin
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
    dlNonEmptyBFImages[i, bf] := LoadImageToDisplayList(ImagesPath +
-     NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png', 
+     NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png',
        [TAlphaImage], [], 0, 0);
 
  PlayerNamesFont := TGLBitmapFont.Create(@BFNT_ChristmasCard_m24);
