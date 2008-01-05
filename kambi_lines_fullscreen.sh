@@ -1,0 +1,1 @@
+kambi_lines --fullscreen
