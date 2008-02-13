@@ -32,7 +32,7 @@ interface
 uses LinesBoard, VectorMath, KambiClassUtils;
 
 const
-  Version = '1.1.3';
+  Version = '1.1.4';
   DisplayProgramName = 'kambi_lines';
 
 { NextColors ---------------------------------------------------------- }
