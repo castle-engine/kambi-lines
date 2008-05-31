@@ -72,12 +72,12 @@ begin
         glCallList(dlBoardImage);
 
         if Position <= 1 then
-          Ball := VLerp(Position, Move.A, MoveWay.Items[0]) else
+          Ball := Lerp(Position, Move.A, MoveWay.Items[0]) else
         begin
           { Max ponizej jest zeby miec absolutna pewnosc ze otrzymane Pos1 jest
             indeksem w zakresie 1..Way.Length-1, bez wzgledu na bledy zmiennoprzec. }
           Pos1 := Clamped(Floor(Position), 1, MoveWay.Length-1);
-          Ball := VLerp(Position-Pos1, MoveWay.Items[Pos1-1], MoveWay.Items[Pos1]);
+          Ball := Lerp(Position-Pos1, MoveWay.Items[Pos1-1], MoveWay.Items[Pos1]);
         end;
 
         glRasterPos2f(BoardFieldImage0X + BoardFieldWidth * Ball[0],
