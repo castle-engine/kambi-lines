@@ -92,13 +92,13 @@ begin
         glw.PostRedisplay;
         glw.FlushRedisplay;
 
-        { We shouldn't use Glw.FPSCompSpeed, because we tricked the drawing and
-          OnDraw was nil. So Glw.FPSCompSpeed would indicate that computer speed was huge,
-          while in fact we just did the drawing outside OnDraw...
-          So we calculate CompSpeed ourselves below. }
-        CompSpeed := ((KamTimer - RenderStartTime) / KamTimerFrequency) * 50;
+        { We shouldn't use Glw.DrawSpeed, because we tricked the drawing and
+          OnDraw was nil, we draw outside of OnDraw.
+          Also, we're not inside Idle, so Glw.IdleSpeed is also not available...
+          So we just calculate CompSpeed ourselves below. }
+        CompSpeed := (KamTimer - RenderStartTime) / KamTimerFrequency;
 
-        Position += 0.2 * CompSpeed;
+        Position += 10 * CompSpeed;
       end;
 
       { zakoncz animacje, przenies kulke na koncowa pozycje w Board[] }
