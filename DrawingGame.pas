@@ -311,7 +311,7 @@ begin
   for bf := LowNonEmptyBF to HighNonEmptyBF do
    dlNonEmptyBFImages[i, bf] := LoadImageToDisplayList(ImagesPath +
      NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png',
-       [TAlphaImage], [], 0, 0);
+       [TRGBAlphaImage], [], 0, 0);
 
  PlayerNamesFont := TGLBitmapFont.Create(@BFNT_ChristmasCard_m24);
  ButtonCaptionFont := TGLBitmapFont.Create(@BFNT_BitstreamVeraSans_Bold_m14);
