@@ -25,4 +25,4 @@ rm -f opengl/glwindow.o \
       opengl/GLWindow.o \
       opengl/GLWindow.ppu
 
-fpc -dRELEASE @kambi.cfg -dGLWINDOW_XLIB ../kambi_lines/kambi_lines.pasprogram
+fpc -dRELEASE "${KAMBI_FPC_OPTIONS:-}" @kambi.cfg -dGLWINDOW_XLIB ../kambi_lines/kambi_lines.pasprogram
