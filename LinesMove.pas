@@ -48,7 +48,7 @@ begin
   BF := Board[Move.A[0], Move.A[1]];
   Board[Move.A[0], Move.A[1]] := bfEmpty;
   DrawGame;
-  dlBoardImage := SaveScreenToDisplayList_noflush(GL_BACK);
+  dlBoardImage := SaveScreenWhole_ToDisplayList_noflush(GL_BACK);
   try
     SavedMode := TGLMode.Create(glw, GL_COLOR_BUFFER_BIT, false);
     try
