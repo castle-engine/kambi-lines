@@ -275,7 +275,7 @@ begin
  try
   TGLWindowState.SetStandardState(glw, @DrawGL, @CloseQueryGL, nil,
     nil, false, false, false,
-    K_None, #0, false, false);
+    K_None, #0, false, nil);
   glw.OnKeyDown := @KeyDown;
   glw.OnMouseMove := @MouseMoveGL;
   glw.OnMouseDown := @MouseDownGL;
