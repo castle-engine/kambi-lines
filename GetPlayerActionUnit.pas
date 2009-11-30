@@ -273,7 +273,7 @@ var SavedMode: TGLMode;
 begin
  SavedMode := TGLMode.Create(glw, 0, false);
  try
-  SetStandardGLWindowState(glw, @DrawGL, @CloseQueryGL, nil,
+  TGLWindowState.SetStandardState(glw, @DrawGL, @CloseQueryGL, nil,
     nil, false, false, false,
     K_None, #0, false, false);
   glw.OnKeyDown := @KeyDown;
