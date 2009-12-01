@@ -126,7 +126,7 @@ const
 
 procedure Init;
 begin
- glw := TGLWindow.Create;
+ glw := TGLWindow.Create(nil);
 
  { parse params }
  WasParam_Fullscreen := false;
