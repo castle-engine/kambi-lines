@@ -308,15 +308,15 @@ procedure InitGL(glwin: TGLWindow);
 begin
  { dopiero w InitGL inicjuj Areas, na wypadek gdybym kiedys zrobil odczytywanie
    ImgButtonWidth/Height z pliku dopiero w DrawingGame.InitGL. }
- DefaultAreas.AppendItem(Area( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(0)));
- DefaultAreas.AppendItem(Area(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(1)));
- DefaultAreas.AppendItem(Area(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(2)));
- DefaultAreas.AppendItem(Area(409, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(3)));
- DefaultAreas.AppendItem(Area(509, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(4)));
+ DefaultAreas.Add(Area( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(0)));
+ DefaultAreas.Add(Area(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(1)));
+ DefaultAreas.Add(Area(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(2)));
+ DefaultAreas.Add(Area(409, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(3)));
+ DefaultAreas.Add(Area(509, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(4)));
 end;
 
 initialization
- glw.OnInitList.AppendItem(@InitGL);
+ glw.OnInitList.Add(@InitGL);
  MoveWay := TDynVector2IntegerArray.Create;
 finalization
  FreeAndNil(MoveWay);

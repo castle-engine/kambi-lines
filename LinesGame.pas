@@ -148,7 +148,7 @@ begin
    for i := 0 to BoardWidth-1 do
     for j := 0 to BoardHeight-1 do
      if Board[i, j] = bfEmpty then
-      result.AppendItem(Vector2Integer(i, j));
+      result.Add(Vector2Integer(i, j));
  except result.Free; raise end;
 end;
 
@@ -241,7 +241,7 @@ const LineLengthToMatch = 5;
   var i: Integer;
   begin
    i := LinesToDelete.IndexOf(Pos);
-   if i = -1 then LinesToDelete.AppendItem(Pos);
+   if i = -1 then LinesToDelete.Add(Pos);
   end;
 
   procedure TryMatchLine(x0, y0, dx, dy: Integer);

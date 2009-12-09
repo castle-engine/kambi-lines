@@ -139,7 +139,7 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
     begin
      result:=(x >= 0) and (y >= 0) and (x < BoardWidth) and (y < BoardHeight) and
        (Board[x, y] = bfEmpty) and FindWay(x, y);
-     if result and (Way <> nil) then Way.AppendItem(Vector2Integer(x, y));
+     if result and (Way <> nil) then Way.Add(Vector2Integer(x, y));
     end;
     
     function TryNeighbour(Dir: TDir): boolean; overload;

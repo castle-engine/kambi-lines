@@ -324,7 +324,7 @@ begin
 end;
 
 initialization
- glw.OnInitList.AppendItem(@InitGL);
- glw.OnCloseList.AppendItem(@CloseGL);
+ glw.OnInitList.Add(@InitGL);
+ glw.OnCloseList.Add(@CloseGL);
 finalization
 end.

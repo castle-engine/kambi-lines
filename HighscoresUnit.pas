@@ -211,7 +211,7 @@ begin
  Highscores.Count := 0;
  try
   S := TFileStream.Create(HighscoresFilename, fmOpenRead);
- except Highscores.AppendItem(StandardKing); Exit end;
+ except Highscores.Add(StandardKing); Exit end;
  try
   S.ReadBuffer(hc, SizeOf(hc));
   Highscores.Count := hc;
@@ -248,7 +248,7 @@ end;
 initialization
  Highscores := TDynHighscoresArray.Create;
  LoadHighscores;
- glw.OnInitList.AppendItem(@InitGL);
+ glw.OnInitList.Add(@InitGL);
 finalization
  SaveHighscores;
  FreeAndNil(Highscores);
