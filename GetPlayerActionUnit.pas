@@ -286,7 +286,7 @@ begin
   MoveState := msNone;
   Action := paMove;
   repeat
-   glwm.ProcessMessage(true);
+   Application.ProcessMessage(true);
   until (Action <> paMove) or (MoveState = msTargetSelected);
 
   result := Action;

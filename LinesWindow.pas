@@ -133,16 +133,16 @@ begin
  ParseParameters(Options, @OptionProc, nil, true);
 
  { setup glwin parameters Width, Height, Fullscreen, ResizeAllowed
-   + glwm.VideoResize* }
+   + Application.VideoResize* }
  if WasParam_Fullscreen then
  begin
-  glwm.VideoResize := true;
-  glwm.VideoResizeWidth := 640;
-  glwm.VideoResizeHeight := 480;
-  glwm.VideoChange(true);
+  Application.VideoResize := true;
+  Application.VideoResizeWidth := 640;
+  Application.VideoResizeHeight := 480;
+  Application.VideoChange(true);
   
-  glw.Width := glwm.VideoResizeWidth;
-  glw.Height := glwm.VideoResizeHeight;
+  glw.Width := Application.VideoResizeWidth;
+  glw.Height := Application.VideoResizeHeight;
   glw.FullScreen := true;
  end else
  begin
