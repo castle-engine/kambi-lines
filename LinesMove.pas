@@ -50,10 +50,9 @@ begin
   DrawGame;
   dlBoardImage := SaveScreenWhole_ToDisplayList_noflush(GL_BACK);
   try
-    SavedMode := TGLMode.Create(glw, GL_COLOR_BUFFER_BIT, false);
+    SavedMode := TGLMode.CreateReset(glw, GL_COLOR_BUFFER_BIT, false,
+      nil, nil, @NoClose, true);
     try
-      TGLWindowState.SetStandardState(glw, nil, nil, @NoClose, true);
-
       glAlphaFunc(GL_GREATER, 0.5);
 
       { Dobra, teraz robimy animacje w OpenGLu przesuwajacej sie kulki.
