@@ -52,8 +52,7 @@ begin
   try
     SavedMode := TGLMode.Create(glw, GL_COLOR_BUFFER_BIT, false);
     try
-      TGLWindowState.SetStandardNoCloseState(glw, nil, nil, true, false, K_None,
-        false);
+      TGLWindowState.SetStandardNoCloseState(glw, nil, nil, true);
 
       glAlphaFunc(GL_GREATER, 0.5);
 
