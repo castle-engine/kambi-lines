@@ -14,4 +14,4 @@ cd ../kambi_vrml_game_engine/
 # Force rebuilding GLWindow unit with proper backend.
 make clean-glwindow
 
-fpc -dRELEASE "${KAMBI_FPC_OPTIONS:-}" @kambi.cfg -dGLWINDOW_XLIB ../kambi_lines/kambi_lines.pasprogram
+fpc -dRELEASE "${KAMBI_FPC_OPTIONS:-}" @kambi.cfg -dGLWINDOW_XLIB ../kambi_lines/kambi_lines.lpr

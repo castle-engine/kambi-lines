@@ -46,7 +46,7 @@ uses GLWindow, VectorMath, OpenGLBmpFonts;
 var
   glw: TGLWindow;
   { LinesFont uzywany jest w wielu miejscach gry - w DrawGame (do tekstu
-    przyciskow i score points), w kambi_lines.pasprogram ustawiamy go GLWinMessages,
+    przyciskow i score points), w kambi_lines.lpr ustawiamy go GLWinMessages,
     i w Highscores w DrawHighscore; }
   LinesFont: TGLBitmapFont;
 
@@ -154,7 +154,7 @@ begin
 
  glw.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
  
- { Init glw window (samo glw.Init przerzucamy do zasadniczego kambi_lines.pasprogram,
+ { Init glw window (samo glw.Init przerzucamy do zasadniczego kambi_lines.lpr,
    lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
    fpc cos sie w tym pieprzy) }
  glw.Caption := 'Kambi Lines';
