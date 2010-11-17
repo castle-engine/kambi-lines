@@ -286,9 +286,9 @@ begin
  DrawGame(false, DummyBoardPos, nil);
 end;
 
-{ glw init/close --------------------------------------------------------- }
+{ glw open/close --------------------------------------------------------- }
 
-procedure InitGL(glwin: TGLWindow);
+procedure OpenGL(glwin: TGLWindow);
 const
   NonEmptyBFImageFileNames: array[TNonEmptyBF]of string=
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
@@ -326,7 +326,7 @@ begin
 end;
 
 initialization
- glw.OnInitList.Add(@InitGL);
+ glw.OnOpenList.Add(@OpenGL);
  glw.OnCloseList.Add(@CloseGL);
 finalization
 end.

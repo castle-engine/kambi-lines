@@ -301,12 +301,12 @@ begin
  finally SavedMode.Free end;
 end;
 
-{ glw init/close --------------------------------------------------------- }
+{ glw open/close --------------------------------------------------------- }
 
-procedure InitGL(glwin: TGLWindow);
+procedure OpenGL(glwin: TGLWindow);
 begin
- { dopiero w InitGL inicjuj Areas, na wypadek gdybym kiedys zrobil odczytywanie
-   ImgButtonWidth/Height z pliku dopiero w DrawingGame.InitGL. }
+ { dopiero w OpenGL inicjuj Areas, na wypadek gdybym kiedys zrobil odczytywanie
+   ImgButtonWidth/Height z pliku dopiero w DrawingGame.OpenGL. }
  DefaultAreas.Add(Area( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(0)));
  DefaultAreas.Add(Area(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(1)));
  DefaultAreas.Add(Area(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(2)));
@@ -315,7 +315,7 @@ begin
 end;
 
 initialization
- glw.OnInitList.Add(@InitGL);
+ glw.OnOpenList.Add(@OpenGL);
  MoveWay := TDynVector2IntegerArray.Create;
 finalization
  FreeAndNil(MoveWay);

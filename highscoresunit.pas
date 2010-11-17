@@ -238,9 +238,9 @@ begin
  finally S.Free end;
 end;
 
-{ Init/Close GL --------------------------------------------------------------- }
+{ Open/Close GL --------------------------------------------------------------- }
 
-procedure InitGL(glwin: TGLWindow);
+procedure OpenGL(glwin: TGLWindow);
 begin
  dlImgHighscr := LoadImageToDisplayList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
 end;
@@ -250,7 +250,7 @@ end;
 initialization
  Highscores := TDynHighscoresArray.Create;
  LoadHighscores;
- glw.OnInitList.Add(@InitGL);
+ glw.OnOpenList.Add(@OpenGL);
 finalization
  SaveHighscores;
  FreeAndNil(Highscores);

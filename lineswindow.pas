@@ -59,7 +59,7 @@ const
 { pozycje lewego dolnego rogu ekranu we wspolrzednych OpenGL'a.
   Beda zawsze <= 0 - jezeli wymiary GameScreen sa rowne wymiarom glwindow
   to beda rowne 0 ale moga byc mniejsze od zera jezeli glwindow bedzie
-  wieksze niz GameScreen. Ustalane dopiero w czasie InitGL okienka glwindow . }
+  wieksze niz GameScreen. Ustalane dopiero w czasie OpenGL okienka glwindow . }
 function ScreenX0: Integer;
 function ScreenY0: Integer;
 
@@ -81,7 +81,7 @@ begin result := ProgramDataPath +'images' +PathDelim end;
 
 { gl window callbacks --------------------------------------------------------- }
 
-procedure InitGL(glwin: TGLWindow);
+procedure OpenGL(glwin: TGLWindow);
 var OverflowX, FirstOverflowX, SecondOverflowX,
     OverflowY, FirstOverflowY, SecondOverflowY: Integer;
 begin
@@ -126,7 +126,7 @@ const
    WasParam_Fullscreen := true;
   end;
 
-procedure Init;
+procedure Open;
 begin
  glw := TGLWindow.Create(nil);
 
@@ -154,17 +154,17 @@ begin
 
  glw.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
  
- { Init glw window (samo glw.Init przerzucamy do zasadniczego kambi_lines.lpr,
+ { open glw window (samo glw.Open przerzucamy do zasadniczego kambi_lines.lpr,
    lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
    fpc cos sie w tym pieprzy) }
  glw.Caption := 'Kambi Lines';
  glw.OnCloseQuery := @CloseQueryGL;
- glw.OnInit := @InitGL;
+ glw.OnOpen := @OpenGL;
  glw.OnClose := @CloseGL;
 end;
 
 initialization
- Init;
+ Open;
 finalization
  FreeAndNil(glw);
 end.
