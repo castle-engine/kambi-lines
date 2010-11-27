@@ -110,7 +110,7 @@ function RandomBall: TNonEmptyBF;
 
 implementation
 
-uses SysUtils, KambiUtils, KambiFilesUtils;
+uses SysUtils, KambiUtils, KambiFilesUtils, KambiXMLConfig;
 
 procedure ClearGame(DoBoard, DoNextColors, DoScore: boolean);
 var i, j: Integer;
@@ -340,33 +340,35 @@ begin
   result := TNonEmptyBF(OrdLowSingleColourBF + Random(SingleColourBFCount));
 end;
 
-{ Load/SaveUserIni --------------------------------------------------------------- }
+{ Loading / saving config ---------------------------------------------------- }
 
-var ini: TKamIniFile;
+var Conf: TKamXMLConfig;
 
-procedure LoadUserIni;
+procedure LoadConfig;
 begin
- ini := TKamIniFile.Create(UserConfigFile('.ini'), true);
- ShowNextColors := ini.ReadBool('prefs', 'ShowNextColors', ShowNextColors);
- AllowSpecialBalls := ini.ReadBool('prefs', 'AllowSpecialBalls', AllowSpecialBalls);
- BallsImageSet := ini.ReadInteger('prefs', 'BallsImageSet', BallsImageSet);
+  Conf := TKamXMLConfig.Create(nil);
+  Conf.FileName := UserConfigFile('.conf');
+  ShowNextColors := Conf.GetValue('prefs/ShowNextColors', ShowNextColors);
+  AllowSpecialBalls := Conf.GetValue('prefs/AllowSpecialBalls', AllowSpecialBalls);
+  BallsImageSet := Conf.GetValue('prefs/BallsImageSet', BallsImageSet);
 end;
 
-procedure SaveUserIni;
+procedure SaveConfig;
 begin
- if Assigned(ini) then
- begin
-  ini.WriteBool('prefs', 'ShowNextColors', ShowNextColors);
-  ini.WriteBool('prefs', 'AllowSpecialBalls', AllowSpecialBalls);
-  ini.WriteInteger('prefs', 'BallsImageSet', BallsImageSet);
-  FreeAndNil(ini);
- end;
+  if Assigned(Conf) then
+  begin
+    Conf.SetValue('prefs/ShowNextColors', ShowNextColors);
+    Conf.SetValue('prefs/AllowSpecialBalls', AllowSpecialBalls);
+    Conf.SetValue('prefs/BallsImageSet', BallsImageSet);
+    Conf.Flush;
+    FreeAndNil(Conf);
+  end;
 end;
 
 { unit init/fini -------------------------------------------------------------- }
 
 initialization
- LoadUserIni;
+ LoadConfig;
 finalization
- SaveUserIni;
+ SaveConfig;
 end.
