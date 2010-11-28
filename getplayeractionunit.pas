@@ -49,6 +49,9 @@ uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, KambiGLUtils, KambiUtils,
   DrawingGame, LinesGame, GLWinInputs, LinesHelp, Areas,
   KambiStringUtils;
 
+var
+  DefaultAreas: TDynAreaArray;
+
 { zmienne wewn. w tym module ----------------------------------------------- }
 
 type
@@ -251,14 +254,13 @@ begin
   { obslugujemy klikanie myszka na przyciskach ponizej }
   AreaIndex := DefaultAreas.FindArea(GLWinMouseXToOurX(glwin.MouseX),
     GLWinMouseYToOurY(glwin.MouseY));
-  if AreaIndex >= 0 then
-   case PtrUInt(DefaultAreas.Items[AreaIndex].UserData) of
+  case AreaIndex of
     0: glwin.EventKeyDown(K_F1, #0);
     1: glwin.EventKeyDown(K_None, 'i');
     2: glwin.EventKeyDown(K_None, 's');
     3: glwin.EventKeyDown(K_None, 'n');
     4: glwin.EventKeyDown(K_None, 'r');
-   end;
+  end;
  end;
 end;
 
@@ -307,16 +309,18 @@ procedure OpenGL(glwin: TGLWindow);
 begin
  { dopiero w OpenGL inicjuj Areas, na wypadek gdybym kiedys zrobil odczytywanie
    ImgButtonWidth/Height z pliku dopiero w DrawingGame.OpenGL. }
- DefaultAreas.Add(Area( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(0)));
- DefaultAreas.Add(Area(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(1)));
- DefaultAreas.Add(Area(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(2)));
- DefaultAreas.Add(Area(409, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(3)));
- DefaultAreas.Add(Area(509, StatusButtonsY, ImgButtonWidth, ImgButtonHeight, Pointer(4)));
+ DefaultAreas.Add(Area( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ DefaultAreas.Add(Area(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ DefaultAreas.Add(Area(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ DefaultAreas.Add(Area(409, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ DefaultAreas.Add(Area(509, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
 end;
 
 initialization
  glw.OnOpenList.Add(@OpenGL);
  MoveWay := TDynVector2IntegerArray.Create;
+ DefaultAreas := TDynAreaArray.Create;
 finalization
  FreeAndNil(MoveWay);
+ FreeAndNil(DefaultAreas);
 end.
