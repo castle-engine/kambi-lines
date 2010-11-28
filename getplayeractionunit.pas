@@ -46,11 +46,11 @@ implementation
 
 uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, KambiGLUtils, KambiUtils,
   Images, GLWinMessages, Classes, HighscoresUnit, GLWinModes,
-  DrawingGame, LinesGame, GLWinInputs, LinesHelp, Areas,
+  DrawingGame, LinesGame, GLWinInputs, LinesHelp, Rectangles,
   KambiStringUtils;
 
 var
-  DefaultAreas: TDynAreaArray;
+  ButtonsRects: TDynRectangleArray;
 
 { zmienne wewn. w tym module ----------------------------------------------- }
 
@@ -217,7 +217,7 @@ procedure MouseDownGL(glwin: TGLWindow; btn: TMouseButton);
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 
 var BoardPos: TVector2Integer;
-    AreaIndex: Integer;
+    RectangleIndex: Integer;
 begin
  if (Action = paMove) and (MoveState = msNone) and (btn = mbLeft) and
    MousePosToBoard(glwin.MouseX, glwin.MouseY, BoardPos) and
@@ -252,9 +252,9 @@ begin
  if (btn = mbLeft) then
  begin
   { obslugujemy klikanie myszka na przyciskach ponizej }
-  AreaIndex := DefaultAreas.FindArea(GLWinMouseXToOurX(glwin.MouseX),
+  RectangleIndex := ButtonsRects.FindRectangle(GLWinMouseXToOurX(glwin.MouseX),
     GLWinMouseYToOurY(glwin.MouseY));
-  case AreaIndex of
+  case RectangleIndex of
     0: glwin.EventKeyDown(K_F1, #0);
     1: glwin.EventKeyDown(K_None, 'i');
     2: glwin.EventKeyDown(K_None, 's');
@@ -307,20 +307,20 @@ end;
 
 procedure OpenGL(glwin: TGLWindow);
 begin
- { dopiero w OpenGL inicjuj Areas, na wypadek gdybym kiedys zrobil odczytywanie
+ { dopiero w OpenGL inicjuj Rectangles, na wypadek gdybym kiedys zrobil odczytywanie
    ImgButtonWidth/Height z pliku dopiero w DrawingGame.OpenGL. }
- DefaultAreas.Add(Area( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
- DefaultAreas.Add(Area(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
- DefaultAreas.Add(Area(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
- DefaultAreas.Add(Area(409, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
- DefaultAreas.Add(Area(509, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ ButtonsRects.Add(Rectangle( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ ButtonsRects.Add(Rectangle(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ ButtonsRects.Add(Rectangle(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ ButtonsRects.Add(Rectangle(409, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
+ ButtonsRects.Add(Rectangle(509, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
 end;
 
 initialization
  glw.OnOpenList.Add(@OpenGL);
  MoveWay := TDynVector2IntegerArray.Create;
- DefaultAreas := TDynAreaArray.Create;
+ ButtonsRects := TDynRectangleArray.Create;
 finalization
  FreeAndNil(MoveWay);
- FreeAndNil(DefaultAreas);
+ FreeAndNil(ButtonsRects);
 end.
