@@ -252,7 +252,7 @@ begin
   AreaIndex := DefaultAreas.FindArea(GLWinMouseXToOurX(glwin.MouseX),
     GLWinMouseYToOurY(glwin.MouseY));
   if AreaIndex >= 0 then
-   case TPointerUInt(DefaultAreas.Items[AreaIndex].UserData) of
+   case PtrUInt(DefaultAreas.Items[AreaIndex].UserData) of
     0: glwin.EventKeyDown(K_F1, #0);
     1: glwin.EventKeyDown(K_None, 'i');
     2: glwin.EventKeyDown(K_None, 's');
