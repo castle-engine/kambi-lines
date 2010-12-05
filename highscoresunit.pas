@@ -187,7 +187,7 @@ begin
   AddToHighscores(Pos, '', AScore);
   DrawHighscores;
   Highscores.Items[Pos].PlayerName:=
-    Input(glw, GL_BACK, false, LinesFont, ScreenX0, ScreenY0,
+    Input(Window, GL_BACK, false, LinesFont, ScreenX0, ScreenY0,
       HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
  end;
 end;
@@ -240,7 +240,7 @@ end;
 
 { Open/Close GL --------------------------------------------------------------- }
 
-procedure OpenGL(glwin: TGLWindow);
+procedure OpenGL(Window: TGLWindow);
 begin
  dlImgHighscr := LoadImageToDisplayList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
 end;
@@ -250,7 +250,7 @@ end;
 initialization
  Highscores := TDynHighscoresArray.Create;
  LoadHighscores;
- glw.OnOpenList.Add(@OpenGL);
+ Window.OnOpenList.Add(@OpenGL);
 finalization
  SaveHighscores;
  FreeAndNil(Highscores);

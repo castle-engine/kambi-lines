@@ -32,7 +32,7 @@ uses SysUtils, LinesWindow, KambiUtils, GLWinMessages, LinesGame;
 
 procedure ShowHelp;
 begin
- MessageOK(glw,
+ MessageOK(Window,
    'Keys: besides the keys listed at the bottom of the screen, ' +
    'also available are:' + nl +
    '  H = show highscores' + nl +

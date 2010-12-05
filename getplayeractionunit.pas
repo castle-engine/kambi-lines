@@ -87,7 +87,7 @@ var
 
 { gl window callbacks -------------------------------------------------------- }
 
-procedure DrawGL(glwin: TGLWindow);
+procedure DrawGL(Window: TGLWindow);
 var HWay: TDynVector2IntegerArray;
 begin
  if HighlightWay and CWayOnTheBoard(Move.A, HighlightWayPos) then
@@ -107,27 +107,27 @@ begin
  end;
 end;
 
-procedure AskQuit(glwin: TGLWindow);
+procedure AskQuit(Window: TGLWindow);
 begin
- if MessageYesNo(glwin, 'Are you sure you want to quit ?') then
+ if MessageYesNo(Window, 'Are you sure you want to quit ?') then
   Action := paQuit;
 end;
 
-procedure KeyDown(glwin: TGLWindow; key: TKey; c: char);
+procedure KeyDown(Window: TGLWindow; key: TKey; c: char);
 begin
  case Key of
   K_F1: ShowHelp;
   else
    case c of
     'r':
-      if MessageYesNo(glwin, 'End this game and start another one ?') then
+      if MessageYesNo(Window, 'End this game and start another one ?') then
        Action := paNewGame;
-    CharEscape: AskQuit(glwin);
+    CharEscape: AskQuit(Window);
     'h':
       begin
        DrawGame;
        DrawHighscores;
-       InputAnyKey(glw, GL_BACK, false, ScreenX0, ScreenY0);
+       InputAnyKey(Window, GL_BACK, false, ScreenX0, ScreenY0);
       end;
     'n':ShowNextColors := not ShowNextColors;
     'i': BallsImageSet := ChangeIntCycle(BallsImageSet, 1, High(BallsImageSet));
@@ -136,7 +136,7 @@ begin
    end;
  end;
 
- glwin.PostRedisplay;
+ Window.PostRedisplay;
 end;
 
 function GLWinMouseXToOurX(MouseX: Integer): Integer;
@@ -146,7 +146,7 @@ end;
 
 function GLWinMouseYToOurY(MouseY: Integer): Integer;
 begin
- result := glw.Height-MouseY + ScreenY0;
+ result := Window.Height-MouseY + ScreenY0;
 end;
 
 function MousePosToBoard(MouseX, MouseY: Integer; var BoardPos: TVector2Integer): boolean;
@@ -169,7 +169,7 @@ begin
  result := true;
 end;
 
-procedure MouseMoveGL(glwin: TGLWindow; NewX, NewY: Integer);
+procedure MouseMoveGL(Window: TGLWindow; NewX, NewY: Integer);
 var NewHighlightOneBF: boolean;
     NewHighlightOneBFPos, BoardPos: TVector2Integer;
     NewHighlightWay: boolean;
@@ -208,11 +208,11 @@ begin
   HighlightOneBFPos := NewHighlightOneBFPos;
   HighlightWay := NewHighlightWay;
   HighlightWayPos := NewHighlightWayPos;
-  glwin.PostRedisplay;
+  Window.PostRedisplay;
  end;
 end;
 
-procedure MouseDownGL(glwin: TGLWindow; btn: TMouseButton);
+procedure MouseDownGL(Window: TGLWindow; btn: TMouseButton);
 
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 
@@ -220,15 +220,15 @@ var BoardPos: TVector2Integer;
     RectangleIndex: Integer;
 begin
  if (Action = paMove) and (MoveState = msNone) and (btn = mbLeft) and
-   MousePosToBoard(glwin.MouseX, glwin.MouseY, BoardPos) and
+   MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) and
    (Board[BoardPos[0], BoardPos[1]] <> bfEmpty) then
  begin
   MoveState := msSourceSelected;
   Move.A := BoardPos;
-  glwin.PostRedisplay;
+  Window.PostRedisplay;
  end else
  if (Action = paMove) and (MoveState = msSourceSelected) and (btn = mbLeft) and
-   MousePosToBoard(glwin.MouseX, glwin.MouseY, BoardPos) then
+   MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) then
  begin
   { jezeli kliknal na pustym to znaczy ze wybiera target.
     Wpp. znaczy ze wybiera ponownie source. }
@@ -241,32 +241,32 @@ begin
     MoveWay.Length := 0;
     MoveWay.AppendDynArray(CWayResultWay);
    end else
-    { bardziej jasny komunikat, w rodzaju MessageOK(glw, 'No way found'),
+    { bardziej jasny komunikat, w rodzaju MessageOK(Window, 'No way found'),
       nie jest tu potrzebny bo podswietlamy droge z A do B wiec user i tak
       widzi ze nie ma drogi; po prostu przypadkiem kliknal sobie tutaj. }
     Beep;
   end else
    Move.A := BoardPos;
-  glwin.PostRedisplay;
+  Window.PostRedisplay;
  end else
  if (btn = mbLeft) then
  begin
   { obslugujemy klikanie myszka na przyciskach ponizej }
-  RectangleIndex := ButtonsRects.FindRectangle(GLWinMouseXToOurX(glwin.MouseX),
-    GLWinMouseYToOurY(glwin.MouseY));
+  RectangleIndex := ButtonsRects.FindRectangle(GLWinMouseXToOurX(Window.MouseX),
+    GLWinMouseYToOurY(Window.MouseY));
   case RectangleIndex of
-    0: glwin.EventKeyDown(K_F1, #0);
-    1: glwin.EventKeyDown(K_None, 'i');
-    2: glwin.EventKeyDown(K_None, 's');
-    3: glwin.EventKeyDown(K_None, 'n');
-    4: glwin.EventKeyDown(K_None, 'r');
+    0: Window.EventKeyDown(K_F1, #0);
+    1: Window.EventKeyDown(K_None, 'i');
+    2: Window.EventKeyDown(K_None, 's');
+    3: Window.EventKeyDown(K_None, 'n');
+    4: Window.EventKeyDown(K_None, 'r');
   end;
  end;
 end;
 
-procedure CloseQueryGL(glwin: TGLWindow);
+procedure CloseQueryGL(Window: TGLWindow);
 begin
- AskQuit(glwin);
+ AskQuit(Window);
 end;
 
 { zasadnicze GetPlayerMove ------------------------------------------------- }
@@ -275,11 +275,11 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
   PlayerMoveWay: TDynVector2IntegerArray): TPlayerAction;
 var SavedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(glw, 0, false, @DrawGL, nil, @CloseQueryGL, false);
+ SavedMode := TGLMode.CreateReset(Window, 0, false, @DrawGL, nil, @CloseQueryGL, false);
  try
-  glw.OnKeyDown := @KeyDown;
-  glw.OnMouseMove := @MouseMoveGL;
-  glw.OnMouseDown := @MouseDownGL;
+  Window.OnKeyDown := @KeyDown;
+  Window.OnMouseMove := @MouseMoveGL;
+  Window.OnMouseDown := @MouseDownGL;
 
   CWayClearCache;
   HighlightOneBF := false;
@@ -305,7 +305,7 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure OpenGL(glwin: TGLWindow);
+procedure OpenGL(Window: TGLWindow);
 begin
  { dopiero w OpenGL inicjuj Rectangles, na wypadek gdybym kiedys zrobil odczytywanie
    ImgButtonWidth/Height z pliku dopiero w DrawingGame.OpenGL. }
@@ -317,7 +317,7 @@ begin
 end;
 
 initialization
- glw.OnOpenList.Add(@OpenGL);
+ Window.OnOpenList.Add(@OpenGL);
  MoveWay := TDynVector2IntegerArray.Create;
  ButtonsRects := TDynRectangleArray.Create;
 finalization

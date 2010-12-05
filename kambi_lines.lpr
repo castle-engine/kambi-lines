@@ -113,7 +113,7 @@ begin
   raise EInvalidParams.Create('Invalid parameter "'+Parameters[1]+'"');
 
  { open glw (everything else about initing glw is done in LinesWindow) }
- glw.Open;
+ Window.Open;
 
  try
   { Init GLWinMessages }
@@ -122,7 +122,7 @@ begin
   { messageFont := LinesFont; }
 
   { go }
-  InputAnyKey(glw, ImagesPath+ 'title.png', 0, 0, 0, 0);
+  InputAnyKey(Window, ImagesPath+ 'title.png', 0, 0, 0, 0);
 
   PlayerMoveWay := TDynVector2IntegerArray.Create;
   repeat
@@ -140,10 +140,10 @@ begin
         BallMove(PlayerMove, PlayerMoveWay);
         if not EndGameTurn then
         begin
-	 { glw.PostRedisplay zeby namalowal plansze gry z BallMove zakonczonym
+	 { Window.PostRedisplay zeby namalowal plansze gry z BallMove zakonczonym
 	   i byc moze dodanymi niektorymi kulkami sposrod NextColors. }
-         glw.PostRedisplay;
-         MessageOK(glw, 'No more moves possible - game over !');
+         Window.PostRedisplay;
+         MessageOK(Window, 'No more moves possible - game over !');
          break;
         end;
        end;

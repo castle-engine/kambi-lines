@@ -44,7 +44,7 @@ interface
 uses GLWindow, VectorMath, OpenGLBmpFonts;
 
 var
-  glw: TGLWindow;
+  Window: TGLWindow;
   { LinesFont uzywany jest w wielu miejscach gry - w DrawGame (do tekstu
     przyciskow i score points), w kambi_lines.lpr ustawiamy go GLWinMessages,
     i w Highscores w DrawHighscore; }
@@ -81,18 +81,18 @@ begin result := ProgramDataPath +'images' +PathDelim end;
 
 { gl window callbacks --------------------------------------------------------- }
 
-procedure OpenGL(glwin: TGLWindow);
+procedure OpenGL(Window: TGLWindow);
 var OverflowX, FirstOverflowX, SecondOverflowX,
     OverflowY, FirstOverflowY, SecondOverflowY: Integer;
 begin
  { musi byc , moj kod na tym polega. Ponizsze projection stara sie umiescic
-   GameScreenWidth, GameScreenHeight na srodku glwin.Width, glwin.Height.
+   GameScreenWidth, GameScreenHeight na srodku Window.Width, Window.Height.
  }
- OverflowX := glwin.Width-GameScreenWidth;
+ OverflowX := Window.Width-GameScreenWidth;
  FirstOverflowX := OverflowX div 2;
  SecondOverflowX := OverflowX - FirstOverflowX;
 
- OverflowY := glwin.Height-GameScreenHeight;
+ OverflowY := Window.Height-GameScreenHeight;
  FirstOverflowY := OverflowY div 2;
  SecondOverflowY := OverflowY - FirstOverflowY;
 
@@ -105,9 +105,9 @@ begin
  LinesFont := TGLBitmapFont.Create(@BFNT_ArialCELatin2_m14);
 end;
 
-procedure CloseQueryGL(glwin: TGLWindow); begin end;
+procedure CloseQueryGL(Window: TGLWindow); begin end;
 
-procedure CloseGL(glwin: TGLWindow);
+procedure CloseGL(Window: TGLWindow);
 begin
  FreeAndNil(LinesFont);
 end;
@@ -128,7 +128,7 @@ const
 
 procedure Open;
 begin
- glw := TGLWindow.Create(nil);
+ Window := TGLWindow.Create(nil);
 
  { parse params }
  WasParam_Fullscreen := false;
@@ -143,28 +143,28 @@ begin
   Application.VideoResizeHeight := 480;
   Application.VideoChange(true);
   
-  glw.Width := Application.VideoResizeWidth;
-  glw.Height := Application.VideoResizeHeight;
-  glw.FullScreen := true;
+  Window.Width := Application.VideoResizeWidth;
+  Window.Height := Application.VideoResizeHeight;
+  Window.FullScreen := true;
  end else
  begin
-  glw.Width := GameScreenWidth;
-  glw.Height := GameScreenHeight;
+  Window.Width := GameScreenWidth;
+  Window.Height := GameScreenHeight;
  end;
 
- glw.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
+ Window.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
  
- { open glw window (samo glw.Open przerzucamy do zasadniczego kambi_lines.lpr,
+ { open glw window (samo Window.Open przerzucamy do zasadniczego kambi_lines.lpr,
    lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
    fpc cos sie w tym pieprzy) }
- glw.Caption := 'Kambi Lines';
- glw.OnCloseQuery := @CloseQueryGL;
- glw.OnOpen := @OpenGL;
- glw.OnClose := @CloseGL;
+ Window.Caption := 'Kambi Lines';
+ Window.OnCloseQuery := @CloseQueryGL;
+ Window.OnOpen := @OpenGL;
+ Window.OnClose := @CloseGL;
 end;
 
 initialization
  Open;
 finalization
- FreeAndNil(glw);
+ FreeAndNil(Window);
 end.

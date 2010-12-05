@@ -52,7 +52,7 @@ begin
   DrawGame;
   dlBoardImage := SaveScreenWhole_ToDisplayList_noflush(GL_BACK);
   try
-    SavedMode := TGLMode.CreateReset(glw, GL_COLOR_BUFFER_BIT, false,
+    SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
       nil, nil, @NoClose, true);
     try
       glAlphaFunc(GL_GREATER, 0.5);
@@ -89,12 +89,12 @@ begin
 
         { OnDraw nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
           na dotychczasowej zawartosci ekranu. }
-        glw.PostRedisplay;
-        glw.FlushRedisplay;
+        Window.PostRedisplay;
+        Window.FlushRedisplay;
 
-        { We shouldn't use Glw.DrawSpeed, because we tricked the drawing and
+        { We shouldn't use Window.DrawSpeed, because we tricked the drawing and
           OnDraw was nil, we draw outside of OnDraw.
-          Also, we're not inside Idle, so Glw.IdleSpeed is also not available...
+          Also, we're not inside Idle, so Window.IdleSpeed is also not available...
           So we just calculate CompSpeed ourselves below. }
         CompSpeed := (KamTimer - RenderStartTime) / KamTimerFrequency;
 

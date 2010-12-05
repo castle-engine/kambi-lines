@@ -209,7 +209,7 @@ var ButtonsAndFramesX: Integer;
 
 var i, j: Integer;
 begin
- if (glw.Width > GameScreenWidth) or (glw.Height > GameScreenHeight) then
+ if (Window.Width > GameScreenWidth) or (Window.Height > GameScreenHeight) then
   glClear(GL_COLOR_BUFFER_BIT);
 
  glRasterPos2i(0, 0);
@@ -288,7 +288,7 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure OpenGL(glwin: TGLWindow);
+procedure OpenGL(Window: TGLWindow);
 const
   NonEmptyBFImageFileNames: array[TNonEmptyBF]of string=
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
@@ -319,14 +319,14 @@ begin
  ButtonCaptionFont := TGLBitmapFont.Create(@BFNT_BitstreamVeraSans_Bold_m14);
 end;
 
-procedure CloseGL(glwin: TGLWindow);
+procedure CloseGL(Window: TGLWindow);
 begin
  PlayerNamesFont.Free;
  ButtonCaptionFont.Free;
 end;
 
 initialization
- glw.OnOpenList.Add(@OpenGL);
- glw.OnCloseList.Add(@CloseGL);
+ Window.OnOpenList.Add(@OpenGL);
+ Window.OnCloseList.Add(@CloseGL);
 finalization
 end.
