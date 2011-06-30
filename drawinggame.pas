@@ -26,7 +26,7 @@ unit DrawingGame;
 
 interface
 
-uses GL, GLU, KambiGLUtils, VectorMath, LinesGame, LinesBoard;
+uses GL, KambiGLUtils, VectorMath, LinesGame, LinesBoard;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie glwindow, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.
@@ -65,7 +65,7 @@ implementation
 
 uses SysUtils, LinesWindow, GLWindow, Images,
   HighscoresUnit, KambiUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
-  BFNT_BitstreamVeraSans_Bold_m14_Unit, GLWinInputs, GLImages;
+  BFNT_BitstreamVeraSans_Bold_m14_Unit, GLImages;
 
 var
   dlGameImage, dlColrowImage,
