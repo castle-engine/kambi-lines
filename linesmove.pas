@@ -60,11 +60,11 @@ begin
 
       { Dobra, teraz robimy animacje w OpenGLu przesuwajacej sie kulki.
         Najwazniejsza rzecza tutaj jest zmienna Position : przybiera ona
-        wartosci od 0 do Way.Length. Wartosc 0 oznacza ze kulka jest na pozycji
-        X1, Y1, wartosci i = 1..Way.Length oznaczaja ze kulka jest na pozycji Way[i].
+        wartosci od 0 do Way.Count. Wartosc 0 oznacza ze kulka jest na pozycji
+        X1, Y1, wartosci i = 1..Way.Count oznaczaja ze kulka jest na pozycji Way[i].
         Wartosci rzeczywiste pomiedzy to interpolacja tych pozycji. }
       Position := 0;
-      while Position < MoveWay.Length do
+      while Position < MoveWay.Count do
       begin
         RenderStartTime := KamTimer;
 
@@ -76,8 +76,8 @@ begin
           Ball := Lerp(Position, Move.A, MoveWay.Items[0]) else
         begin
           { Max ponizej jest zeby miec absolutna pewnosc ze otrzymane Pos1 jest
-            indeksem w zakresie 1..Way.Length-1, bez wzgledu na bledy zmiennoprzec. }
-          Pos1 := Clamped(Floor(Position), 1, MoveWay.Length-1);
+            indeksem w zakresie 1..Way.Count-1, bez wzgledu na bledy zmiennoprzec. }
+          Pos1 := Clamped(Floor(Position), 1, MoveWay.Count-1);
           Ball := Lerp(Position-Pos1, MoveWay.Items[Pos1-1], MoveWay.Items[Pos1]);
         end;
 

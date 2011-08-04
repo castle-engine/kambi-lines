@@ -159,7 +159,7 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
     if (x = B[0]) and (y = B[1]) then
     begin
      result := true;
-     if Way <> nil then Way.Length := 0;
+     if Way <> nil then Way.Count := 0;
     end else
     begin
      { gdyby nie zalezalo nam na mozliwie krotkiej drodze wystarczyloby tutaj

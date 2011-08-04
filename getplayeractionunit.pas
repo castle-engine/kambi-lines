@@ -238,8 +238,8 @@ begin
    begin
     MoveState := msTargetSelected;
     Move.B := BoardPos;
-    MoveWay.Length := 0;
-    MoveWay.AppendDynArray(CWayResultWay);
+    MoveWay.Count := 0;
+    MoveWay.AddList(CWayResultWay);
    end else
     { bardziej jasny komunikat, w rodzaju MessageOK(Window, 'No way found'),
       nie jest tu potrzebny bo podswietlamy droge z A do B wiec user i tak
@@ -296,8 +296,8 @@ begin
    PlayerMove := Move;
    if PlayerMoveWay <> nil then
    begin
-    PlayerMoveWay.Length := 0;
-    PlayerMoveWay.AppendDynArray(MoveWay);
+    PlayerMoveWay.Count := 0;
+    PlayerMoveWay.AddList(MoveWay);
    end;
   end;
  finally SavedMode.Free end;
