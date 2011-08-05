@@ -129,7 +129,7 @@ begin
  H.PlayerName := APlayerName;
  H.Score := AScore;
  Highscores.Insert(Position, H);
- if Highscores.Count > MaxHighscoresCount then Highscores.Delete(Highscores.High);
+ if Highscores.Count > MaxHighscoresCount then Highscores.Delete(Highscores.Count - 1);
 end;
 
 function KingScore: PHighscore;
