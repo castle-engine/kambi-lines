@@ -133,7 +133,7 @@ begin
 end;
 
 function KingScore: PHighscore;
-begin result := Highscores.Pointers[0] end;
+begin result := PHighscore(Highscores.List) end;
 
 { displaying functions ------------------------------------------------------- }
 
