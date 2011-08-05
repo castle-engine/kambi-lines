@@ -66,7 +66,7 @@ function ScreenY0: Integer;
 implementation
 
 uses SysUtils, KambiUtils, KambiGLUtils, 
-  BFNT_ArialCELatin2_m14_Unit, ParseParametersUnit, KambiFilesUtils;
+  BFNT_ArialCELatin2_m14_Unit, KambiParameters, KambiFilesUtils;
 
 var
   FScreenX0, FScreenY0: Integer;
@@ -132,7 +132,7 @@ begin
 
  { parse params }
  WasParam_Fullscreen := false;
- ParseParameters(Options, @OptionProc, nil, true);
+ Parameters.Parse(Options, @OptionProc, nil, true);
 
  { setup glwin parameters Width, Height, Fullscreen, ResizeAllowed
    + Application.VideoResize* }

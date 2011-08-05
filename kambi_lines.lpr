@@ -60,7 +60,7 @@ program kambi_lines;
 uses SysUtils, GLWindow, LinesWindow, KambiUtils, HighscoresUnit,
   GetPlayerActionUnit, GLWinMessages, KambiGLUtils, LinesBoard,
   VectorMath, LinesMove, LinesGame, GLWinInputs,
-  ParseParametersUnit, KambiClassUtils;
+  KambiParameters, KambiClassUtils;
 
 { params ------------------------------------------------------------ }
 
@@ -108,7 +108,7 @@ var WantsToPlayMore: boolean = true;
     i: Integer;
 begin
  { parse params }
- ParseParameters(Options, @OptionProc, nil);
+ Parameters.Parse(Options, @OptionProc, nil);
  if Parameters.High > 0 then
   raise EInvalidParams.Create('Invalid parameter "'+Parameters[1]+'"');
 
