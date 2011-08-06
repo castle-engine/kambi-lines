@@ -20,13 +20,12 @@
   ----------------------------------------------------------------------------
 }
 
+{ Highscores. }
 unit HighscoresUnit;
 
 interface
 
-uses SysUtils, KambiUtils, Classes;
-
-{$define read_interface}
+uses SysUtils, KambiUtils, Classes, GenericStructList;
 
 const MaxPlayerNameLength = 10;
 type
@@ -36,11 +35,7 @@ type
   end;
   PHighscore = ^THighscore;
 
-  TDynArrayItem_1 = THighscore;
-  PDynArrayItem_1 = PHighscore;
-  {$define DYNARRAY_1_IS_STRUCT}
-  {$I DynArray_1.inc}
-  TDynHighscoresArray = TDynarray_1;
+  TDynHighscoresArray = specialize TGenericStructList<THighscore>;
 
 const
   MaxHighscoresCount = 10; { musi byc > 0 }
@@ -80,9 +75,6 @@ uses VectorMath, LinesWindow, GLWindow, GLWinMessages, GL, GLU, GLExt,
   KambiGLUtils, Images, GLWinInputs, KambiStringUtils, KambiFilesUtils,
   GLImages;
 
-{$define read_implementation}
-{$I DynArray_1.inc}
-
 function CheckNewScore(AScore: Integer): Integer;
 { CheckNewScore sprawdza czy AScore jest na tyle wysoki ze gracz powinien
     byc wstawiony w ktores miejsce na liscie Highscores.
@@ -108,7 +100,7 @@ begin
  if AScore = 0 then Exit(-1);
 
  for i := 0 to Highscores.Count-1 do
-  if AScore > Highscores.Items[i].Score then Exit(i);
+  if AScore > Highscores.List^[i].Score then Exit(i);
  {nie wygral z zadnym elementem sposrod Highscores ? OK, wiec mozemy go
   jszcze dopisac na koncu o ile mamy miejsce}
  if Highscores.Count < MaxHighscoresCount then
@@ -172,8 +164,8 @@ begin
   Print(IntToStr(i+1)+'. ', HighscrNameX, RowY);
   if i < Highscores.Count then
   begin
-   LinesFont.Print(Highscores.Items[i].PlayerName);
-   Print(IntToStr(Highscores.Items[i].Score), HighscrScoreX, RowY);
+   LinesFont.Print(Highscores.List^[i].PlayerName);
+   Print(IntToStr(Highscores.List^[i].Score), HighscrScoreX, RowY);
   end;
  end;
 end;
@@ -186,7 +178,7 @@ begin
  begin
   AddToHighscores(Pos, '', AScore);
   DrawHighscores;
-  Highscores.Items[Pos].PlayerName:=
+  Highscores.List^[Pos].PlayerName:=
     Input(Window, GL_BACK, false, LinesFont, ScreenX0, ScreenY0,
       HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
  end;
@@ -217,7 +209,7 @@ begin
  try
   S.ReadBuffer(hc, SizeOf(hc));
   Highscores.Count := hc;
-  S.ReadBuffer(Highscores.Items[0], SizeOf(THighscore)*hc);
+  S.ReadBuffer(Highscores.List^[0], SizeOf(THighscore)*hc);
  finally S.Free end;
 
  { o ile nikt nie grzebal brzydko w highscr.scr also w tym programie
@@ -234,7 +226,7 @@ begin
  try
   hc := Highscores.Count;
   S.WriteBuffer(hc, SizeOf(hc));
-  S.WriteBuffer(Highscores.Items[0], SizeOf(THighscore)*hc);
+  S.WriteBuffer(Highscores.List^[0], SizeOf(THighscore)*hc);
  finally S.Free end;
 end;
 

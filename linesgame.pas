@@ -146,7 +146,7 @@ begin
  result := TDynVector2IntegerArray.Create;
  try
   { konstruuj zawartosc EmptyPositions }
-  result.AllowedCapacityOverflow := BoardWidth*BoardHeight;
+  result.Capacity := BoardWidth*BoardHeight;
    for i := 0 to BoardWidth-1 do
     for j := 0 to BoardHeight-1 do
      if Board[i, j] = bfEmpty then
@@ -273,7 +273,7 @@ begin
   { LineLengthToMath+1 "na oko" wydaje sie byc tu dobrym przyblizeniem,
     najczesciej jesli znikna jakies kulki to bedzie ich dokladnie
     LineLengthToMatch, rzadko +1, prawie nigdy wiecej. }
-  LinesToDelete.AllowedCapacityOverflow := LineLengthToMatch + 1;
+  LinesToDelete.Capacity := LineLengthToMatch + 1;
 
   for i := 0 to BoardWidth-1 do
    for j := 0 to BoardHeight-1 do
@@ -295,7 +295,7 @@ begin
 
   { TODO: jakas animacyjka na znikanie kulek bedzie tu zrobiona pozniej }
   for i := 0 to LinesToDelete.Count-1 do
-   Board[LinesToDelete.Items[i, 0], LinesToDelete.Items[i, 1]] := bfEmpty;
+   Board[LinesToDelete.List^[i][0], LinesToDelete.List^[i][1]] := bfEmpty;
 
  finally LinesToDelete.Free end;
 end;

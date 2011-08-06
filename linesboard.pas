@@ -20,6 +20,7 @@
   ----------------------------------------------------------------------------
 }
 
+{ Storing and searching path on board. }
 unit LinesBoard;
 
 { NIE zalezy od OpenGLa (a wiec i od LinesWindow, DrawingGame, GetPlayerMove,
@@ -27,42 +28,38 @@ unit LinesBoard;
 
 interface
 
-uses SysUtils, KambiUtils, VectorMath;
-
-{$define read_interface}
+uses SysUtils, KambiUtils, VectorMath, GenericStructList;
 
 { typy --------------------------------------------------------------------- }
 
 type
-  TDynArrayItem_1 = TVector2Integer;
-  PDynArrayItem_1 = PVector2Integer;
-  {$define DYNARRAY_1_IS_STRUCT}
-  {$define DYNARRAY_1_USE_EQUALITY_COMPAREMEM}
-  {$I DynArray_1.inc}
-  TDynVector2IntegerArray = TDynArray_1;
-  
+  TDynVector2IntegerArray = class(specialize TGenericStructList<TVector2Integer>)
+    procedure Reverse;
+    procedure AddList(L: TDynVector2IntegerArray);
+  end;
+
 const
   { BoardWidth/Height musza byc <= High(Byte). Ponadto w rzeczywistosci powinny
     byc DUZO mniejsze zeby dalo sie je sensownie wyswietlac na ekranie.  }
   BoardWidth = 9;
   BoardHeight = 9;
-  
+
 type
-  TBoardField = (bfEmpty, 
+  TBoardField = (bfEmpty,
     bfBrown, bfYellow, bfGreen, bfWhite, bfViolet, bfRed, bfBlue,
-    bfBlueYellow, bfRedWhite, 
+    bfBlueYellow, bfRedWhite,
     bfJoker
-  );  
-  { TNonEmptyBF to ZAWSZE bedzie typ TBoardField poza bfEmpty, 
+  );
+  { TNonEmptyBF to ZAWSZE bedzie typ TBoardField poza bfEmpty,
     tzn. nie moze byc elementow w TBoardField ktorych nie ma w TNonEmptyBF
     innych niz bfEmpty. }
   TNonEmptyBF = Succ(bfEmpty) .. High(TBoardField);
   TSingleColourBF = bfBrown .. bfBlue;
   TDoubleColourBF = bfBlueYellow .. bfRedWhite;
   TSpecialBF =  bfBlueYellow .. High(TBoardField);
-  
+
   TSingleColourBFs = set of TSingleColourBF;
-  
+
 const
   { consts needed due to bug in FPC 1.0.x }
   LowNonEmptyBF = Low(TNonEmptyBF);
@@ -71,7 +68,7 @@ const
   HighSingleColourBF = High(TSingleColourBF);
   LowSpecialBF = Low(TSpecialBF);
   HighSpecialBF = High(TSpecialBF);
-  
+
   AllSingleColourBFs = [Low(TSingleColourBF) .. High(TSingleColourBF)];
 var
   Board: array[0..BoardWidth-1, 0..BoardHeight-1]of TBoardField;
@@ -79,14 +76,14 @@ var
 { funkcje ----------------------------------------------------------------- }
 
 { sprawdza czy istnieje droga z A do B na planszy po wolnych polach.
-  Jesli tak to zwraca true, wpp. zwraca false. Jesli zwraca true i 
-  Way <> nil to odpowiednia droge zapisze do Way w postaci kolejnych 
+  Jesli tak to zwraca true, wpp. zwraca false. Jesli zwraca true i
+  Way <> nil to odpowiednia droge zapisze do Way w postaci kolejnych
   wspolrzednych kolejnych pol na drodze zaczynajac od A (ale samo
   A nie bedzie w Way) i konczac w B (B bedzie w Way).
   Nie sprawdza czy A i B sa puste czy nie.
-  
+
   Nie podawaj jako A i B tych samych pol - nie jest zdefiniowane
-  co wtedy odpowie ta funkcja i co bedzie w Way. (po prostu dlatego 
+  co wtedy odpowie ta funkcja i co bedzie w Way. (po prostu dlatego
   ze jeszcze nie widze sensownosci w zadnej definicji, w obecnej chwili
   wiem ze zawsze WayOnTheBoard bedzie uzywane z roznymi polami). }
 function WayOnTheBoard(A: TVector2Integer; const B: TVector2Integer;
@@ -97,28 +94,46 @@ function WayOnTheBoard(A: TVector2Integer; const B: TVector2Integer;
   to zwroci odpowiedz blyskawicznie, bez wzgledu na to jak dlugo dzialaloby
   WayOnTheBoard. Zwrocona droga bedzie w CWayResultWay (bo kopiowanie jej
   kazdorazowe do dostarczanej przez ciebie tablicy Way: TDynVector2IntegerArray
-  powodowaloby strate czasu ktora niweczylaby skutki cache'owania). 
-  
+  powodowaloby strate czasu ktora niweczylaby skutki cache'owania).
+
   Za kazdym razem kiedy dokonasz jakies zmiany na Board i chcesz uzyc tej
-  funkcji musisz najpierw wywolac CWayClearCache. 
-  
+  funkcji musisz najpierw wywolac CWayClearCache.
+
   Zmienna CWayResultWay jest tylko do odczytu. }
 var CWayResultWay: TDynVector2IntegerArray;
 function CWayOnTheBoard(const A, B: TVector2Integer): boolean;
 procedure CWayClearCache;
 
-{$undef read_interface}  
-
 implementation
 
-{$define read_implementation}
-{$I DynArray_1.inc}
+{ TDynVector2IntegerArray ---------------------------------------------------- }
+
+procedure TDynVector2IntegerArray.Reverse;
+var
+  I: Integer;
+begin
+  { Need to specially check for Count = 0 case, since (0-1) div 2 = -1 div 2 = 0
+    which means that loop would try invalid Exchange(0, -1). }
+  if Count = 0 then Exit;
+  for I := 0 to (Count - 1) div 2 do
+    Exchange(I, Count - 1 - I);
+end;
+
+procedure TDynVector2IntegerArray.AddList(L: TDynVector2IntegerArray);
+var
+  OldCount: Integer;
+begin
+  OldCount := Count;
+  Count := Count + L.Count;
+  if L.Count <> 0 then
+    System.Move(L.List^[0], List^[OldCount], SizeOf(TVector2Integer) * L.Count);
+end;
 
 { WayOnTheBoard* ------------------------------------------------------------ }
 
 function WayOnTheBoard(A: TVector2Integer; const B: TVector2Integer;
   Way: TDynVector2IntegerArray): boolean;
-  
+
 var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
 
   function FindWay(x, y: Integer): boolean;
@@ -143,7 +158,7 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
        (Board[x, y] = bfEmpty) and FindWay(x, y);
      if result and (Way <> nil) then Way.Add(Vector2Integer(x, y));
     end;
-    
+
     function TryNeighbour(Dir: TDir): boolean; overload;
     begin
      result := TryNeighbour(x+DirToDXY[Dir, 0], y+DirToDXY[Dir, 1]);
@@ -217,7 +232,7 @@ begin
   CWayA := A;
   CWayB := B;
   result := CWayResult;
- end; 
+ end;
 end;
 
 procedure CWayClearCache;
@@ -230,6 +245,6 @@ end;
 
 initialization
  CWayResultWay := TDynVector2IntegerArray.Create;
-finalization 
+finalization
  FreeAndNil(CWayResultWay);
 end.
