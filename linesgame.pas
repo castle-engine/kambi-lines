@@ -295,7 +295,7 @@ begin
 
   { TODO: jakas animacyjka na znikanie kulek bedzie tu zrobiona pozniej }
   for i := 0 to LinesToDelete.Count-1 do
-   Board[LinesToDelete.List^[i][0], LinesToDelete.List^[i][1]] := bfEmpty;
+   Board[LinesToDelete.L[i][0], LinesToDelete.L[i][1]] := bfEmpty;
 
  finally LinesToDelete.Free end;
 end;

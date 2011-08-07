@@ -35,7 +35,7 @@ uses SysUtils, KambiUtils, VectorMath, GenericStructList;
 type
   TDynVector2IntegerArray = class(specialize TGenericStructList<TVector2Integer>)
     procedure Reverse;
-    procedure AddList(L: TDynVector2IntegerArray);
+    procedure AddList(Source: TDynVector2IntegerArray);
   end;
 
 const
@@ -119,14 +119,14 @@ begin
     Exchange(I, Count - 1 - I);
 end;
 
-procedure TDynVector2IntegerArray.AddList(L: TDynVector2IntegerArray);
+procedure TDynVector2IntegerArray.AddList(Source: TDynVector2IntegerArray);
 var
   OldCount: Integer;
 begin
   OldCount := Count;
-  Count := Count + L.Count;
-  if L.Count <> 0 then
-    System.Move(L.List^[0], List^[OldCount], SizeOf(TVector2Integer) * L.Count);
+  Count := Count + Source.Count;
+  if Source.Count <> 0 then
+    System.Move(Source.L[0], L[OldCount], SizeOf(TVector2Integer) * Source.Count);
 end;
 
 { WayOnTheBoard* ------------------------------------------------------------ }

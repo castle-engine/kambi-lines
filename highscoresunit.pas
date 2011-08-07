@@ -100,7 +100,7 @@ begin
  if AScore = 0 then Exit(-1);
 
  for i := 0 to Highscores.Count-1 do
-  if AScore > Highscores.List^[i].Score then Exit(i);
+  if AScore > Highscores.L[i].Score then Exit(i);
  {nie wygral z zadnym elementem sposrod Highscores ? OK, wiec mozemy go
   jszcze dopisac na koncu o ile mamy miejsce}
  if Highscores.Count < MaxHighscoresCount then
@@ -164,8 +164,8 @@ begin
   Print(IntToStr(i+1)+'. ', HighscrNameX, RowY);
   if i < Highscores.Count then
   begin
-   LinesFont.Print(Highscores.List^[i].PlayerName);
-   Print(IntToStr(Highscores.List^[i].Score), HighscrScoreX, RowY);
+   LinesFont.Print(Highscores.L[i].PlayerName);
+   Print(IntToStr(Highscores.L[i].Score), HighscrScoreX, RowY);
   end;
  end;
 end;
@@ -178,7 +178,7 @@ begin
  begin
   AddToHighscores(Pos, '', AScore);
   DrawHighscores;
-  Highscores.List^[Pos].PlayerName:=
+  Highscores.L[Pos].PlayerName:=
     Input(Window, GL_BACK, false, LinesFont, ScreenX0, ScreenY0,
       HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
  end;
@@ -209,7 +209,7 @@ begin
  try
   S.ReadBuffer(hc, SizeOf(hc));
   Highscores.Count := hc;
-  S.ReadBuffer(Highscores.List^[0], SizeOf(THighscore)*hc);
+  S.ReadBuffer(Highscores.L[0], SizeOf(THighscore)*hc);
  finally S.Free end;
 
  { o ile nikt nie grzebal brzydko w highscr.scr also w tym programie
@@ -226,7 +226,7 @@ begin
  try
   hc := Highscores.Count;
   S.WriteBuffer(hc, SizeOf(hc));
-  S.WriteBuffer(Highscores.List^[0], SizeOf(THighscore)*hc);
+  S.WriteBuffer(Highscores.L[0], SizeOf(THighscore)*hc);
  finally S.Free end;
 end;
 
