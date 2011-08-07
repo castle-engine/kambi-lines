@@ -40,7 +40,7 @@ type
   (ruch w PlayerMove na pewno jest poprawny)
   Mozesz przekazac PlayerMoveWay = nil jesli nie interesuje cie droga. }
 function GetPlayerAction(var PlayerMove: TPlayerMove;
-  PlayerMoveWay: TDynVector2IntegerArray): TPlayerAction;
+  PlayerMoveWay: TVector2IntegerList): TPlayerAction;
 
 implementation
 
@@ -50,7 +50,7 @@ uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, KambiGLUtils, KambiUtils,
   KambiStringUtils;
 
 var
-  ButtonsRects: TDynRectangleArray;
+  ButtonsRects: TRectangleList;
 
 { zmienne wewn. w tym module ----------------------------------------------- }
 
@@ -66,7 +66,7 @@ var
   Move: TPlayerMove;
   { MoveWay is always created (non-nil) but it is initialized to some
     valid content only when MoveState = msTargetSelected. }
-  MoveWay: TDynVector2IntegerArray;
+  MoveWay: TVector2IntegerList;
 
   HighlightOneBF: boolean;
   HighlightOneBFPos: TVector2Integer;
@@ -88,7 +88,7 @@ var
 { gl window callbacks -------------------------------------------------------- }
 
 procedure DrawGL(Window: TGLWindow);
-var HWay: TDynVector2IntegerArray;
+var HWay: TVector2IntegerList;
 begin
  if HighlightWay and CWayOnTheBoard(Move.A, HighlightWayPos) then
   HWay := CWayResultWay else
@@ -272,7 +272,7 @@ end;
 { zasadnicze GetPlayerMove ------------------------------------------------- }
 
 function GetPlayerAction(var PlayerMove: TPlayerMove;
-  PlayerMoveWay: TDynVector2IntegerArray): TPlayerAction;
+  PlayerMoveWay: TVector2IntegerList): TPlayerAction;
 var SavedMode: TGLMode;
 begin
  SavedMode := TGLMode.CreateReset(Window, 0, false, @DrawGL, nil, @CloseQueryGL, false);
@@ -318,8 +318,8 @@ end;
 
 initialization
  Window.OnOpenList.Add(@OpenGL);
- MoveWay := TDynVector2IntegerArray.Create;
- ButtonsRects := TDynRectangleArray.Create;
+ MoveWay := TVector2IntegerList.Create;
+ ButtonsRects := TRectangleList.Create;
 finalization
  FreeAndNil(MoveWay);
  FreeAndNil(ButtonsRects);

@@ -35,7 +35,7 @@ type
   end;
   PHighscore = ^THighscore;
 
-  TDynHighscoresArray = specialize TGenericStructList<THighscore>;
+  THighscoresList = specialize TGenericStructList<THighscore>;
 
 const
   MaxHighscoresCount = 10; { musi byc > 0 }
@@ -52,7 +52,7 @@ var
     Zmiescil sie, bo tablica Highscores ma zawsze Count <= MaxHighscoresCount.
       Gdy dodajesz do niej nowych graczy gracze z konca tablicy (tzn. najgorsi)
       sa usuwani. }
-  Highscores: TDynHighscoresArray;
+  Highscores: THighscoresList;
 
 { wywolaj to po kazdej zakonczonej przez gracza grze; sprawdza czy gracz
   kwalifikuje sie do highscores i jesli tak - pyta sie gracza o imie
@@ -240,7 +240,7 @@ end;
 { unit init/fini ------------------------------------------------------------- }
 
 initialization
- Highscores := TDynHighscoresArray.Create;
+ Highscores := THighscoresList.Create;
  LoadHighscores;
  Window.OnOpenList.Add(@OpenGL);
 finalization

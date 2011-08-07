@@ -29,14 +29,14 @@ uses LinesBoard, GetPlayerActionUnit, VectorMath;
 { przemieszcza kulke na Board zgodnie z Move. Wykonuje animacje kulki
   wedrujacej wzdluz MoveWay. Wiec zadane Move musi byc poprawne z droga
   MoveWay. }
-procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
+procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 
 implementation
 
 uses GL, GLU, GLExt, GLWindow, KambiGLUtils, GLWinModes, KambiUtils, Math, DrawingGame,
   LinesWindow, LinesGame, KambiTimeUtils, GLImages;
 
-procedure BallMove(const Move: TPlayerMove; MoveWay: TDynVector2IntegerArray);
+procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
   BF: TNonEmptyBF;
   SavedMode: TGLMode;

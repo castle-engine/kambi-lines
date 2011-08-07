@@ -33,9 +33,9 @@ uses SysUtils, KambiUtils, VectorMath, GenericStructList;
 { typy --------------------------------------------------------------------- }
 
 type
-  TDynVector2IntegerArray = class(specialize TGenericStructList<TVector2Integer>)
+  TVector2IntegerList = class(specialize TGenericStructList<TVector2Integer>)
     procedure Reverse;
-    procedure AddList(Source: TDynVector2IntegerArray);
+    procedure AddList(Source: TVector2IntegerList);
   end;
 
 const
@@ -87,28 +87,28 @@ var
   ze jeszcze nie widze sensownosci w zadnej definicji, w obecnej chwili
   wiem ze zawsze WayOnTheBoard bedzie uzywane z roznymi polami). }
 function WayOnTheBoard(A: TVector2Integer; const B: TVector2Integer;
-  Way: TDynVector2IntegerArray): boolean;
+  Way: TVector2IntegerList): boolean;
 
 { CWayOnTheBoard to wersja Cached funkcji WayOfTheBoard. Przechowuje swoje
   wyniki i jesli drugi raz zapytasz sie jej o takie same X1, Y1, X2, Y2
   to zwroci odpowiedz blyskawicznie, bez wzgledu na to jak dlugo dzialaloby
   WayOnTheBoard. Zwrocona droga bedzie w CWayResultWay (bo kopiowanie jej
-  kazdorazowe do dostarczanej przez ciebie tablicy Way: TDynVector2IntegerArray
+  kazdorazowe do dostarczanej przez ciebie tablicy Way: TVector2IntegerList
   powodowaloby strate czasu ktora niweczylaby skutki cache'owania).
 
   Za kazdym razem kiedy dokonasz jakies zmiany na Board i chcesz uzyc tej
   funkcji musisz najpierw wywolac CWayClearCache.
 
   Zmienna CWayResultWay jest tylko do odczytu. }
-var CWayResultWay: TDynVector2IntegerArray;
+var CWayResultWay: TVector2IntegerList;
 function CWayOnTheBoard(const A, B: TVector2Integer): boolean;
 procedure CWayClearCache;
 
 implementation
 
-{ TDynVector2IntegerArray ---------------------------------------------------- }
+{ TVector2IntegerList ---------------------------------------------------- }
 
-procedure TDynVector2IntegerArray.Reverse;
+procedure TVector2IntegerList.Reverse;
 var
   I: Integer;
 begin
@@ -119,7 +119,7 @@ begin
     Exchange(I, Count - 1 - I);
 end;
 
-procedure TDynVector2IntegerArray.AddList(Source: TDynVector2IntegerArray);
+procedure TVector2IntegerList.AddList(Source: TVector2IntegerList);
 var
   OldCount: Integer;
 begin
@@ -132,7 +132,7 @@ end;
 { WayOnTheBoard* ------------------------------------------------------------ }
 
 function WayOnTheBoard(A: TVector2Integer; const B: TVector2Integer;
-  Way: TDynVector2IntegerArray): boolean;
+  Way: TVector2IntegerList): boolean;
 
 var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
 
@@ -244,7 +244,7 @@ begin
 end;
 
 initialization
- CWayResultWay := TDynVector2IntegerArray.Create;
+ CWayResultWay := TVector2IntegerList.Create;
 finalization
  FreeAndNil(CWayResultWay);
 end.

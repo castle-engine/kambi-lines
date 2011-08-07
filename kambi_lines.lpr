@@ -104,7 +104,7 @@ const
 
 var WantsToPlayMore: boolean = true;
     PlayerMove: TPlayerMove;
-    PlayerMoveWay: TDynVector2IntegerArray;
+    PlayerMoveWay: TVector2IntegerList;
     i: Integer;
 begin
  { parse params }
@@ -124,7 +124,7 @@ begin
   { go }
   InputAnyKey(Window, ImagesPath+ 'title.png', 0, 0, 0, 0);
 
-  PlayerMoveWay := TDynVector2IntegerArray.Create;
+  PlayerMoveWay := TVector2IntegerList.Create;
   repeat
    ClearGame(true, true, true);
 

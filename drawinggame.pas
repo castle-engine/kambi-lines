@@ -33,7 +33,7 @@ uses GL, KambiGLUtils, VectorMath, LinesGame, LinesBoard;
   Podswietla pola HighlightOneBFPos (o ile HighlightOneBF)
   i HighlightBFs (o ile HighlightBFs <> nil). }
 procedure DrawGame(HighlightOneBF: boolean; const HighlightOneBFPos: TVector2Integer;
-  HighlightBFs: TDynVector2IntegerArray); overload;
+  HighlightBFs: TVector2IntegerList); overload;
 procedure DrawGame; overload;
 
 const
@@ -75,7 +75,7 @@ var
   ButtonCaptionFont, PlayerNamesFont: TGLBitmapFont;
 
 procedure DrawGame(HighlightOneBF: boolean; const HighlightOneBFPos: TVector2Integer;
-  HighlightBFs: TDynVector2IntegerArray);
+  HighlightBFs: TVector2IntegerList);
 const
   { pozycje zsynchronizowane z game.png }
   ColrowY0 = 119;

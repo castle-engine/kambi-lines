@@ -140,10 +140,10 @@ end;
   this does not take really much time, to be honest).
   So I am not going to do this optimisations unless I'll see some reason. }
 
-function CreateEmptyPositions: TDynVector2IntegerArray;
+function CreateEmptyPositions: TVector2IntegerList;
 var i, j: Integer;
 begin
- result := TDynVector2IntegerArray.Create;
+ result := TVector2IntegerList.Create;
  try
   { konstruuj zawartosc EmptyPositions }
   result.Capacity := BoardWidth*BoardHeight;
@@ -161,7 +161,7 @@ function ExistsEmptyBoardPos: boolean;
   W tym momencie wywolywanie ExistsEmptyBoardPos tylko po to zeby
   sie przekonac co zwroci PutBallOnRandomEmptyBoardPos jest bardzo
   nieoptymalne (obie funkcje konstruuja sobie EmptyPositions). }
-var EmptyPositions: TDynVector2IntegerArray;
+var EmptyPositions: TVector2IntegerList;
 begin
  EmptyPositions := CreateEmptyPositions;
  try
@@ -171,7 +171,7 @@ end;
 
 function PutBallOnRandomEmptyBoardPos(BF: TNonEmptyBF): boolean;
 var Pos: TVector2Integer;
-    EmptyPositions: TDynVector2IntegerArray;
+    EmptyPositions: TVector2IntegerList;
 begin
  EmptyPositions := CreateEmptyPositions;
  try
@@ -236,7 +236,7 @@ const
    until false;
   end;
 
-var LinesToDelete: TDynVector2IntegerArray;
+var LinesToDelete: TVector2IntegerList;
 const LineLengthToMatch = 5;
 
   procedure TryDeleteBall(const Pos: TVector2Integer);
@@ -268,7 +268,7 @@ var i, j: Integer;
 begin
  result := 0;
 
- LinesToDelete := TDynVector2IntegerArray.Create;
+ LinesToDelete := TVector2IntegerList.Create;
  try
   { LineLengthToMath+1 "na oko" wydaje sie byc tu dobrym przyblizeniem,
     najczesciej jesli znikna jakies kulki to bedzie ich dokladnie
