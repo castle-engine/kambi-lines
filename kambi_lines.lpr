@@ -85,7 +85,7 @@ begin
         Format('By default, game will run in window sized %dx%d.',
           [GameScreenWidth, GameScreenHeight]) +nl+
         nl+
-        SVrmlEngineProgramHelpSuffix(DisplayProgramName, Version, true));
+        SCastleEngineProgramHelpSuffix(DisplayProgramName, Version, true));
       ProgramBreak;
      end;
   1: begin
