@@ -34,7 +34,7 @@ unit LinesWindow;
     0..GameWidth, 0..GameHeight ograniczajac sie do wywolywania
     glClear(GL_COLOR_BUFFER_BIT) aby wyczyscic reszte ekranu na domyslny
     clear color
-    
+
   Ten modul NIE zalezy od zadnego innego modulu sposrod modulow kulek.
   Ten modul jest na samym spodzie.
 }
@@ -55,7 +55,7 @@ function ImagesPath: string;
 const
   GameScreenWidth = 640;
   GameScreenHeight = 350;
-  
+
 { pozycje lewego dolnego rogu ekranu we wspolrzednych OpenGL'a.
   Beda zawsze <= 0 - jezeli wymiary GameScreen sa rowne wymiarom glwindow
   to beda rowne 0 ale moga byc mniejsze od zera jezeli glwindow bedzie
@@ -65,12 +65,12 @@ function ScreenY0: Integer;
 
 implementation
 
-uses SysUtils, KambiUtils, KambiGLUtils, 
+uses SysUtils, KambiUtils, KambiGLUtils,
   BFNT_ArialCELatin2_m14_Unit, KambiParameters, KambiFilesUtils;
 
 var
   FScreenX0, FScreenY0: Integer;
-  
+
 function ScreenX0: Integer; begin result := FScreenX0 end;
 function ScreenY0: Integer; begin result := FScreenY0 end;
 
@@ -101,7 +101,7 @@ begin
 
  FScreenX0 := -FirstOverflowX;
  FScreenY0 := -FirstOverflowY;
- 
+
  LinesFont := TGLBitmapFont.Create(@BFNT_ArialCELatin2_m14);
 end;
 
@@ -117,7 +117,7 @@ end;
 var WasParam_Fullscreen: boolean;
 
 const
-  Options: array[0..0]of TOption = 
+  Options: array[0..0]of TOption =
   ( (Short:#0; Long:'fullscreen'; Argument: oaNone) );
 
   procedure OptionProc(ParamNum: Integer; HasArgument: boolean;
@@ -142,7 +142,7 @@ begin
   Application.VideoResizeWidth := 640;
   Application.VideoResizeHeight := 480;
   Application.VideoChange(true);
-  
+
   Window.Width := Application.VideoResizeWidth;
   Window.Height := Application.VideoResizeHeight;
   Window.FullScreen := true;
@@ -153,7 +153,7 @@ begin
  end;
 
  Window.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
- 
+
  { open glw window (samo Window.Open przerzucamy do zasadniczego kambi_lines.lpr,
    lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
    fpc cos sie w tym pieprzy) }
