@@ -288,7 +288,7 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure OpenGL(Window: TGLWindow);
+procedure OpenGL(Window: TCastleWindowBase);
 const
   NonEmptyBFImageFileNames: array[TNonEmptyBF]of string=
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
@@ -319,7 +319,7 @@ begin
  ButtonCaptionFont := TGLBitmapFont.Create(@BFNT_BitstreamVeraSans_Bold_m14);
 end;
 
-procedure CloseGL(Window: TGLWindow);
+procedure CloseGL(Window: TCastleWindowBase);
 begin
  PlayerNamesFont.Free;
  ButtonCaptionFont.Free;

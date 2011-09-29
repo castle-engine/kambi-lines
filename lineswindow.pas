@@ -22,7 +22,7 @@
 
 unit LinesWindow;
 
-{ zajmujemy sie tutaj naszym okienkiem TGLWindow. Tutaj inicjujemy mu wszystkie
+{ zajmujemy sie tutaj naszym okienkiem TCastleWindowBase. Tutaj inicjujemy mu wszystkie
   wlasciwosci, parsujemy jego parametry i robimy mu Init. Tutaj zajmujemy
   sie tez projection OpenGLa ktore bedzie jedno i takie samo przez caly czas
   gry.
@@ -44,7 +44,7 @@ interface
 uses GLWindow, VectorMath, OpenGLBmpFonts;
 
 var
-  Window: TGLWindow;
+  Window: TCastleWindowBase;
   { LinesFont uzywany jest w wielu miejscach gry - w DrawGame (do tekstu
     przyciskow i score points), w kambi_lines.lpr ustawiamy go GLWinMessages,
     i w Highscores w DrawHighscore; }
@@ -81,7 +81,7 @@ begin result := ProgramDataPath +'images' +PathDelim end;
 
 { gl window callbacks --------------------------------------------------------- }
 
-procedure OpenGL(Window: TGLWindow);
+procedure OpenGL(Window: TCastleWindowBase);
 var OverflowX, FirstOverflowX, SecondOverflowX,
     OverflowY, FirstOverflowY, SecondOverflowY: Integer;
 begin
@@ -105,9 +105,9 @@ begin
  LinesFont := TGLBitmapFont.Create(@BFNT_ArialCELatin2_m14);
 end;
 
-procedure CloseQueryGL(Window: TGLWindow); begin end;
+procedure CloseQueryGL(Window: TCastleWindowBase); begin end;
 
-procedure CloseGL(Window: TGLWindow);
+procedure CloseGL(Window: TCastleWindowBase);
 begin
  FreeAndNil(LinesFont);
 end;
@@ -128,7 +128,7 @@ const
 
 procedure Open;
 begin
- Window := TGLWindow.Create(nil);
+ Window := TCastleWindowBase.Create(nil);
 
  { parse params }
  WasParam_Fullscreen := false;

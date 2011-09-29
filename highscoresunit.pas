@@ -232,7 +232,7 @@ end;
 
 { Open/Close GL --------------------------------------------------------------- }
 
-procedure OpenGL(Window: TGLWindow);
+procedure OpenGL(Window: TCastleWindowBase);
 begin
  dlImgHighscr := LoadImageToDisplayList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
 end;

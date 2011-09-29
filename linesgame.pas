@@ -342,11 +342,11 @@ end;
 
 { Loading / saving config ---------------------------------------------------- }
 
-var Conf: TKamXMLConfig;
+var Conf: TCastleConfig;
 
 procedure LoadConfig;
 begin
-  Conf := TKamXMLConfig.Create(nil);
+  Conf := TCastleConfig.Create(nil);
   Conf.FileName := UserConfigFile('.conf');
   ShowNextColors := Conf.GetValue('prefs/ShowNextColors', ShowNextColors);
   AllowSpecialBalls := Conf.GetValue('prefs/AllowSpecialBalls', AllowSpecialBalls);

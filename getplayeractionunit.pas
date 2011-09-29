@@ -87,7 +87,7 @@ var
 
 { gl window callbacks -------------------------------------------------------- }
 
-procedure DrawGL(Window: TGLWindow);
+procedure DrawGL(Window: TCastleWindowBase);
 var HWay: TVector2IntegerList;
 begin
  if HighlightWay and CWayOnTheBoard(Move.A, HighlightWayPos) then
@@ -107,13 +107,13 @@ begin
  end;
 end;
 
-procedure AskQuit(Window: TGLWindow);
+procedure AskQuit(Window: TCastleWindowBase);
 begin
  if MessageYesNo(Window, 'Are you sure you want to quit ?') then
   Action := paQuit;
 end;
 
-procedure KeyDown(Window: TGLWindow; key: TKey; c: char);
+procedure KeyDown(Window: TCastleWindowBase; key: TKey; c: char);
 begin
  case Key of
   K_F1: ShowHelp;
@@ -169,7 +169,7 @@ begin
  result := true;
 end;
 
-procedure MouseMoveGL(Window: TGLWindow; NewX, NewY: Integer);
+procedure MouseMoveGL(Window: TCastleWindowBase; NewX, NewY: Integer);
 var NewHighlightOneBF: boolean;
     NewHighlightOneBFPos, BoardPos: TVector2Integer;
     NewHighlightWay: boolean;
@@ -212,7 +212,7 @@ begin
  end;
 end;
 
-procedure MouseDownGL(Window: TGLWindow; btn: TMouseButton);
+procedure MouseDownGL(Window: TCastleWindowBase; btn: TMouseButton);
 
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 
@@ -264,7 +264,7 @@ begin
  end;
 end;
 
-procedure CloseQueryGL(Window: TGLWindow);
+procedure CloseQueryGL(Window: TCastleWindowBase);
 begin
  AskQuit(Window);
 end;
@@ -305,7 +305,7 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure OpenGL(Window: TGLWindow);
+procedure OpenGL(Window: TCastleWindowBase);
 begin
  { dopiero w OpenGL inicjuj Rectangles, na wypadek gdybym kiedys zrobil odczytywanie
    ImgButtonWidth/Height z pliku dopiero w DrawingGame.OpenGL. }
