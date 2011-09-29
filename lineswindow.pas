@@ -41,7 +41,7 @@ unit LinesWindow;
 
 interface
 
-uses GLWindow, VectorMath, OpenGLBmpFonts;
+uses CastleWindow, VectorMath, OpenGLBmpFonts;
 
 var
   Window: TCastleWindowBase;
@@ -57,9 +57,10 @@ const
   GameScreenHeight = 350;
 
 { pozycje lewego dolnego rogu ekranu we wspolrzednych OpenGL'a.
-  Beda zawsze <= 0 - jezeli wymiary GameScreen sa rowne wymiarom glwindow
-  to beda rowne 0 ale moga byc mniejsze od zera jezeli glwindow bedzie
-  wieksze niz GameScreen. Ustalane dopiero w czasie OpenGL okienka glwindow . }
+  Beda zawsze <= 0 - jezeli wymiary GameScreen sa rowne wymiarom window
+  to beda rowne 0 ale moga byc mniejsze od zera jezeli window bedzie
+  wieksze niz GameScreen. Ustalane dopiero w czasie initializing the OpenGL context
+  of the window. }
 function ScreenX0: Integer;
 function ScreenY0: Integer;
 

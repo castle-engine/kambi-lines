@@ -57,9 +57,9 @@ program kambi_lines;
 
 {$apptype GUI}
 
-uses SysUtils, GLWindow, LinesWindow, CastleUtils, HighscoresUnit,
-  GetPlayerActionUnit, GLWinMessages, CastleGLUtils, LinesBoard,
-  VectorMath, LinesMove, LinesGame, GLWinInputs,
+uses SysUtils, CastleWindow, LinesWindow, CastleUtils, HighscoresUnit,
+  GetPlayerActionUnit, CastleMessages, CastleGLUtils, LinesBoard,
+  VectorMath, LinesMove, LinesGame, CastleInputs,
   CastleParameters, CastleClassUtils;
 
 { params ------------------------------------------------------------ }
@@ -116,8 +116,8 @@ begin
  Window.Open;
 
  try
-  { Init GLWinMessages }
-  { For now don't change defaults of GLWinMessages -- I like them. }
+  { Init CastleMessages }
+  { For now don't change defaults of CastleMessages -- I like them. }
   { messageCols.RectBorderCol := White3Single; }
   { messageFont := LinesFont; }
 

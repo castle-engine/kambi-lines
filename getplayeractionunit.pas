@@ -44,9 +44,9 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
 
 implementation
 
-uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, CastleGLUtils, CastleUtils,
-  Images, GLWinMessages, Classes, HighscoresUnit, GLWinModes,
-  DrawingGame, LinesGame, GLWinInputs, LinesHelp, Rectangles,
+uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
+  Images, CastleMessages, Classes, HighscoresUnit, CastleWindowModes,
+  DrawingGame, LinesGame, CastleInputs, LinesHelp, Rectangles,
   CastleStringUtils;
 
 var
@@ -151,7 +151,7 @@ end;
 
 function MousePosToBoard(MouseX, MouseY: Integer; var BoardPos: TVector2Integer): boolean;
 { funkcja pomocnicza, oblicza nad jakim polem Board jest pozycje MouseX, MouseY
-  podawana w konwencji MouseX, MouseY z glwindow. }
+  podawana w konwencji MouseX, MouseY z Window. }
 var TryPos: TVector2Integer;
 begin
  MouseX := GLWinMouseXToOurX(MouseX);

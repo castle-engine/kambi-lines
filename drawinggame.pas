@@ -28,7 +28,7 @@ interface
 
 uses GL, CastleGLUtils, VectorMath, LinesGame, LinesBoard;
 
-{ rysuje cala plansze gry (zajmujac cala powierzchnie glwindow, nie tylko
+{ rysuje cala plansze gry (zajmujac cala powierzchnie window, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.
   Podswietla pola HighlightOneBFPos (o ile HighlightOneBF)
   i HighlightBFs (o ile HighlightBFs <> nil). }
@@ -63,7 +63,7 @@ var dlNonEmptyBFImages: array[TBallsImageSet, TNonEmptyBF]of TGLuint;
 
 implementation
 
-uses SysUtils, LinesWindow, GLWindow, Images,
+uses SysUtils, LinesWindow, CastleWindow, Images,
   HighscoresUnit, CastleUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
   BFNT_BitstreamVeraSans_Bold_m14_Unit, GLImages;
 

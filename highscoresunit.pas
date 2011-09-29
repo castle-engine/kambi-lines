@@ -71,8 +71,8 @@ procedure DrawHighscores;
 
 implementation
 
-uses VectorMath, LinesWindow, GLWindow, GLWinMessages, GL, GLU, GLExt,
-  CastleGLUtils, Images, GLWinInputs, CastleStringUtils, CastleFilesUtils,
+uses VectorMath, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
+  CastleGLUtils, Images, CastleInputs, CastleStringUtils, CastleFilesUtils,
   GLImages;
 
 function CheckNewScore(AScore: Integer): Integer;
