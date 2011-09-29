@@ -57,10 +57,10 @@ program kambi_lines;
 
 {$apptype GUI}
 
-uses SysUtils, GLWindow, LinesWindow, KambiUtils, HighscoresUnit,
-  GetPlayerActionUnit, GLWinMessages, KambiGLUtils, LinesBoard,
+uses SysUtils, GLWindow, LinesWindow, CastleUtils, HighscoresUnit,
+  GetPlayerActionUnit, GLWinMessages, CastleGLUtils, LinesBoard,
   VectorMath, LinesMove, LinesGame, GLWinInputs,
-  KambiParameters, KambiClassUtils;
+  CastleParameters, CastleClassUtils;
 
 { params ------------------------------------------------------------ }
 

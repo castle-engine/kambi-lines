@@ -31,7 +31,7 @@ unit LinesGame;
 
 interface
 
-uses LinesBoard, VectorMath, KambiClassUtils;
+uses LinesBoard, VectorMath, CastleClassUtils;
 
 const
   Version = '1.1.5';
@@ -110,7 +110,7 @@ function RandomBall: TNonEmptyBF;
 
 implementation
 
-uses SysUtils, KambiUtils, KambiFilesUtils, KambiXMLConfig;
+uses SysUtils, CastleUtils, CastleFilesUtils, CastleXMLConfig;
 
 procedure ClearGame(DoBoard, DoNextColors, DoScore: boolean);
 var i, j: Integer;

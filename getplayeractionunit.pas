@@ -44,10 +44,10 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
 
 implementation
 
-uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, KambiGLUtils, KambiUtils,
+uses SysUtils, GL, GLU, GLExt, LinesWindow, GLWindow, CastleGLUtils, CastleUtils,
   Images, GLWinMessages, Classes, HighscoresUnit, GLWinModes,
   DrawingGame, LinesGame, GLWinInputs, LinesHelp, Rectangles,
-  KambiStringUtils;
+  CastleStringUtils;
 
 var
   ButtonsRects: TRectangleList;

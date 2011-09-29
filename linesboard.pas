@@ -28,7 +28,7 @@ unit LinesBoard;
 
 interface
 
-uses SysUtils, KambiUtils, VectorMath, GenericStructList;
+uses SysUtils, CastleUtils, VectorMath, GenericStructList;
 
 { typy --------------------------------------------------------------------- }
 

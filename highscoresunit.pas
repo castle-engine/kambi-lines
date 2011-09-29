@@ -25,7 +25,7 @@ unit HighscoresUnit;
 
 interface
 
-uses SysUtils, KambiUtils, Classes, GenericStructList;
+uses SysUtils, CastleUtils, Classes, GenericStructList;
 
 const MaxPlayerNameLength = 10;
 type
@@ -72,7 +72,7 @@ procedure DrawHighscores;
 implementation
 
 uses VectorMath, LinesWindow, GLWindow, GLWinMessages, GL, GLU, GLExt,
-  KambiGLUtils, Images, GLWinInputs, KambiStringUtils, KambiFilesUtils,
+  CastleGLUtils, Images, GLWinInputs, CastleStringUtils, CastleFilesUtils,
   GLImages;
 
 function CheckNewScore(AScore: Integer): Integer;

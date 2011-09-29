@@ -65,8 +65,8 @@ function ScreenY0: Integer;
 
 implementation
 
-uses SysUtils, KambiUtils, KambiGLUtils,
-  BFNT_ArialCELatin2_m14_Unit, KambiParameters, KambiFilesUtils;
+uses SysUtils, CastleUtils, CastleGLUtils,
+  BFNT_ArialCELatin2_m14_Unit, CastleParameters, CastleFilesUtils;
 
 var
   FScreenX0, FScreenY0: Integer;

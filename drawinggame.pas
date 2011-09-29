@@ -26,7 +26,7 @@ unit DrawingGame;
 
 interface
 
-uses GL, KambiGLUtils, VectorMath, LinesGame, LinesBoard;
+uses GL, CastleGLUtils, VectorMath, LinesGame, LinesBoard;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie glwindow, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.
@@ -64,7 +64,7 @@ var dlNonEmptyBFImages: array[TBallsImageSet, TNonEmptyBF]of TGLuint;
 implementation
 
 uses SysUtils, LinesWindow, GLWindow, Images,
-  HighscoresUnit, KambiUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
+  HighscoresUnit, CastleUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
   BFNT_BitstreamVeraSans_Bold_m14_Unit, GLImages;
 
 var

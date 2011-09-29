@@ -28,7 +28,7 @@ procedure ShowHelp;
 
 implementation
 
-uses SysUtils, LinesWindow, KambiUtils, GLWinMessages, LinesGame;
+uses SysUtils, LinesWindow, CastleUtils, GLWinMessages, LinesGame;
 
 procedure ShowHelp;
 begin

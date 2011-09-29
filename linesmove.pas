@@ -33,8 +33,8 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 
 implementation
 
-uses GL, GLU, GLExt, GLWindow, KambiGLUtils, GLWinModes, KambiUtils, Math, DrawingGame,
-  LinesWindow, LinesGame, KambiTimeUtils, GLImages;
+uses GL, GLU, GLExt, GLWindow, CastleGLUtils, GLWinModes, CastleUtils, Math, DrawingGame,
+  LinesWindow, LinesGame, CastleTimeUtils, GLImages;
 
 procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
