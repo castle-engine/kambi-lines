@@ -45,7 +45,7 @@ var
   Ball: TVector2Single;
   Pos1: Integer;
   CompSpeed: Single;
-  RenderStartTime: TKamTimerResult;
+  RenderStartTime: TTimerResult;
 begin
   BF := Board[Move.A[0], Move.A[1]];
   Board[Move.A[0], Move.A[1]] := bfEmpty;
@@ -66,7 +66,7 @@ begin
       Position := 0;
       while Position < MoveWay.Count do
       begin
-        RenderStartTime := KamTimer;
+        RenderStartTime := Timer;
 
         { draw animation frame }
         glRasterPos2i(ScreenX0, ScreenY0);
@@ -95,7 +95,7 @@ begin
 
         { We're not inside Idle, so Window.Fps.IdleSpeed is not available.
           So we just calculate CompSpeed ourselves below. }
-        CompSpeed := (KamTimer - RenderStartTime) / KamTimerFrequency;
+        CompSpeed := (Timer - RenderStartTime) / TimerFrequency;
 
         Position += 10 * CompSpeed;
       end;
