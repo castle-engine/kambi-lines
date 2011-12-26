@@ -287,7 +287,7 @@ begin
   MoveState := msNone;
   Action := paMove;
   repeat
-   Application.ProcessMessage(true);
+   Application.ProcessMessage(true, true);
   until (Action <> paMove) or (MoveState = msTargetSelected);
 
   result := Action;
