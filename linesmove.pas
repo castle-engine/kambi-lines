@@ -54,7 +54,7 @@ begin
     0, 0, Window.Width, Window.Height, GL_BACK);
   try
     SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
-      nil, nil, @NoClose, true);
+      nil, nil, @NoClose);
     try
       glAlphaFunc(GL_GREATER, 0.5);
 

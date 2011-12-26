@@ -275,7 +275,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
   PlayerMoveWay: TVector2IntegerList): TPlayerAction;
 var SavedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, 0, false, @DrawGL, nil, @CloseQueryGL, false);
+ SavedMode := TGLMode.CreateReset(Window, 0, false, @DrawGL, nil, @CloseQueryGL);
  try
   Window.OnKeyDown := @KeyDown;
   Window.OnMouseMove := @MouseMoveGL;
