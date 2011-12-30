@@ -34,7 +34,7 @@ interface
 uses LinesBoard, VectorMath, CastleClassUtils;
 
 const
-  Version = '1.1.5';
+  Version = '1.1.6';
   DisplayProgramName = 'kambi_lines';
 
 { NextColors ---------------------------------------------------------- }
