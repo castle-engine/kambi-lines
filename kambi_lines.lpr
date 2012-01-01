@@ -159,10 +159,3 @@ begin
   PlayerMoveWay.Free;
  end;
 end.
-
-{
-  Local Variables:
-  kam-compile-release-command-unix:    "./compile_unix.sh && mv -fv kambi_lines ~/bin/"
-  kam-compile-release-command-windows: "./compile_windows.sh"
-  End:
-}
