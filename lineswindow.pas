@@ -97,8 +97,8 @@ begin
  FirstOverflowY := OverflowY div 2;
  SecondOverflowY := OverflowY - FirstOverflowY;
 
- ProjectionGLOrtho(-FirstOverflowX, GameScreenWidth + SecondOverflowX,
-                   -FirstOverflowY, GameScreenHeight + SecondOverflowY);
+ OrthoProjection(-FirstOverflowX, GameScreenWidth + SecondOverflowX,
+                 -FirstOverflowY, GameScreenHeight + SecondOverflowY);
 
  FScreenX0 := -FirstOverflowX;
  FScreenY0 := -FirstOverflowY;
