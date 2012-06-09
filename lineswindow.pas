@@ -129,7 +129,7 @@ const
 
 procedure Open;
 begin
- Window := TCastleWindowBase.Create(nil);
+ Window := TCastleWindowCustom.Create(nil);
 
  { parse params }
  WasParam_Fullscreen := false;

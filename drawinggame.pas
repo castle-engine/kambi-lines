@@ -63,7 +63,7 @@ var dlNonEmptyBFImages: array[TBallsImageSet, TNonEmptyBF]of TGLuint;
 
 implementation
 
-uses SysUtils, LinesWindow, CastleWindow, Images,
+uses SysUtils, LinesWindow, CastleWindow, Images, UIControls,
   HighscoresUnit, CastleUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
   BFNT_BitstreamVeraSans_Bold_m14_Unit, GLImages;
 
@@ -288,7 +288,7 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure OpenGL(Window: TCastleWindowBase);
+procedure WindowOpen(const Container: IUIContainer);
 const
   NonEmptyBFImageFileNames: array[TNonEmptyBF]of string=
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
@@ -319,14 +319,14 @@ begin
  ButtonCaptionFont := TGLBitmapFont.Create(@BFNT_BitstreamVeraSans_Bold_m14);
 end;
 
-procedure CloseGL(Window: TCastleWindowBase);
+procedure WindowClose(const Container: IUIContainer);
 begin
  PlayerNamesFont.Free;
  ButtonCaptionFont.Free;
 end;
 
 initialization
- Window.OnOpenList.Add(@OpenGL);
- Window.OnCloseList.Add(@CloseGL);
+ OnGLContextOpen.Add(@WindowOpen);
+ OnGLContextClose.Add(@WindowClose);
 finalization
 end.

@@ -45,7 +45,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
 implementation
 
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
-  Images, CastleMessages, Classes, HighscoresUnit, WindowModes,
+  Images, CastleMessages, Classes, HighscoresUnit, WindowModes, UIControls,
   DrawingGame, LinesGame, CastleInputs, LinesHelp, Rectangles,
   CastleStringUtils;
 
@@ -305,10 +305,10 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure OpenGL(Window: TCastleWindowBase);
+procedure WindowOpen(const Container: IUIContainer);
 begin
  { dopiero w OpenGL inicjuj Rectangles, na wypadek gdybym kiedys zrobil odczytywanie
-   ImgButtonWidth/Height z pliku dopiero w DrawingGame.OpenGL. }
+   ImgButtonWidth/Height z pliku dopiero w DrawingGame.WindowOpen. }
  ButtonsRects.Add(Rectangle( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
  ButtonsRects.Add(Rectangle(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
  ButtonsRects.Add(Rectangle(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
@@ -317,7 +317,7 @@ begin
 end;
 
 initialization
- Window.OnOpenList.Add(@OpenGL);
+ OnGLContextOpen.Add(@WindowOpen);
  MoveWay := TVector2IntegerList.Create;
  ButtonsRects := TRectangleList.Create;
 finalization

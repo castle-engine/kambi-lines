@@ -73,7 +73,7 @@ implementation
 
 uses VectorMath, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
   CastleGLUtils, Images, CastleInputs, CastleStringUtils, CastleFilesUtils,
-  GLImages;
+  GLImages, UIControls;
 
 function CheckNewScore(AScore: Integer): Integer;
 { CheckNewScore sprawdza czy AScore jest na tyle wysoki ze gracz powinien
@@ -232,7 +232,7 @@ end;
 
 { Open/Close GL --------------------------------------------------------------- }
 
-procedure OpenGL(Window: TCastleWindowBase);
+procedure WindowOpen(const Container: IUIContainer);
 begin
  dlImgHighscr := LoadImageToDisplayList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
 end;
@@ -242,7 +242,7 @@ end;
 initialization
  Highscores := THighscoresList.Create;
  LoadHighscores;
- Window.OnOpenList.Add(@OpenGL);
+ OnGLContextOpen.Add(@WindowOpen);
 finalization
  SaveHighscores;
  FreeAndNil(Highscores);
