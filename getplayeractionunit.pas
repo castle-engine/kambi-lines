@@ -47,7 +47,7 @@ implementation
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   Images, CastleMessages, Classes, HighscoresUnit, WindowModes, UIControls,
   DrawingGame, LinesGame, CastleInputs, LinesHelp, Rectangles,
-  CastleStringUtils;
+  CastleStringUtils, GLImages;
 
 var
   ButtonsRects: TRectangleList;
@@ -114,6 +114,8 @@ begin
 end;
 
 procedure KeyDown(Window: TCastleWindowBase; key: TKey; c: char);
+var
+  DL: TGLuint;
 begin
  case Key of
   K_F1: ShowHelp;
@@ -127,7 +129,12 @@ begin
       begin
        DrawGame;
        DrawHighscores;
-       InputAnyKey(Window, GL_BACK, false, ScreenX0, ScreenY0);
+       { directly get screenshot now, without redrawing with Window.OnDraw }
+       DL := SaveScreen_ToDisplayList_NoFlush(0, 0, Window.Width, Window.Height,
+         GL_BACK);
+       try
+         InputAnyKey(Window, DL, ScreenX0, ScreenY0, Window.Width, Window.Height);
+       finally glFreeDisplayList(DL) end;
       end;
     'n':ShowNextColors := not ShowNextColors;
     'i': BallsImageSet := ChangeIntCycle(BallsImageSet, 1, High(BallsImageSet));

@@ -171,16 +171,24 @@ begin
 end;
 
 procedure CheckAndMaybeAddToHighscore(AScore: Integer);
-var Pos: Integer;
+var
+  Pos: Integer;
+  DL: TGLuint;
 begin
  Pos := CheckNewScore(AScore);
  if Pos >= 0 then
  begin
   AddToHighscores(Pos, '', AScore);
   DrawHighscores;
-  Highscores.L[Pos].PlayerName:=
-    Input(Window, GL_BACK, false, LinesFont, ScreenX0, ScreenY0,
-      HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
+
+  { directly get screenshot now, without redrawing with Window.OnDraw }
+  DL := SaveScreen_ToDisplayList_NoFlush(0, 0, Window.Width, Window.Height,
+    GL_BACK);
+  try
+    Highscores.L[Pos].PlayerName:=
+      Input(Window, DL, LinesFont, ScreenX0, ScreenY0,
+        HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
+  finally glFreeDisplayList(DL) end;
  end;
 end;
 
