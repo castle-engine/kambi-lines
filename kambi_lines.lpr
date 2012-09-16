@@ -59,7 +59,7 @@ program kambi_lines;
 
 uses SysUtils, CastleWindow, LinesWindow, CastleUtils, HighscoresUnit,
   GetPlayerActionUnit, CastleMessages, CastleGLUtils, LinesBoard,
-  VectorMath, LinesMove, LinesGame, CastleInputs,
+  VectorMath, LinesMove, LinesGame, CastleInputAny,
   CastleParameters, CastleClassUtils;
 
 { params ------------------------------------------------------------ }

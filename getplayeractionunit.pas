@@ -46,8 +46,8 @@ implementation
 
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   Images, CastleMessages, Classes, HighscoresUnit, WindowModes, UIControls,
-  DrawingGame, LinesGame, CastleInputs, LinesHelp, Rectangles,
-  CastleStringUtils, GLImages;
+  DrawingGame, LinesGame, CastleInputAny, LinesHelp, Rectangles,
+  CastleStringUtils, GLImages, KeysMouse;
 
 var
   ButtonsRects: TRectangleList;
@@ -111,39 +111,6 @@ procedure AskQuit(Window: TCastleWindowBase);
 begin
  if MessageYesNo(Window, 'Are you sure you want to quit ?') then
   Action := paQuit;
-end;
-
-procedure KeyDown(Window: TCastleWindowBase; key: TKey; c: char);
-var
-  DL: TGLuint;
-begin
- case Key of
-  K_F1: ShowHelp;
-  else
-   case c of
-    'r':
-      if MessageYesNo(Window, 'End this game and start another one ?') then
-       Action := paNewGame;
-    CharEscape: AskQuit(Window);
-    'h':
-      begin
-       DrawGame;
-       DrawHighscores;
-       { directly get screenshot now, without redrawing with Window.OnDraw }
-       DL := SaveScreen_ToDisplayList_NoFlush(0, 0, Window.Width, Window.Height,
-         GL_BACK);
-       try
-         InputAnyKey(Window, DL, ScreenX0, ScreenY0, Window.Width, Window.Height);
-       finally glFreeDisplayList(DL) end;
-      end;
-    'n':ShowNextColors := not ShowNextColors;
-    'i': BallsImageSet := ChangeIntCycle(BallsImageSet, 1, High(BallsImageSet));
-    's': AllowSpecialBalls := not AllowSpecialBalls;
-    else Exit;
-   end;
- end;
-
- Window.PostRedisplay;
 end;
 
 function GLWinMouseXToOurX(MouseX: Integer): Integer;
@@ -219,56 +186,90 @@ begin
  end;
 end;
 
-procedure MouseDownGL(Window: TCastleWindowBase; btn: TMouseButton);
+procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
 
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 
-var BoardPos: TVector2Integer;
-    RectangleIndex: Integer;
+var
+  BoardPos: TVector2Integer;
+  RectangleIndex: Integer;
+  DL: TGLuint;
 begin
- if (Action = paMove) and (MoveState = msNone) and (btn = mbLeft) and
-   MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) and
-   (Board[BoardPos[0], BoardPos[1]] <> bfEmpty) then
- begin
-  MoveState := msSourceSelected;
-  Move.A := BoardPos;
-  Window.PostRedisplay;
- end else
- if (Action = paMove) and (MoveState = msSourceSelected) and (btn = mbLeft) and
-   MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) then
- begin
-  { jezeli kliknal na pustym to znaczy ze wybiera target.
-    Wpp. znaczy ze wybiera ponownie source. }
-  if Board[BoardPos[0], BoardPos[1]] = bfEmpty then
+  if Event.IsMouseButton(mbLeft) then
   begin
-   if CWayOnTheBoard(Move.A, BoardPos) then
-   begin
-    MoveState := msTargetSelected;
-    Move.B := BoardPos;
-    MoveWay.Count := 0;
-    MoveWay.AddList(CWayResultWay);
-   end else
-    { bardziej jasny komunikat, w rodzaju MessageOK(Window, 'No way found'),
-      nie jest tu potrzebny bo podswietlamy droge z A do B wiec user i tak
-      widzi ze nie ma drogi; po prostu przypadkiem kliknal sobie tutaj. }
-    Beep;
+    if (Action = paMove) and (MoveState = msNone) and
+      MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) and
+      (Board[BoardPos[0], BoardPos[1]] <> bfEmpty) then
+    begin
+      MoveState := msSourceSelected;
+      Move.A := BoardPos;
+      Window.PostRedisplay;
+    end else
+    if (Action = paMove) and (MoveState = msSourceSelected) and
+      MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) then
+    begin
+      { jezeli kliknal na pustym to znaczy ze wybiera target.
+        Wpp. znaczy ze wybiera ponownie source. }
+      if Board[BoardPos[0], BoardPos[1]] = bfEmpty then
+      begin
+        if CWayOnTheBoard(Move.A, BoardPos) then
+        begin
+          MoveState := msTargetSelected;
+          Move.B := BoardPos;
+          MoveWay.Count := 0;
+          MoveWay.AddList(CWayResultWay);
+        end else
+          { bardziej jasny komunikat, w rodzaju MessageOK(Window, 'No way found'),
+            nie jest tu potrzebny bo podswietlamy droge z A do B wiec user i tak
+            widzi ze nie ma drogi; po prostu przypadkiem kliknal sobie tutaj. }
+          Beep;
+      end else
+        Move.A := BoardPos;
+      Window.PostRedisplay;
+    end else
+    begin
+      { obslugujemy klikanie myszka na przyciskach ponizej }
+      RectangleIndex := ButtonsRects.FindRectangle(GLWinMouseXToOurX(Window.MouseX),
+        GLWinMouseYToOurY(Window.MouseY));
+      case RectangleIndex of
+        0: Window.EventPress(InputKey(K_F1, #0));
+        1: Window.EventPress(InputKey(K_None, 'i'));
+        2: Window.EventPress(InputKey(K_None, 's'));
+        3: Window.EventPress(InputKey(K_None, 'n'));
+        4: Window.EventPress(InputKey(K_None, 'r'));
+      end;
+    end;
   end else
-   Move.A := BoardPos;
-  Window.PostRedisplay;
- end else
- if (btn = mbLeft) then
- begin
-  { obslugujemy klikanie myszka na przyciskach ponizej }
-  RectangleIndex := ButtonsRects.FindRectangle(GLWinMouseXToOurX(Window.MouseX),
-    GLWinMouseYToOurY(Window.MouseY));
-  case RectangleIndex of
-    0: Window.EventKeyDown(K_F1, #0);
-    1: Window.EventKeyDown(K_None, 'i');
-    2: Window.EventKeyDown(K_None, 's');
-    3: Window.EventKeyDown(K_None, 'n');
-    4: Window.EventKeyDown(K_None, 'r');
+  if Event.EventType = itKey then
+  begin
+    case Event.Key of
+     K_F1: ShowHelp;
+     else
+      case Event.KeyCharacter of
+       'r':
+         if MessageYesNo(Window, 'End this game and start another one ?') then
+          Action := paNewGame;
+       CharEscape: AskQuit(Window);
+       'h':
+         begin
+          DrawGame;
+          DrawHighscores;
+          { directly get screenshot now, without redrawing with Window.OnDraw }
+          DL := SaveScreen_ToDisplayList_NoFlush(0, 0, Window.Width, Window.Height,
+            GL_BACK);
+          try
+            InputAnyKey(Window, DL, ScreenX0, ScreenY0, Window.Width, Window.Height);
+          finally glFreeDisplayList(DL) end;
+         end;
+       'n':ShowNextColors := not ShowNextColors;
+       'i': BallsImageSet := ChangeIntCycle(BallsImageSet, 1, High(BallsImageSet));
+       's': AllowSpecialBalls := not AllowSpecialBalls;
+       else Exit;
+      end;
+    end;
+
+    Window.PostRedisplay;
   end;
- end;
 end;
 
 procedure CloseQueryGL(Window: TCastleWindowBase);
@@ -284,9 +285,8 @@ var SavedMode: TGLMode;
 begin
  SavedMode := TGLMode.CreateReset(Window, 0, false, @DrawGL, nil, @CloseQueryGL);
  try
-  Window.OnKeyDown := @KeyDown;
+  Window.OnPress := @Press;
   Window.OnMouseMove := @MouseMoveGL;
-  Window.OnMouseDown := @MouseDownGL;
 
   CWayClearCache;
   HighlightOneBF := false;

@@ -14,7 +14,7 @@
 }
 
 { Waiting for user input, keeping static image displayed on TCastleWindowBase. }
-unit CastleInputs;
+unit CastleInputAny;
 
 {
   TODO
@@ -74,7 +74,7 @@ procedure InputAnyKey(Window: TCastleWindowBase; DLDrawImage: TGLuint;
 
 implementation
 
-uses SysUtils, GLImages;
+uses SysUtils, GLImages, KeysMouse;
 
 { gl window callbacks for GLWinInput -------------------------------------------- }
 
@@ -104,24 +104,32 @@ begin
  D^.Font.Print(D^.Answer+'_');
 end;
 
-procedure KeyDown(Window: TCastleWindowBase; key: TKey; c: Char);
+procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
 var D: PGLWinInputData;
 begin
- D := PGLWinInputData(Window.UserData);
+  if Event.EventType <> itKey then Exit;
 
- case c of
-  CharBackSpace:
-    if Length(D^.Answer) > 0 then
-     begin SetLength(D^.Answer, Length(D^.Answer)-1); Window.PostRedisplay; end;
-  CharEnter:
-    if Between(Length(D^.Answer), D^.MinLength, D^.MaxLength) then
-     D^.Answered := true;
-  else
-    if (c <> #0) and
-       (c in D^.AnswerAllowedChars) and
-       (Length(D^.Answer) < D^.MaxLength) then
-     begin D^.Answer += c; Window.PostRedisplay; end;
- end;
+  D := PGLWinInputData(Window.UserData);
+
+  case Event.KeyCharacter of
+    CharBackSpace:
+      if Length(D^.Answer) > 0 then
+      begin
+        SetLength(D^.Answer, Length(D^.Answer)-1);
+        Window.PostRedisplay;
+      end;
+    CharEnter:
+      if Between(Length(D^.Answer), D^.MinLength, D^.MaxLength) then
+        D^.Answered := true;
+    else
+      if (Event.KeyCharacter <> #0) and
+         (Event.KeyCharacter in D^.AnswerAllowedChars) and
+         (Length(D^.Answer) < D^.MaxLength) then
+      begin
+        D^.Answer += Event.KeyCharacter;
+        Window.PostRedisplay;
+      end;
+  end;
 end;
 
 { GLWinInput -------------------------------------------------------------- }
@@ -156,7 +164,7 @@ begin
     {$ifdef FPC_OBJFPC} @ {$endif} NoClose);
   try
     Window.UserData := @Data;
-    Window.OnKeyDown := @KeyDown;
+    Window.OnPress := @Press;
 
     repeat Application.ProcessMessage(true, true) until Data.Answered;
 
@@ -182,11 +190,14 @@ begin
  glCallList(D^.DLDrawImage);
 end;
 
-procedure KeyDownAnyKey(Window: TCastleWindowBase; key: TKey; c: char);
+procedure PressAnyKey(Window: TCastleWindowBase; const Event: TInputPressRelease);
 var D: PInputAnyKeyData;
 begin
- D := PInputAnyKeyData(Window.UserData);
- D^.KeyPressed := true;
+  if Event.EventType = itKey then
+  begin
+    D := PInputAnyKeyData(Window.UserData);
+    D^.KeyPressed := true;
+  end;
 end;
 
 { GLWinInputAnyKey ----------------------------------------------------------- }
@@ -209,7 +220,7 @@ begin
   Data.KeyPressed := false;
 
   Window.UserData := @Data;
-  Window.OnKeyDown := @KeyDownAnyKey;
+  Window.OnPress := @PressAnyKey;
 
   glRasterPos2i(RasterX, RasterY);
   repeat Application.ProcessMessage(true, true) until Data.KeyPressed;
