@@ -34,13 +34,13 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 implementation
 
 uses GL, GLU, GLExt, CastleWindow, CastleGLUtils, WindowModes, CastleUtils, Math, DrawingGame,
-  LinesWindow, LinesGame, CastleTimeUtils, GLImages;
+  LinesWindow, LinesGame, CastleTimeUtils, GLImages, SysUtils;
 
 procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
   BF: TNonEmptyBF;
   SavedMode: TGLMode;
-  dlBoardImage: TGLuint;
+  BoardImage: TGLImage;
   Position: Single;
   Ball: TVector2Single;
   Pos1: Integer;
@@ -50,8 +50,7 @@ begin
   BF := Board[Move.A[0], Move.A[1]];
   Board[Move.A[0], Move.A[1]] := bfEmpty;
   DrawGame;
-  dlBoardImage := SaveScreen_ToDisplayList_noflush(
-    0, 0, Window.Width, Window.Height, GL_BACK);
+  BoardImage := SaveScreenToGL_noflush(0, 0, Window.Width, Window.Height, GL_BACK);
   try
     SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
       nil, nil, @NoClose);
@@ -70,7 +69,7 @@ begin
 
         { draw animation frame }
         glRasterPos2i(ScreenX0, ScreenY0);
-        glCallList(dlBoardImage);
+        BoardImage.Draw;
 
         if Position <= 1 then
           Ball := Lerp(Position, Move.A, MoveWay.L[0]) else
@@ -85,7 +84,7 @@ begin
                       BoardFieldImage0Y + BoardFieldHeight * Ball[1]);
         { TODO: glenable/disable below should be in disp list }
         glEnable(GL_ALPHA_TEST);
-        glCallList(dlNonEmptyBFImages[BallsImageSet, BF]);
+        NonEmptyBFImages[BallsImageSet, BF].Draw;
         glDisable(GL_ALPHA_TEST);
 
         { OnDraw nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
@@ -102,8 +101,8 @@ begin
 
       { zakoncz animacje, przenies kulke na koncowa pozycje w Board[] }
       Board[Move.B[0], Move.B[1]] := BF;
-    finally SavedMode.Free end;
-  finally glDeleteLists(dlBoardImage, 1) end;
+    finally FreeAndNil(SavedMode) end;
+  finally FreeAndNil(BoardImage) end;
 end;
 
 end.

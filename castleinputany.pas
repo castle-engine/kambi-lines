@@ -28,12 +28,11 @@ unit CastleInputAny;
 
 interface
 
-uses GL, GLU, CastleGLUtils, CastleWindow, WindowModes, OpenGLFonts, CastleUtils, Images,
-  CastleStringUtils;
+uses GL, GLU, CastleGLUtils, CastleWindow, WindowModes, OpenGLFonts, CastleUtils, 
+  Images, CastleStringUtils, GLImages;
 
 { Wait until user inputs a string (accept by Enter), displaying the static
-  image with user string. DLDrawImage must be a display list obtained by
-  call like SaveScreen_ToDisplayList_NoFlush that draws the image.
+  image with user string.
 
   ScreenX0, ScreenY0 is raster position for lower-left screen corner.
 
@@ -43,7 +42,7 @@ uses GL, GLU, CastleGLUtils, CastleWindow, WindowModes, OpenGLFonts, CastleUtils
   have the same meaning as in CastleMessages unit. Initial Answer
   cannot contain characters outside AnswerAllowedChars. }
 function Input(Window: TCastleWindowBase;
-  DLDrawImage: TGLuint;
+  Image: TGLImage;
   Font: TGLBitmapFont_Abstract;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
   AnswerDefault: string = '';
@@ -68,20 +67,20 @@ procedure InputAnyKey(Window: TCastleWindowBase; const ImgFileName: string;
   ResizeX, ResizeY, RasterX, RasterY: Integer); overload;
 procedure InputAnyKey(Window: TCastleWindowBase; const Img: TCastleImage;
   RasterX, RasterY: Integer); overload;
-procedure InputAnyKey(Window: TCastleWindowBase; DLDrawImage: TGLuint;
+procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
   RasterX, RasterY: Integer; BGImageWidth, BGImageHeight: Cardinal); overload;
 { @groupEnd }
 
 implementation
 
-uses SysUtils, GLImages, KeysMouse;
+uses SysUtils, KeysMouse;
 
 { gl window callbacks for GLWinInput -------------------------------------------- }
 
 type
   TGLWinInputData = record
     { input params }
-    DLDrawImage: TGLuint;
+    Image: TGLImage;
     MinLength, MaxLength: Integer;
     AnswerAllowedChars: TSetOfChars;
     Font: TGLBitmapFont_Abstract;
@@ -99,7 +98,7 @@ begin
  D := PGLWinInputData(Window.UserData);
 
  glRasterPos2i(D^.ScreenX0, D^.ScreenY0);
- glCallList(D^.DLDrawImage);
+ D^.Image.Draw;
  glRasterPos2i(D^.AnswerX0, D^.AnswerY0);
  D^.Font.Print(D^.Answer+'_');
 end;
@@ -135,7 +134,7 @@ end;
 { GLWinInput -------------------------------------------------------------- }
 
 function Input(Window: TCastleWindowBase;
-  DLDrawImage: TGLuint;
+  Image: TGLImage;
   Font: TGLBitmapFont_Abstract;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
   AnswerDefault: string = '';
@@ -147,7 +146,7 @@ var
   SavedMode: TGLMode;
   Data: TGLWinInputData;
 begin
-  Data.DLDrawImage := DLDrawImage;
+  Data.Image := Image;
   Data.Answer := AnswerDefault;
   Data.MinLength := MinLength;
   Data.MaxLength := MaxLength;
@@ -177,7 +176,7 @@ end;
 type
   TInputAnyKeyData = record
     DoClear: boolean;
-    DLDrawImage: TGLuint;
+    Image: TGLImage;
     KeyPressed: boolean;
   end;
   PInputAnyKeyData = ^TInputAnyKeyData;
@@ -187,7 +186,7 @@ var D: PInputAnyKeyData;
 begin
  D := PInputAnyKeyData(Window.UserData);
  if D^.DoClear then glClear(GL_COLOR_BUFFER_BIT);
- glCallList(D^.DLDrawImage);
+ D^.Image.Draw;
 end;
 
 procedure PressAnyKey(Window: TCastleWindowBase; const Event: TInputPressRelease);
@@ -202,7 +201,7 @@ end;
 
 { GLWinInputAnyKey ----------------------------------------------------------- }
 
-procedure InputAnyKey(Window: TCastleWindowBase; DLDrawImage: TGLuint;
+procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
   RasterX, RasterY: Integer; BGImageWidth, BGImageHeight: Cardinal);
 var
   Data: TInputAnyKeyData;
@@ -216,7 +215,7 @@ begin
 
   Data.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or
                   (Cardinal(Window.Height) > BGImageHeight);
-  Data.DLDrawImage := DLDrawImage;
+  Data.Image := Image;
   Data.KeyPressed := false;
 
   Window.UserData := @Data;
@@ -230,18 +229,18 @@ end;
 procedure InputAnyKey(Window: TCastleWindowBase; const Img: TCastleImage;
   RasterX, RasterY: Integer);
 var
-  DL: TGLuint;
+  I: TGLImage;
 begin
-  DL := ImageDrawToDisplayList(Img);
+  I := TGLImage.Create(Img);
   try
-    InputAnyKey(Window, DL, RasterX, RasterY, Img.Width, Img.Height);
-  finally glFreeDisplayList(DL) end;
+    InputAnyKey(Window, I, RasterX, RasterY, Img.Width, Img.Height);
+  finally FreeAndNil(I) end;
 end;
 
 procedure InputAnyKey(Window: TCastleWindowBase; const ImgFileName: string;
   ResizeX, ResizeY, RasterX, RasterY: Integer);
 var
-  DL: TGLuint;
+  GLImage: TGLImage;
   Image: TCastleImage;
   BGImageWidth, BGImageHeight: Cardinal;
 begin
@@ -249,11 +248,11 @@ begin
   try
     BGImageWidth  := Image.Width ;
     BGImageHeight := Image.Height;
-    DL := ImageDrawToDisplayList(Image);
+    GLImage := TGLImage.Create(Image);
   finally FreeAndNil(Image) end;
   try
-    InputAnyKey(Window, DL, RasterX, RasterY, BGImageWidth, BGImageHeight);
-  finally glFreeDisplayList(DL) end;
+    InputAnyKey(Window, GLImage, RasterX, RasterY, BGImageWidth, BGImageHeight);
+  finally FreeAndNil(GLImage) end;
 end;
 
 end.

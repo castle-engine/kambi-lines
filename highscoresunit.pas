@@ -129,7 +129,8 @@ begin result := PHighscore(Highscores.List) end;
 
 { displaying functions ------------------------------------------------------- }
 
-var dlImgHighscr: TGLuint;
+var
+  ImgHighscr: TGLImage;
 
 const
   HighscrX0 = (640-235) div 2 + 3;
@@ -154,7 +155,7 @@ procedure DrawHighscores;
 var i, RowY: Integer;
 begin
  glRasterPos2i(HighscrX0, HighscrY0);
- glCallList(dlImgHighscr);
+ ImgHighscr.Draw;
 
  glColorv(Vector3Byte(0, 168, 0));
 
@@ -173,7 +174,7 @@ end;
 procedure CheckAndMaybeAddToHighscore(AScore: Integer);
 var
   Pos: Integer;
-  DL: TGLuint;
+  GLImage: TGLImage;
 begin
  Pos := CheckNewScore(AScore);
  if Pos >= 0 then
@@ -182,13 +183,13 @@ begin
   DrawHighscores;
 
   { directly get screenshot now, without redrawing with Window.OnDraw }
-  DL := SaveScreen_ToDisplayList_NoFlush(0, 0, Window.Width, Window.Height,
+  GLImage := SaveScreenToGL_NoFlush(0, 0, Window.Width, Window.Height,
     GL_BACK);
   try
     Highscores.L[Pos].PlayerName:=
-      Input(Window, DL, LinesFont, ScreenX0, ScreenY0,
+      Input(Window, GLImage, LinesFont, ScreenX0, ScreenY0,
         HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
-  finally glFreeDisplayList(DL) end;
+  finally FreeAndNil(GLImage) end;
  end;
 end;
 
@@ -242,16 +243,22 @@ end;
 
 procedure WindowOpen(const Container: IUIContainer);
 begin
- dlImgHighscr := LoadImageToDisplayList(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
+  ImgHighscr := TGLImage.Create(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
+end;
+
+procedure WindowClose(const Container: IUIContainer);
+begin
+  FreeAndNil(ImgHighscr);
 end;
 
 { unit init/fini ------------------------------------------------------------- }
 
 initialization
- Highscores := THighscoresList.Create;
- LoadHighscores;
- OnGLContextOpen.Add(@WindowOpen);
+  Highscores := THighscoresList.Create;
+  LoadHighscores;
+  OnGLContextOpen.Add(@WindowOpen);
+  OnGLContextClose.Add(@WindowClose);
 finalization
- SaveHighscores;
- FreeAndNil(Highscores);
+  SaveHighscores;
+  FreeAndNil(Highscores);
 end.

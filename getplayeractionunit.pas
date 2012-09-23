@@ -193,7 +193,7 @@ procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
 var
   BoardPos: TVector2Integer;
   RectangleIndex: Integer;
-  DL: TGLuint;
+  GLImage: TGLImage;
 begin
   if Event.IsMouseButton(mbLeft) then
   begin
@@ -255,11 +255,11 @@ begin
           DrawGame;
           DrawHighscores;
           { directly get screenshot now, without redrawing with Window.OnDraw }
-          DL := SaveScreen_ToDisplayList_NoFlush(0, 0, Window.Width, Window.Height,
+          GLImage := SaveScreenToGL_NoFlush(0, 0, Window.Width, Window.Height,
             GL_BACK);
           try
-            InputAnyKey(Window, DL, ScreenX0, ScreenY0, Window.Width, Window.Height);
-          finally glFreeDisplayList(DL) end;
+            InputAnyKey(Window, GLImage, ScreenX0, ScreenY0, Window.Width, Window.Height);
+          finally FreeAndNil(GLImage) end;
          end;
        'n':ShowNextColors := not ShowNextColors;
        'i': BallsImageSet := ChangeIntCycle(BallsImageSet, 1, High(BallsImageSet));

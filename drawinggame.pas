@@ -26,7 +26,7 @@ unit DrawingGame;
 
 interface
 
-uses GL, CastleGLUtils, VectorMath, LinesGame, LinesBoard;
+uses GL, CastleGLUtils, VectorMath, LinesGame, LinesBoard, GLImages;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie window, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.
@@ -45,7 +45,7 @@ const
 
   { BoardFieldImageShiftX mowi jak trzeba przesunac pozycje
     (wzgledem pozycji obliczonej w/g BoardField0X + i * BoardFieldWidth)
-    zeby narysowac na tej pozycji kuleczke, tzn. zeby uzyc dlNonEmptyBFImages. }
+    zeby narysowac na tej pozycji kuleczke, tzn. zeby uzyc NonEmptyBFImages. }
   BoardFieldImageShiftX = 3;
   BoardFieldImageShiftY = 3;
   BoardFieldImage0X = BoardField0X + BoardFieldImageShiftX;
@@ -59,19 +59,26 @@ const
 { Balls zaladowane do display list OpenGLa. W interfejsie, bo przydatne takze
   w LinesMove. Jako pierwszego indeksu bedziesz chcial zazwyczaj uzywac
   BallsImageSet. }
-var dlNonEmptyBFImages: array[TBallsImageSet, TNonEmptyBF]of TGLuint;
+var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 
 implementation
 
 uses SysUtils, LinesWindow, CastleWindow, Images, UIControls,
   HighscoresUnit, CastleUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
-  BFNT_BitstreamVeraSans_Bold_m14_Unit, GLImages;
+  BFNT_BitstreamVeraSans_Bold_m14_Unit;
 
 var
-  dlGameImage, dlColrowImage,
-    dlMasterImage, dlPretenderImage, dlMasterAltImage, dlPretenderAltImage,
-    dlHighlightOneBFImage,
-    dlButtonImage, dlFrameLImage, dlFrameMImage, dlFrameRImage: TGLuint;
+  GameImage,
+  ColrowImage,
+  MasterImage,
+  PretenderImage,
+  MasterAltImage,
+  PretenderAltImage,
+  HighlightOneBFImage,
+  ButtonImage,
+  FrameLImage,
+  FrameMImage,
+  FrameRImage: TGLImage;
   ButtonCaptionFont, PlayerNamesFont: TGLBitmapFont;
 
 procedure DrawGame(HighlightOneBF: boolean; const HighlightOneBFPos: TVector2Integer;
@@ -113,23 +120,23 @@ const
   ImgFrameHeight = 21;
 
   procedure DisplayColumn(ColrowCount, ColrowX0, TopImageX0: integer;
-    dlTopImage: TGLuint);
+    TopImage: TGLImage);
   var i: integer;
   begin
    for i := 0 to ColrowCount-1 do
    begin
     glRasterPos2i(ColrowX0, ColrowY0 + i*ImgColrowHeight);
-    glCallList(dlColrowImage);
+    ColrowImage.Draw;
    end;
    glRasterPos2i(TopImageX0, ColrowY0 + ColrowCount*ImgColrowHeight);
-   glCallList(dlTopImage);
+   TopImage.Draw;
   end;
 
   procedure Highlight(BF: TVector2Integer);
   begin
    glRasterPos2i(BoardField0X + BoardFieldWidth * BF[0],
                  BoardField0Y + BoardFieldHeight * BF[1]);
-   glCallList(dlHighlightOneBFImage);
+   HighlightOneBFImage.Draw;
   end;
 
   procedure DrawText(x, y: Integer; const s: string; const Color: TVector3Byte);
@@ -160,7 +167,7 @@ var ButtonsAndFramesX: Integer;
   procedure DrawButton(y: Integer; const s: string);
   begin
    glRasterPos2i(ButtonsAndFramesX, y);
-   glCallList(dlButtonImage);
+   ButtonImage.Draw;
    glColor3ub(0, 0, 0);
    glRasterPos2i(ButtonsAndFramesX + (ImgButtonWidth -
      ButtonCaptionFont.TextWidth(s)) div 2, y+7);
@@ -174,16 +181,16 @@ var ButtonsAndFramesX: Integer;
   begin
    x0 := ButtonsAndFramesX;
    glRasterPos2i(ButtonsAndFramesX, y);
-   glCallList(dlFrameLImage);
+   FrameLImage.Draw;
    ButtonsAndFramesX += ImgFrameLWidth;
    for i := 0 to LinesFont.TextWidth(s) + CaptionHorizMargin*2 do
    begin
     glRasterPos2i(ButtonsAndFramesX, y);
-    glCallList(dlFrameMImage);
+    FrameMImage.Draw;
     Inc(ButtonsAndFramesX);
    end;
    glRasterPos2i(ButtonsAndFramesX, y);
-   glCallList(dlFrameRImage);
+   FrameRImage.Draw;
    ButtonsAndFramesX += ImgFrameRWidth;
 
    DrawText(x0+ImgFrameLWidth + CaptionHorizMargin, y+6, s, FrameTextColor);
@@ -213,7 +220,7 @@ begin
   glClear(GL_COLOR_BUFFER_BIT);
 
  glRasterPos2i(0, 0);
- glCallList(dlGameImage);
+ GameImage.Draw;
 
  { wyswietlaj kolumny odzwierciedlajace punkty gracza w stosunku do
    punktow krola. Ten kto ma wiecej jest na wysokosci MaxColrowCount,
@@ -223,18 +230,18 @@ begin
    zwiazanego z operacjami na liczbach zmiennoprzec. }
  if KingScore^.Score >= PlayerScore then
  begin
-  DisplayColumn(MaxColrowCount, MasterColrowX0, MasterImageX0, dlMasterImage);
+  DisplayColumn(MaxColrowCount, MasterColrowX0, MasterImageX0, MasterImage);
   DisplayColumn(
     Clamped(Round(Lerp(PlayerScore/KingScore^.Score, MinColrowCount, MaxColrowCount)),
       MinColrowCount, MaxColrowCount),
-    PretenderColrowX0, PretenderImageX0, dlPretenderImage);
+    PretenderColrowX0, PretenderImageX0, PretenderImage);
  end else
  begin
   DisplayColumn(
     Clamped(Round(Lerp(KingScore^.Score/PlayerScore, MinColrowCount, MaxColrowCount)),
       MinColrowCount, MaxColrowCount),
-    MasterColrowX0, MasterImageX0, dlMasterAltImage);
-  DisplayColumn(maxColrowCount, PretenderColrowX0, PretenderImageX0, dlPretenderAltImage);
+    MasterColrowX0, MasterImageX0, MasterAltImage);
+  DisplayColumn(maxColrowCount, PretenderColrowX0, PretenderImageX0, PretenderAltImage);
  end;
 
  if HighlightOneBF then
@@ -251,13 +258,13 @@ begin
     begin
      glRasterPos2i(BoardFieldImage0X + BoardFieldWidth*i,
                    BoardFieldImage0Y + BoardFieldHeight*j);
-     glCallList(dlNonEmptyBFImages[BallsImageSet, Board[i, j]]);
+     NonEmptyBFImages[BallsImageSet, Board[i, j]].Draw;
     end;
   if ShowNextColors then
    for i := 0 to NextColorsCount-1 do
    begin
     glRasterPos2i(NextColorsImage0X + NextColorsFieldWidth*i, NextColorsImage0Y);
-    glCallList(dlNonEmptyBFImages[BallsImageSet, NextColors[i]]);
+    NonEmptyBFImages[BallsImageSet, NextColors[i]].Draw;
    end;
  finally glDisable(GL_ALPHA_TEST) end;
 
@@ -294,24 +301,25 @@ const
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
    'ball_violet', 'ball_red', 'ball_blue',
    'ball_blue_yellow', 'ball_red_white', 'ball_joker');
-var bf: TNonEmptyBF;
-    i: Integer;
+var
+  bf: TNonEmptyBF;
+  i: Integer;
 begin
- dlGameImage := LoadImageToDisplayList(ImagesPath +'game.png', [TRGBImage], [], 0, 0);
- dlColrowImage := LoadImageToDisplayList(ImagesPath +'colrow.png', [TRGBImage], [], 0, 0);
- dlMasterImage := LoadImageToDisplayList(ImagesPath +'master.png', [TRGBImage], [], 0, 0);
- dlPretenderImage := LoadImageToDisplayList(ImagesPath +'pretender.png', [TRGBImage], [], 0, 0);
- dlMasterAltImage := LoadImageToDisplayList(ImagesPath +'master_alt.png', [TRGBImage], [], 0, 0);
- dlPretenderAltImage := LoadImageToDisplayList(ImagesPath +'pretender_alt.png', [TRGBImage], [], 0, 0);
- dlHighlightOneBFImage := LoadImageToDisplayList(ImagesPath +'bf_highlight.png', [TRGBImage], [], 0, 0);
- dlButtonImage := LoadImageToDisplayList(ImagesPath +'button.png', [TRGBImage], [], 0, 0);
- dlFrameLImage := LoadImageToDisplayList(ImagesPath +'frame_l.png', [TRGBImage], [], 0, 0);
- dlFrameMImage := LoadImageToDisplayList(ImagesPath +'frame_m.png', [TRGBImage], [], 0, 0);
- dlFrameRImage := LoadImageToDisplayList(ImagesPath +'frame_r.png', [TRGBImage], [], 0, 0);
+ GameImage := TGLImage.Create(ImagesPath +'game.png', [TRGBImage], [], 0, 0);
+ ColrowImage := TGLImage.Create(ImagesPath +'colrow.png', [TRGBImage], [], 0, 0);
+ MasterImage := TGLImage.Create(ImagesPath +'master.png', [TRGBImage], [], 0, 0);
+ PretenderImage := TGLImage.Create(ImagesPath +'pretender.png', [TRGBImage], [], 0, 0);
+ MasterAltImage := TGLImage.Create(ImagesPath +'master_alt.png', [TRGBImage], [], 0, 0);
+ PretenderAltImage := TGLImage.Create(ImagesPath +'pretender_alt.png', [TRGBImage], [], 0, 0);
+ HighlightOneBFImage := TGLImage.Create(ImagesPath +'bf_highlight.png', [TRGBImage], [], 0, 0);
+ ButtonImage := TGLImage.Create(ImagesPath +'button.png', [TRGBImage], [], 0, 0);
+ FrameLImage := TGLImage.Create(ImagesPath +'frame_l.png', [TRGBImage], [], 0, 0);
+ FrameMImage := TGLImage.Create(ImagesPath +'frame_m.png', [TRGBImage], [], 0, 0);
+ FrameRImage := TGLImage.Create(ImagesPath +'frame_r.png', [TRGBImage], [], 0, 0);
 
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
-   dlNonEmptyBFImages[i, bf] := LoadImageToDisplayList(ImagesPath +
+   NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
      NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png',
        [TRGBAlphaImage], [], 0, 0);
 
@@ -320,9 +328,28 @@ begin
 end;
 
 procedure WindowClose(const Container: IUIContainer);
+var
+  bf: TNonEmptyBF;
+  i: Integer;
 begin
- PlayerNamesFont.Free;
- ButtonCaptionFont.Free;
+ FreeAndNil(GameImage);
+ FreeAndNil(ColrowImage);
+ FreeAndNil(MasterImage);
+ FreeAndNil(PretenderImage);
+ FreeAndNil(MasterAltImage);
+ FreeAndNil(PretenderAltImage);
+ FreeAndNil(HighlightOneBFImage);
+ FreeAndNil(ButtonImage);
+ FreeAndNil(FrameLImage);
+ FreeAndNil(FrameMImage);
+ FreeAndNil(FrameRImage);
+
+ for i := 0 to High(TBallsImageSet) do
+  for bf := LowNonEmptyBF to HighNonEmptyBF do
+   FreeAndNil(NonEmptyBFImages[i, bf]);
+
+ FreeAndNil(PlayerNamesFont);
+ FreeAndNil(ButtonCaptionFont);
 end;
 
 initialization
