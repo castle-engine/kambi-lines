@@ -45,7 +45,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
 implementation
 
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
-  Images, CastleMessages, Classes, HighscoresUnit, WindowModes, UIControls,
+  CastleImages, CastleMessages, Classes, HighscoresUnit, WindowModes, UIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, Rectangles,
   CastleStringUtils, GLImages, KeysMouse;
 

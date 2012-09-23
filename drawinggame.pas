@@ -63,7 +63,7 @@ var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 
 implementation
 
-uses SysUtils, LinesWindow, CastleWindow, Images, UIControls,
+uses SysUtils, LinesWindow, CastleWindow, CastleImages, UIControls,
   HighscoresUnit, CastleUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
   BFNT_BitstreamVeraSans_Bold_m14_Unit;
 

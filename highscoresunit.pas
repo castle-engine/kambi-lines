@@ -72,7 +72,7 @@ procedure DrawHighscores;
 implementation
 
 uses VectorMath, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
-  CastleGLUtils, Images, CastleInputAny, CastleStringUtils, CastleFilesUtils,
+  CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
   GLImages, UIControls;
 
 function CheckNewScore(AScore: Integer): Integer;

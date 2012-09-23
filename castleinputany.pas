@@ -29,7 +29,7 @@ unit CastleInputAny;
 interface
 
 uses GL, GLU, CastleGLUtils, CastleWindow, WindowModes, OpenGLFonts, CastleUtils, 
-  Images, CastleStringUtils, GLImages;
+  CastleImages, CastleStringUtils, GLImages;
 
 { Wait until user inputs a string (accept by Enter), displaying the static
   image with user string.
