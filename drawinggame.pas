@@ -305,23 +305,22 @@ var
   bf: TNonEmptyBF;
   i: Integer;
 begin
- GameImage := TGLImage.Create(ImagesPath +'game.png', [TRGBImage], [], 0, 0);
- ColrowImage := TGLImage.Create(ImagesPath +'colrow.png', [TRGBImage], [], 0, 0);
- MasterImage := TGLImage.Create(ImagesPath +'master.png', [TRGBImage], [], 0, 0);
- PretenderImage := TGLImage.Create(ImagesPath +'pretender.png', [TRGBImage], [], 0, 0);
- MasterAltImage := TGLImage.Create(ImagesPath +'master_alt.png', [TRGBImage], [], 0, 0);
- PretenderAltImage := TGLImage.Create(ImagesPath +'pretender_alt.png', [TRGBImage], [], 0, 0);
- HighlightOneBFImage := TGLImage.Create(ImagesPath +'bf_highlight.png', [TRGBImage], [], 0, 0);
- ButtonImage := TGLImage.Create(ImagesPath +'button.png', [TRGBImage], [], 0, 0);
- FrameLImage := TGLImage.Create(ImagesPath +'frame_l.png', [TRGBImage], [], 0, 0);
- FrameMImage := TGLImage.Create(ImagesPath +'frame_m.png', [TRGBImage], [], 0, 0);
- FrameRImage := TGLImage.Create(ImagesPath +'frame_r.png', [TRGBImage], [], 0, 0);
+ GameImage := TGLImage.Create(ImagesPath +'game.png', [TRGBImage]);
+ ColrowImage := TGLImage.Create(ImagesPath +'colrow.png', [TRGBImage]);
+ MasterImage := TGLImage.Create(ImagesPath +'master.png', [TRGBImage]);
+ PretenderImage := TGLImage.Create(ImagesPath +'pretender.png', [TRGBImage]);
+ MasterAltImage := TGLImage.Create(ImagesPath +'master_alt.png', [TRGBImage]);
+ PretenderAltImage := TGLImage.Create(ImagesPath +'pretender_alt.png', [TRGBImage]);
+ HighlightOneBFImage := TGLImage.Create(ImagesPath +'bf_highlight.png', [TRGBImage]);
+ ButtonImage := TGLImage.Create(ImagesPath +'button.png', [TRGBImage]);
+ FrameLImage := TGLImage.Create(ImagesPath +'frame_l.png', [TRGBImage]);
+ FrameMImage := TGLImage.Create(ImagesPath +'frame_m.png', [TRGBImage]);
+ FrameRImage := TGLImage.Create(ImagesPath +'frame_r.png', [TRGBImage]);
 
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
    NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
-     NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png',
-       [TRGBAlphaImage], [], 0, 0);
+     NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
 
  PlayerNamesFont := TGLBitmapFont.Create(@BFNT_ChristmasCard_m24);
  ButtonCaptionFont := TGLBitmapFont.Create(@BFNT_BitstreamVeraSans_Bold_m14);

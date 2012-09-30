@@ -244,7 +244,7 @@ var
   Image: TCastleImage;
   BGImageWidth, BGImageHeight: Cardinal;
 begin
-  Image := LoadImage(ImgFileName, [TRGBImage], [], ResizeX, ResizeY);
+  Image := LoadImage(ImgFileName, [TRGBImage], ResizeX, ResizeY);
   try
     BGImageWidth  := Image.Width ;
     BGImageHeight := Image.Height;

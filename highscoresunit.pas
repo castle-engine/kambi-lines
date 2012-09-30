@@ -243,7 +243,7 @@ end;
 
 procedure WindowOpen(const Container: IUIContainer);
 begin
-  ImgHighscr := TGLImage.Create(ImagesPath+'highscr.png', [TRGBImage], [], 0, 0);
+  ImgHighscr := TGLImage.Create(ImagesPath+'highscr.png', [TRGBImage]);
 end;
 
 procedure WindowClose(const Container: IUIContainer);
