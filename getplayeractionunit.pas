@@ -47,7 +47,7 @@ implementation
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, WindowModes, UIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, Rectangles,
-  CastleStringUtils, GLImages, KeysMouse;
+  CastleStringUtils, GLImages, CastleKeysMouse;
 
 var
   ButtonsRects: TRectangleList;

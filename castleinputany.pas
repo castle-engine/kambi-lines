@@ -73,7 +73,7 @@ procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
 
 implementation
 
-uses SysUtils, KeysMouse;
+uses SysUtils, CastleKeysMouse;
 
 { gl window callbacks for GLWinInput -------------------------------------------- }
 
