@@ -41,7 +41,7 @@ unit LinesWindow;
 
 interface
 
-uses CastleWindow, VectorMath, OpenGLBmpFonts;
+uses CastleWindow, CastleVectors, OpenGLBmpFonts;
 
 var
   Window: TCastleWindowBase;

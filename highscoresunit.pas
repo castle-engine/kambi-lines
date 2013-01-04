@@ -71,7 +71,7 @@ procedure DrawHighscores;
 
 implementation
 
-uses VectorMath, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
+uses CastleVectors, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
   CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
   GLImages, UIControls;
 

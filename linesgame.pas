@@ -31,7 +31,7 @@ unit LinesGame;
 
 interface
 
-uses LinesBoard, VectorMath, CastleClassUtils;
+uses LinesBoard, CastleVectors, CastleClassUtils;
 
 const
   Version = '1.1.6';

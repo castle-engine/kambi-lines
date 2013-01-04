@@ -24,7 +24,7 @@ unit GetPlayerActionUnit;
 
 interface
 
-uses LinesBoard, VectorMath;
+uses LinesBoard, CastleVectors;
 
 type
   TPlayerAction = (paMove, paNewGame, paQuit);

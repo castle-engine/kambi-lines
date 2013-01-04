@@ -24,7 +24,7 @@ unit LinesMove;
 
 interface
 
-uses LinesBoard, GetPlayerActionUnit, VectorMath;
+uses LinesBoard, GetPlayerActionUnit, CastleVectors;
 
 { przemieszcza kulke na Board zgodnie z Move. Wykonuje animacje kulki
   wedrujacej wzdluz MoveWay. Wiec zadane Move musi byc poprawne z droga
