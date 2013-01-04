@@ -41,7 +41,7 @@ unit LinesWindow;
 
 interface
 
-uses CastleWindow, CastleVectors, OpenGLBmpFonts;
+uses CastleWindow, CastleVectors, CastleGLBitmapFonts;
 
 var
   Window: TCastleWindowBase;
@@ -67,7 +67,7 @@ function ScreenY0: Integer;
 implementation
 
 uses SysUtils, CastleUtils, CastleGLUtils,
-  BFNT_ArialCELatin2_m14_Unit, CastleParameters, CastleFilesUtils;
+  CastleBitmapFont_ArialCELatin2_m14, CastleParameters, CastleFilesUtils;
 
 var
   FScreenX0, FScreenY0: Integer;
@@ -103,7 +103,7 @@ begin
  FScreenX0 := -FirstOverflowX;
  FScreenY0 := -FirstOverflowY;
 
- LinesFont := TGLBitmapFont.Create(@BFNT_ArialCELatin2_m14);
+ LinesFont := TGLBitmapFont.Create(BitmapFont_ArialCELatin2_m14);
 end;
 
 procedure CloseQueryGL(Window: TCastleWindowBase); begin end;

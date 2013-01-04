@@ -44,19 +44,19 @@
         <UsageCount Value="20"/>
       </Unit0>
       <Unit1>
-        <Filename Value="bfnt_arialcelatin2_m14_unit.pas"/>
+        <Filename Value="castlebitmapfont_arialcelatin2_m14.pas"/>
         <IsPartOfProject Value="True"/>
         <UsageCount Value="20"/>
         <SyntaxHighlighter Value="Text"/>
       </Unit1>
       <Unit2>
-        <Filename Value="bfnt_bitstreamverasans_bold_m14_unit.pas"/>
+        <Filename Value="castlebitmapfont_bvsans_bold_m14.pas"/>
         <IsPartOfProject Value="True"/>
         <UsageCount Value="20"/>
         <SyntaxHighlighter Value="Text"/>
       </Unit2>
       <Unit3>
-        <Filename Value="bfnt_christmascard_m24_unit.pas"/>
+        <Filename Value="castlebitmapfont_christmascard_m24.pas"/>
         <IsPartOfProject Value="True"/>
         <UsageCount Value="20"/>
         <SyntaxHighlighter Value="Text"/>

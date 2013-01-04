@@ -64,8 +64,8 @@ var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 implementation
 
 uses SysUtils, LinesWindow, CastleWindow, CastleImages, UIControls,
-  HighscoresUnit, CastleUtils, OpenGLBmpFonts, BFNT_ChristmasCard_m24_Unit,
-  BFNT_BitstreamVeraSans_Bold_m14_Unit;
+  HighscoresUnit, CastleUtils, CastleGLBitmapFonts, CastleBitmapFont_ChristmasCard_m24,
+  CastleBitmapFont_BVSans_Bold_m14;
 
 var
   GameImage,
@@ -322,8 +322,8 @@ begin
    NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
      NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
 
- PlayerNamesFont := TGLBitmapFont.Create(@BFNT_ChristmasCard_m24);
- ButtonCaptionFont := TGLBitmapFont.Create(@BFNT_BitstreamVeraSans_Bold_m14);
+ PlayerNamesFont := TGLBitmapFont.Create(BitmapFont_ChristmasCard_m24);
+ ButtonCaptionFont := TGLBitmapFont.Create(BitmapFont_BVSans_Bold_m14);
 end;
 
 procedure WindowClose(const Container: IUIContainer);
