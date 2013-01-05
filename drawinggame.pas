@@ -26,7 +26,7 @@ unit DrawingGame;
 
 interface
 
-uses GL, CastleGLUtils, CastleVectors, LinesGame, LinesBoard, GLImages;
+uses GL, CastleGLUtils, CastleVectors, LinesGame, LinesBoard, CastleGLImages;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie window, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.
@@ -63,7 +63,7 @@ var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 
 implementation
 
-uses SysUtils, LinesWindow, CastleWindow, CastleImages, UIControls,
+uses SysUtils, LinesWindow, CastleWindow, CastleImages, CastleUIControls,
   HighscoresUnit, CastleUtils, CastleGLBitmapFonts, CastleBitmapFont_ChristmasCard_m24,
   CastleBitmapFont_BVSans_Bold_m14;
 

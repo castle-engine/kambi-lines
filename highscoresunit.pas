@@ -25,7 +25,7 @@ unit HighscoresUnit;
 
 interface
 
-uses SysUtils, CastleUtils, Classes, GenericStructList;
+uses SysUtils, CastleUtils, Classes, CastleGenericLists;
 
 const MaxPlayerNameLength = 10;
 type
@@ -73,7 +73,7 @@ implementation
 
 uses CastleVectors, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
   CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
-  GLImages, UIControls;
+  CastleGLImages, CastleUIControls;
 
 function CheckNewScore(AScore: Integer): Integer;
 { CheckNewScore sprawdza czy AScore jest na tyle wysoki ze gracz powinien

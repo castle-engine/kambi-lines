@@ -28,8 +28,8 @@ unit CastleInputAny;
 
 interface
 
-uses GL, GLU, CastleGLUtils, CastleWindow, WindowModes, CastleGLBitmapFonts, CastleUtils, 
-  CastleImages, CastleStringUtils, GLImages;
+uses GL, GLU, CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, CastleUtils, 
+  CastleImages, CastleStringUtils, CastleGLImages;
 
 { Wait until user inputs a string (accept by Enter), displaying the static
   image with user string.
@@ -55,7 +55,7 @@ function Input(Window: TCastleWindowBase;
 
   Displays a given image on the screen while waiting.
   You can give image filename, or ready TCastleImage instance
-  (must be renderable to OpenGL, i.e. by one of GLImages.PixelsImageClasses
+  (must be renderable to OpenGL, i.e. by one of CastleGLImages.PixelsImageClasses
   classes), or display list to render any image (in which case you
   have to tell us image size).
 
