@@ -97,13 +97,11 @@ begin
 
  if (Action = paMove) and (MoveState <> msNone) then
  begin
-  glColorv(Vector3Byte(255, 255, 0));
-  glLineWidth(3);
   GLRectangleBorder(BoardField0X + Move.A[0] * BoardFieldWidth,
                     BoardField0Y + Move.A[1] * BoardFieldHeight,
                     BoardField0X + (Move.A[0]+1) * BoardFieldWidth,
-                    BoardField0Y + (Move.A[1]+1) * BoardFieldHeight);
-  glLineWidth(1);
+                    BoardField0Y + (Move.A[1]+1) * BoardFieldHeight,
+                    Yellow4Single, 3);
  end;
 end;
 
