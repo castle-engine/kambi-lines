@@ -46,7 +46,7 @@ implementation
 
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, CastleWindowModes, CastleUIControls,
-  DrawingGame, LinesGame, CastleInputAny, LinesHelp,
+  DrawingGame, LinesGame, CastleInputAny, LinesHelp, CastleColors,
   CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleOnScreenMenu;
 
 var
