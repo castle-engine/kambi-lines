@@ -99,10 +99,10 @@ begin
  begin
   glColorv(Vector3Byte(255, 255, 0));
   glLineWidth(3);
-  DrawGLRectBorder(BoardField0X + Move.A[0] * BoardFieldWidth,
-                   BoardField0Y + Move.A[1] * BoardFieldHeight,
-		   BoardField0X + (Move.A[0]+1) * BoardFieldWidth,
-                   BoardField0Y + (Move.A[1]+1) * BoardFieldHeight);
+  GLRectangleBorder(BoardField0X + Move.A[0] * BoardFieldWidth,
+                    BoardField0Y + Move.A[1] * BoardFieldHeight,
+                    BoardField0X + (Move.A[0]+1) * BoardFieldWidth,
+                    BoardField0Y + (Move.A[1]+1) * BoardFieldHeight);
   glLineWidth(1);
  end;
 end;
