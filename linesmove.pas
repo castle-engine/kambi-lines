@@ -44,7 +44,7 @@ var
   Position: Single;
   Ball: TVector2Single;
   Pos1: Integer;
-  CompSpeed: Single;
+  SecondsPassed: Single;
   RenderStartTime: TTimerResult;
 begin
   BF := Board[Move.A[0], Move.A[1]];
@@ -92,11 +92,11 @@ begin
         Window.PostRedisplay;
         Window.FlushRedisplay;
 
-        { We're not inside Idle, so Window.Fps.IdleSpeed is not available.
-          So we just calculate CompSpeed ourselves below. }
-        CompSpeed := (Timer - RenderStartTime) / TimerFrequency;
+        { We're not inside Update, so Window.Fps.UpdateSecondsPassed is not available.
+          So we just calculate SecondsPassed ourselves below. }
+        SecondsPassed := (Timer - RenderStartTime) / TimerFrequency;
 
-        Position += 10 * CompSpeed;
+        Position += 10 * SecondsPassed;
       end;
 
       { zakoncz animacje, przenies kulke na koncowa pozycje w Board[] }
