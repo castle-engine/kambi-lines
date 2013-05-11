@@ -12,4 +12,5 @@ install:
 .PHONY: clean
 clean:
 	rm -f kambi_lines kambi_lines.exe
+	rm -Rf kambi_lines.app
 	rm -f KAMBI_LINES.hsc KAMBI_LINES.ini
