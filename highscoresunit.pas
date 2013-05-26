@@ -73,7 +73,7 @@ implementation
 
 uses CastleVectors, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
   CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
-  CastleGLImages, CastleUIControls;
+  CastleGLImages, CastleUIControls, CastleDownload, CastleURIUtils;
 
 function CheckNewScore(AScore: Integer): Integer;
 { CheckNewScore sprawdza czy AScore jest na tyle wysoki ze gracz powinien
@@ -208,35 +208,37 @@ procedure LoadHighscores;
       musimy wtedy dodac tego StandardKing. }
     StandardKing: THighscore = (PlayerName:'Handicap'; Score:100);
 
-var S: TFileStream;
-    hc: Integer;
+var
+  S: TStream;
+  hc: Integer;
 begin
- Highscores.Count := 0;
- try
-  S := TFileStream.Create(HighscoresFilename, fmOpenRead);
- except Highscores.Add(StandardKing); Exit end;
- try
-  S.ReadBuffer(hc, SizeOf(hc));
-  Highscores.Count := hc;
-  S.ReadBuffer(Highscores.L[0], SizeOf(THighscore)*hc);
- finally S.Free end;
+  Highscores.Count := 0;
+  try
+    S := Download(HighscoresFilename);
+  except Highscores.Add(StandardKing); Exit end;
+  try
+    S.ReadBuffer(hc, SizeOf(hc));
+    Highscores.Count := hc;
+    S.ReadBuffer(Highscores.L[0], SizeOf(THighscore)*hc);
+  finally FreeAndNil(S) end;
 
- { o ile nikt nie grzebal brzydko w highscr.scr also w tym programie
-   to te zalozenia powinny byc zawsze prawdziwe }
- Check(Highscores.Count > 0, 'Highscores.Count must be > 0');
- Check(KingScore^.Score > 0, 'KingScore.Count must be > 0');
+  { o ile nikt nie grzebal brzydko w highscr.scr also w tym programie
+    to te zalozenia powinny byc zawsze prawdziwe }
+  Check(Highscores.Count > 0, 'Highscores.Count must be > 0');
+  Check(KingScore^.Score > 0, 'KingScore.Count must be > 0');
 end;
 
 procedure SaveHighscores;
-var S: TFileStream;
-    hc: Integer;
+var
+  S: TStream;
+  hc: Integer;
 begin
- S := TFileStream.Create(HighscoresFilename, fmCreate);
- try
-  hc := Highscores.Count;
-  S.WriteBuffer(hc, SizeOf(hc));
-  S.WriteBuffer(Highscores.L[0], SizeOf(THighscore)*hc);
- finally S.Free end;
+  S := URISaveStream(HighscoresFilename);
+  try
+    hc := Highscores.Count;
+    S.WriteBuffer(hc, SizeOf(hc));
+    S.WriteBuffer(Highscores.L[0], SizeOf(THighscore)*hc);
+  finally S.Free end;
 end;
 
 { Open/Close GL --------------------------------------------------------------- }
