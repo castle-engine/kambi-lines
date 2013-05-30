@@ -78,7 +78,7 @@ function ScreenY0: Integer; begin result := FScreenY0 end;
 { cos do Images ------------------------------------------------------------ }
 
 function ImagesPath: string;
-begin result := ProgramDataPath +'images' +PathDelim end;
+begin result := ApplicationData('images/') end;
 
 { gl window callbacks --------------------------------------------------------- }
 

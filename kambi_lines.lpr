@@ -75,7 +75,7 @@ procedure OptionProc(OptionNum: Integer; HasArgument: boolean;
 begin
  case OptionNum of
   0: begin
-      InfoWrite(DisplayProgramName +
+      InfoWrite(DisplayApplicationName +
         ': small game based on an old DOS game "Color lines".' +nl+
         'Accepted command-line options:' +nl+
         HelpOptionHelp+ nl+
@@ -85,7 +85,7 @@ begin
         Format('By default, game will run in window sized %dx%d.',
           [GameScreenWidth, GameScreenHeight]) +nl+
         nl+
-        SCastleEngineProgramHelpSuffix(DisplayProgramName, Version, true));
+        SCastleEngineProgramHelpSuffix(DisplayApplicationName, Version, true));
       ProgramBreak;
      end;
   1: begin

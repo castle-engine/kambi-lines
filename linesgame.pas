@@ -35,7 +35,7 @@ uses LinesBoard, CastleVectors, CastleClassUtils;
 
 const
   Version = '1.1.7';
-  DisplayProgramName = 'kambi_lines';
+  DisplayApplicationName = 'kambi_lines';
 
 { NextColors ---------------------------------------------------------- }
 
@@ -347,7 +347,7 @@ var Conf: TCastleConfig;
 procedure LoadConfig;
 begin
   Conf := TCastleConfig.Create(nil);
-  Conf.FileName := UserConfigFile('.conf');
+  Conf.URL := ApplicationConfig(ApplicationName + '.conf');
   ShowNextColors := Conf.GetValue('prefs/ShowNextColors', ShowNextColors);
   AllowSpecialBalls := Conf.GetValue('prefs/AllowSpecialBalls', AllowSpecialBalls);
   BallsImageSet := Conf.GetValue('prefs/BallsImageSet', BallsImageSet);

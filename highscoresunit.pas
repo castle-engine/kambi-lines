@@ -195,9 +195,9 @@ end;
 
 { Load/Save Highscores --------------------------------------------------- }
 
-function HighscoresFilename: string;
+function HighscoresURL: string;
 begin
- result := UserConfigFile('.hsc');
+ result := ApplicationConfig(ApplicationName + '.hsc');
 end;
 
 procedure LoadHighscores;
@@ -214,7 +214,7 @@ var
 begin
   Highscores.Count := 0;
   try
-    S := Download(HighscoresFilename);
+    S := Download(HighscoresURL);
   except Highscores.Add(StandardKing); Exit end;
   try
     S.ReadBuffer(hc, SizeOf(hc));
@@ -233,7 +233,7 @@ var
   S: TStream;
   hc: Integer;
 begin
-  S := URISaveStream(HighscoresFilename);
+  S := URISaveStream(HighscoresURL);
   try
     hc := Highscores.Count;
     S.WriteBuffer(hc, SizeOf(hc));

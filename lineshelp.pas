@@ -38,7 +38,7 @@ begin
    '  H = show highscores' + nl +
    '  Escape = exit' + nl +
    nl+
-   SCastleEngineProgramHelpSuffix(DisplayProgramName, Version, false),
+   SCastleEngineProgramHelpSuffix(DisplayApplicationName, Version, false),
    taLeft);
 end;
 
