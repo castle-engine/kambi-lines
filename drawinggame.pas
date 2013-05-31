@@ -297,7 +297,7 @@ end;
 
 procedure WindowOpen(const Container: IUIContainer);
 const
-  NonEmptyBFImageFileNames: array[TNonEmptyBF]of string=
+  NonEmptyBFImageNames: array[TNonEmptyBF]of string=
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
    'ball_violet', 'ball_red', 'ball_blue',
    'ball_blue_yellow', 'ball_red_white', 'ball_joker');
@@ -320,7 +320,7 @@ begin
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
    NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
-     NonEmptyBFImageFileNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
+     NonEmptyBFImageNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
 
  PlayerNamesFont := TGLBitmapFont.Create(BitmapFont_ChristmasCard_m24);
  ButtonCaptionFont := TGLBitmapFont.Create(BitmapFont_BVSans_Bold_m14);
