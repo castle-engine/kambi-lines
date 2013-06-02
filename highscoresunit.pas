@@ -233,7 +233,7 @@ var
   S: TStream;
   hc: Integer;
 begin
-  S := URISaveStream(HighscoresURL);
+  S := URLSaveStream(HighscoresURL);
   try
     hc := Highscores.Count;
     S.WriteBuffer(hc, SizeOf(hc));
