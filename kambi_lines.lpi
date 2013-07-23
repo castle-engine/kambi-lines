@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="7"/>
+    <Version Value="9"/>
     <General>
       <Flags>
         <MainUnitHasUsesSectionForAllUnits Value="False"/>
@@ -9,14 +9,17 @@
         <MainUnitHasTitleStatement Value="False"/>
         <LRSInOutputDirectory Value="False"/>
       </Flags>
+      <SessionStorage Value="InIDEConfig"/>
       <MainUnit Value="0"/>
-      <TargetFileExt Value=""/>
     </General>
     <VersionInfo>
-      <ProjectVersion Value=""/>
       <Language Value=""/>
       <CharSet Value=""/>
+      <StringTable ProductVersion=""/>
     </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="default" Default="True"/>
+    </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -41,76 +44,52 @@
       <Unit0>
         <Filename Value="kambi_lines.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
       </Unit0>
       <Unit1>
         <Filename Value="castlebitmapfont_arialcelatin2_m14.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit1>
       <Unit2>
         <Filename Value="castlebitmapfont_bvsans_bold_m14.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit2>
       <Unit3>
         <Filename Value="castlebitmapfont_christmascard_m24.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit3>
       <Unit4>
         <Filename Value="drawinggame.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit4>
       <Unit5>
         <Filename Value="getplayeractionunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit5>
       <Unit6>
         <Filename Value="highscoresunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit6>
       <Unit7>
         <Filename Value="linesboard.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit7>
       <Unit8>
         <Filename Value="linesgame.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit8>
       <Unit9>
         <Filename Value="lineshelp.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit9>
       <Unit10>
         <Filename Value="linesmove.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit10>
       <Unit11>
         <Filename Value="lineswindow.pas"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
-        <SyntaxHighlighter Value="Text"/>
       </Unit11>
     </Units>
-    <JumpHistory Count="0" HistoryIndex="-1"/>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
@@ -120,10 +99,20 @@
     <Parsing>
       <SyntaxOptions>
         <CStyleMacros Value="True"/>
-        <UseAnsiStrings Value="True"/>
       </SyntaxOptions>
     </Parsing>
+    <CodeGeneration>
+      <Checks>
+        <IOChecks Value="True"/>
+      </Checks>
+      <Optimizations>
+        <OptimizationLevel Value="2"/>
+      </Optimizations>
+    </CodeGeneration>
     <Other>
+      <Verbosity>
+        <ShowHints Value="False"/>
+      </Verbosity>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
