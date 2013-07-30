@@ -28,7 +28,7 @@ unit CastleInputAny;
 
 interface
 
-uses GL, GLU, CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, CastleUtils, 
+uses GL, GLU, CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, CastleUtils,
   CastleImages, CastleStringUtils, CastleGLImages;
 
 { Wait until user inputs a string (accept by Enter), displaying the static
@@ -75,10 +75,10 @@ implementation
 
 uses SysUtils, CastleKeysMouse;
 
-{ gl window callbacks for GLWinInput -------------------------------------------- }
+{ window callbacks for Input ------------------------------------------------- }
 
 type
-  TGLWinInputData = record
+  TWindowInputData = record
     { input params }
     Image: TGLImage;
     MinLength, MaxLength: Integer;
@@ -90,12 +90,12 @@ type
     Answer: string;
     Answered: boolean;
   end;
-  PGLWinInputData = ^TGLWinInputData;
+  PWindowInputData = ^TWindowInputData;
 
-procedure DrawGL(Window: TCastleWindowBase);
-var D: PGLWinInputData;
+procedure Draw(Window: TCastleWindowBase);
+var D: PWindowInputData;
 begin
- D := PGLWinInputData(Window.UserData);
+ D := PWindowInputData(Window.UserData);
 
  glRasterPos2i(D^.ScreenX0, D^.ScreenY0);
  D^.Image.Draw;
@@ -104,11 +104,11 @@ begin
 end;
 
 procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
-var D: PGLWinInputData;
+var D: PWindowInputData;
 begin
   if Event.EventType <> itKey then Exit;
 
-  D := PGLWinInputData(Window.UserData);
+  D := PWindowInputData(Window.UserData);
 
   case Event.KeyCharacter of
     CharBackSpace:
@@ -131,7 +131,7 @@ begin
   end;
 end;
 
-{ GLWinInput -------------------------------------------------------------- }
+{ Input ---------------------------------------------------------------------- }
 
 function Input(Window: TCastleWindowBase;
   Image: TGLImage;
@@ -144,7 +144,7 @@ function Input(Window: TCastleWindowBase;
   ): string;
 var
   SavedMode: TGLMode;
-  Data: TGLWinInputData;
+  Data: TWindowInputData;
 begin
   Data.Image := Image;
   Data.Answer := AnswerDefault;
@@ -158,9 +158,7 @@ begin
   Data.AnswerX0 := AnswerX0;
   Data.AnswerY0 := AnswerY0;
 
-  SavedMode := TGLMode.CreateReset(Window, 0, false,
-    {$ifdef FPC_OBJFPC} @ {$endif} DrawGL, nil,
-    {$ifdef FPC_OBJFPC} @ {$endif} NoClose);
+  SavedMode := TGLMode.CreateReset(Window, 0, false, @Draw, nil, @NoClose);
   try
     Window.UserData := @Data;
     Window.OnPress := @Press;
@@ -171,7 +169,7 @@ begin
   finally SavedMode.Free end;
 end;
 
-{ gl window callbacks for GLWinInputAnyKey ------------------------------------ }
+{ window callbacks for InputAnyKey ------------------------------------------- }
 
 type
   TInputAnyKeyData = record
@@ -199,7 +197,7 @@ begin
   end;
 end;
 
-{ GLWinInputAnyKey ----------------------------------------------------------- }
+{ InputAnyKey ---------------------------------------------------------------- }
 
 procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
   RasterX, RasterY: Integer; BGImageWidth, BGImageHeight: Cardinal);
@@ -208,8 +206,7 @@ var
   savedMode: TGLMode;
 begin
  SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
-   {$ifdef FPC_OBJFPC} @ {$endif} DrawGLAnyKey, nil,
-   {$ifdef FPC_OBJFPC} @ {$endif} NoClose);
+   @DrawGLAnyKey, nil, @NoClose);
  try
   glDisable(GL_ALPHA_TEST);
 

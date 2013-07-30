@@ -111,12 +111,12 @@ begin
   Action := paQuit;
 end;
 
-function GLWinMouseXToOurX(MouseX: Integer): Integer;
+function WindowMouseXToOurX(MouseX: Integer): Integer;
 begin
  result := MouseX + ScreenX0;
 end;
 
-function GLWinMouseYToOurY(MouseY: Integer): Integer;
+function WindowMouseYToOurY(MouseY: Integer): Integer;
 begin
  result := Window.Height-MouseY + ScreenY0;
 end;
@@ -126,8 +126,8 @@ function MousePosToBoard(MouseX, MouseY: Integer; var BoardPos: TVector2Integer)
   podawana w konwencji MouseX, MouseY z Window. }
 var TryPos: TVector2Integer;
 begin
- MouseX := GLWinMouseXToOurX(MouseX);
- MouseY := GLWinMouseYToOurY(MouseY);
+ MouseX := WindowMouseXToOurX(MouseX);
+ MouseY := WindowMouseYToOurY(MouseY);
 
  if (MouseX < BoardField0X) or (MouseY < BoardField0Y) then Exit(false);
 
@@ -227,8 +227,8 @@ begin
     end else
     begin
       { obslugujemy klikanie myszka na przyciskach ponizej }
-      RectangleIndex := ButtonsRects.FindRectangle(GLWinMouseXToOurX(Window.MouseX),
-        GLWinMouseYToOurY(Window.MouseY));
+      RectangleIndex := ButtonsRects.FindRectangle(WindowMouseXToOurX(Window.MouseX),
+        WindowMouseYToOurY(Window.MouseY));
       case RectangleIndex of
         0: Window.EventPress(InputKey(K_F1, #0));
         1: Window.EventPress(InputKey(K_None, 'i'));

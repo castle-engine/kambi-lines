@@ -46,7 +46,7 @@ uses CastleWindow, CastleVectors, CastleGLBitmapFonts;
 var
   Window: TCastleWindowBase;
   { LinesFont uzywany jest w wielu miejscach gry - w DrawGame (do tekstu
-    przyciskow i score points), w kambi_lines.lpr ustawiamy go GLWinMessages,
+    przyciskow i score points), w kambi_lines.lpr ustawiamy go CastleMessages,
     i w Highscores w DrawHighscore; }
   LinesFont: TGLBitmapFont;
 
@@ -135,7 +135,7 @@ begin
  WasParam_Fullscreen := false;
  Parameters.Parse(Options, @OptionProc, nil, true);
 
- { setup glwin parameters Width, Height, Fullscreen, ResizeAllowed
+ { setup Window parameters Width, Height, Fullscreen, ResizeAllowed
    + Application.VideoResize* }
  if WasParam_Fullscreen then
  begin
