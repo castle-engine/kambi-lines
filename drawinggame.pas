@@ -153,8 +153,7 @@ const
      ale przynajmniej bedzie cos widac. }
    x := Max(MiddleX - PlayerNamesFont.TextWidth(s) div 2, 0);
    glColor3ub(255, 255, 255);
-   SetWindowPos(x, PlayerNamesY);
-   PlayerNamesFont.PrintAndMove(s);
+   PlayerNamesFont.Print(x, PlayerNamesY, s);
   end;
 
 var ButtonsAndFramesX: Integer;

@@ -148,8 +148,7 @@ procedure DrawHighscores;
 
   procedure Print(const s: string; x, y: Integer);
   begin
-   SetWindowPos(x-LinesFont.TextWidth(s), y);
-   LinesFont.PrintAndMove(s);
+    LinesFont.Print(x - LinesFont.TextWidth(s), y, s);
   end;
 
 var i, RowY: Integer;
