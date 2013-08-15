@@ -34,9 +34,9 @@ uses GL, GLU, CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFont
 { Wait until user inputs a string (accept by Enter), displaying the static
   image with user string.
 
-  ScreenX0, ScreenY0 is raster position for lower-left screen corner.
+  ScreenX0, ScreenY0 is position for lower-left screen corner.
 
-  AnswerX0, AnswerY0 is raster position for displaying user answer.
+  AnswerX0, AnswerY0 is position for displaying user answer.
 
   AnswerDefault, MinLength, MaxLength and AnswerAllowedChars
   have the same meaning as in CastleMessages unit. Initial Answer
@@ -59,16 +59,16 @@ function Input(Window: TCastleWindowBase;
   classes), or display list to render any image (in which case you
   have to tell us image size).
 
-  RasterX, RasterY is the image position on the screen. In the background
+  X, Y is the image position on the screen. In the background
   OpenGL clear color will be used.
 
   @groupBegin }
 procedure InputAnyKey(Window: TCastleWindowBase; const ImgURL: string;
-  ResizeX, ResizeY, RasterX, RasterY: Integer); overload;
+  ResizeX, ResizeY, X, Y: Integer); overload;
 procedure InputAnyKey(Window: TCastleWindowBase; const Img: TCastleImage;
-  RasterX, RasterY: Integer); overload;
+  X, Y: Integer); overload;
 procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
-  RasterX, RasterY: Integer; BGImageWidth, BGImageHeight: Cardinal); overload;
+  X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal); overload;
 { @groupEnd }
 
 implementation
@@ -199,7 +199,7 @@ end;
 { InputAnyKey ---------------------------------------------------------------- }
 
 procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
-  RasterX, RasterY: Integer; BGImageWidth, BGImageHeight: Cardinal);
+  X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal);
 var
   Data: TInputAnyKeyData;
   savedMode: TGLMode;
@@ -216,24 +216,24 @@ begin
   Window.UserData := @Data;
   Window.OnPress := @PressAnyKey;
 
-  SetWindowPos(RasterX, RasterY);
+  SetWindowPos(X, Y);
   repeat Application.ProcessMessage(true, true) until Data.KeyPressed;
  finally SavedMode.Free end;
 end;
 
 procedure InputAnyKey(Window: TCastleWindowBase; const Img: TCastleImage;
-  RasterX, RasterY: Integer);
+  X, Y: Integer);
 var
   I: TGLImage;
 begin
   I := TGLImage.Create(Img);
   try
-    InputAnyKey(Window, I, RasterX, RasterY, Img.Width, Img.Height);
+    InputAnyKey(Window, I, X, Y, Img.Width, Img.Height);
   finally FreeAndNil(I) end;
 end;
 
 procedure InputAnyKey(Window: TCastleWindowBase; const ImgURL: string;
-  ResizeX, ResizeY, RasterX, RasterY: Integer);
+  ResizeX, ResizeY, X, Y: Integer);
 var
   GLImage: TGLImage;
   Image: TCastleImage;
@@ -246,7 +246,7 @@ begin
     GLImage := TGLImage.Create(Image);
   finally FreeAndNil(Image) end;
   try
-    InputAnyKey(Window, GLImage, RasterX, RasterY, BGImageWidth, BGImageHeight);
+    InputAnyKey(Window, GLImage, X, Y, BGImageWidth, BGImageHeight);
   finally FreeAndNil(GLImage) end;
 end;
 
