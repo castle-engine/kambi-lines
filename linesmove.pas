@@ -34,7 +34,8 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 implementation
 
 uses GL, GLU, GLExt, CastleWindow, CastleGLUtils, CastleWindowModes, CastleUtils, Math, DrawingGame,
-  LinesWindow, LinesGame, CastleTimeUtils, CastleGLImages, SysUtils;
+  LinesWindow, LinesGame, CastleTimeUtils, CastleGLImages, SysUtils,
+  CastleImages;
 
 procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
@@ -80,12 +81,10 @@ begin
           Ball := Lerp(Position-Pos1, MoveWay.L[Pos1-1], MoveWay.L[Pos1]);
         end;
 
-        glRasterPos2f(BoardFieldImage0X + BoardFieldWidth * Ball[0],
-                      BoardFieldImage0Y + BoardFieldHeight * Ball[1]);
-        { TODO: glenable/disable below should be in disp list }
-        glEnable(GL_ALPHA_TEST);
-        NonEmptyBFImages[BallsImageSet, BF].Draw;
-        glDisable(GL_ALPHA_TEST);
+        NonEmptyBFImages[BallsImageSet, BF].Alpha := acNone;
+        NonEmptyBFImages[BallsImageSet, BF].Draw(
+          Round(BoardFieldImage0X + BoardFieldWidth * Ball[0]),
+          Round(BoardFieldImage0Y + BoardFieldHeight * Ball[1]));
 
         { OnDraw nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
           na dotychczasowej zawartosci ekranu. }

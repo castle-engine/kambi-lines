@@ -208,11 +208,10 @@ begin
  SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
    @DrawGLAnyKey, nil, @NoClose);
  try
-  glDisable(GL_ALPHA_TEST);
-
   Data.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or
                   (Cardinal(Window.Height) > BGImageHeight);
   Data.Image := Image;
+  Data.Image.Alpha := acNone;
   Data.KeyPressed := false;
 
   Window.UserData := @Data;
