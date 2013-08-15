@@ -56,8 +56,7 @@ const
   ImgButtonHeight = 25;
   StatusButtonsY = 8;
 
-{ Balls zaladowane do display list OpenGLa. W interfejsie, bo przydatne takze
-  w LinesMove. Jako pierwszego indeksu bedziesz chcial zazwyczaj uzywac
+{ Balls images, with alpha test. The first array index usually comes from
   BallsImageSet. }
 var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 
@@ -124,25 +123,21 @@ const
   var i: integer;
   begin
    for i := 0 to ColrowCount-1 do
-   begin
-    glRasterPos2i(ColrowX0, ColrowY0 + i*ImgColrowHeight);
-    ColrowImage.Draw;
-   end;
-   glRasterPos2i(TopImageX0, ColrowY0 + ColrowCount*ImgColrowHeight);
-   TopImage.Draw;
+     ColrowImage.Draw(ColrowX0, ColrowY0 + i*ImgColrowHeight);
+   TopImage.Draw(TopImageX0, ColrowY0 + ColrowCount*ImgColrowHeight);
   end;
 
   procedure Highlight(BF: TVector2Integer);
   begin
-   glRasterPos2i(BoardField0X + BoardFieldWidth * BF[0],
-                 BoardField0Y + BoardFieldHeight * BF[1]);
-   HighlightOneBFImage.Draw;
+   HighlightOneBFImage.Draw(
+     BoardField0X + BoardFieldWidth * BF[0],
+     BoardField0Y + BoardFieldHeight * BF[1]);
   end;
 
   procedure DrawText(x, y: Integer; const s: string; const Color: TVector3Byte);
   begin
    glColorv(Color);
-   glRasterPos2i(x, y);
+   SetWindowPos(x, y);
    LinesFont.Print(s);
   end;
 
@@ -158,7 +153,7 @@ const
      ale przynajmniej bedzie cos widac. }
    x := Max(MiddleX - PlayerNamesFont.TextWidth(s) div 2, 0);
    glColor3ub(255, 255, 255);
-   glRasterPos2i(x, PlayerNamesY);
+   SetWindowPos(x, PlayerNamesY);
    PlayerNamesFont.PrintAndMove(s);
   end;
 
@@ -166,10 +161,9 @@ var ButtonsAndFramesX: Integer;
 
   procedure DrawButton(y: Integer; const s: string);
   begin
-   glRasterPos2i(ButtonsAndFramesX, y);
-   ButtonImage.Draw;
+   ButtonImage.Draw(ButtonsAndFramesX, y);
    glColor3ub(0, 0, 0);
-   glRasterPos2i(ButtonsAndFramesX + (ImgButtonWidth -
+   SetWindowPos(ButtonsAndFramesX + (ImgButtonWidth -
      ButtonCaptionFont.TextWidth(s)) div 2, y+7);
    ButtonCaptionFont.Print(s);
    ButtonsAndFramesX += ImgButtonWidth;
@@ -180,17 +174,14 @@ var ButtonsAndFramesX: Integer;
   var x0, i: Integer;
   begin
    x0 := ButtonsAndFramesX;
-   glRasterPos2i(ButtonsAndFramesX, y);
-   FrameLImage.Draw;
+   FrameLImage.Draw(ButtonsAndFramesX, y);
    ButtonsAndFramesX += ImgFrameLWidth;
    for i := 0 to LinesFont.TextWidth(s) + CaptionHorizMargin*2 do
    begin
-    glRasterPos2i(ButtonsAndFramesX, y);
-    FrameMImage.Draw;
+    FrameMImage.Draw(ButtonsAndFramesX, y);
     Inc(ButtonsAndFramesX);
    end;
-   glRasterPos2i(ButtonsAndFramesX, y);
-   FrameRImage.Draw;
+   FrameRImage.Draw(ButtonsAndFramesX, y);
    ButtonsAndFramesX += ImgFrameRWidth;
 
    DrawText(x0+ImgFrameLWidth + CaptionHorizMargin, y+6, s, FrameTextColor);
@@ -219,8 +210,7 @@ begin
  if (Window.Width > GameScreenWidth) or (Window.Height > GameScreenHeight) then
   glClear(GL_COLOR_BUFFER_BIT);
 
- glRasterPos2i(0, 0);
- GameImage.Draw;
+ GameImage.Draw(0, 0);
 
  { wyswietlaj kolumny odzwierciedlajace punkty gracza w stosunku do
    punktow krola. Ten kto ma wiecej jest na wysokosci MaxColrowCount,
@@ -249,24 +239,21 @@ begin
  if HighlightBFs <> nil then
   for i := 0 to HighlightBFs.Count-1 do Highlight(HighlightBFs.Items[i]);
 
- glAlphaFunc(GL_GREATER, 0.5);
- glEnable(GL_ALPHA_TEST);
- try
-  for i := 0 to BoardWidth-1 do
-   for j := 0 to BoardHeight-1 do
-    if Board[i, j] <> bfEmpty then
-    begin
-     glRasterPos2i(BoardFieldImage0X + BoardFieldWidth*i,
-                   BoardFieldImage0Y + BoardFieldHeight*j);
-     NonEmptyBFImages[BallsImageSet, Board[i, j]].Draw;
-    end;
-  if ShowNextColors then
-   for i := 0 to NextColorsCount-1 do
+ for i := 0 to BoardWidth-1 do
+  for j := 0 to BoardHeight-1 do
+   if Board[i, j] <> bfEmpty then
    begin
-    glRasterPos2i(NextColorsImage0X + NextColorsFieldWidth*i, NextColorsImage0Y);
-    NonEmptyBFImages[BallsImageSet, NextColors[i]].Draw;
+    NonEmptyBFImages[BallsImageSet, Board[i, j]].Draw(
+      BoardFieldImage0X + BoardFieldWidth*i,
+      BoardFieldImage0Y + BoardFieldHeight*j);
    end;
- finally glDisable(GL_ALPHA_TEST) end;
+
+ if ShowNextColors then
+  for i := 0 to NextColorsCount-1 do
+  begin
+   NonEmptyBFImages[BallsImageSet, NextColors[i]].Draw(
+     NextColorsImage0X + NextColorsFieldWidth*i, NextColorsImage0Y)
+  end;
 
  ButtonsAndFramesX := 20;
  { TODO: zmieniajac ponizsze musze tez zmienic generowanie Areas w
@@ -319,8 +306,11 @@ begin
 
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
+  begin
    NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
      NonEmptyBFImageNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
+   NonEmptyBFImages[i, bf].Alpha := acSimpleYesNo;
+  end;
 
  PlayerNamesFont := TGLBitmapFont.Create(BitmapFont_ChristmasCard_m24);
  ButtonCaptionFont := TGLBitmapFont.Create(BitmapFont_BVSans_Bold_m14);

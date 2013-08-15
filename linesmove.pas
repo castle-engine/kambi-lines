@@ -53,11 +53,8 @@ begin
   DrawGame;
   BoardImage := SaveScreenToGL_noflush(0, 0, Window.Width, Window.Height, GL_BACK);
   try
-    SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
-      nil, nil, @NoClose);
+    SavedMode := TGLMode.CreateReset(Window, 0, false, nil, nil, @NoClose);
     try
-      glAlphaFunc(GL_GREATER, 0.5);
-
       { Dobra, teraz robimy animacje w OpenGLu przesuwajacej sie kulki.
         Najwazniejsza rzecza tutaj jest zmienna Position : przybiera ona
         wartosci od 0 do Way.Count. Wartosc 0 oznacza ze kulka jest na pozycji
@@ -69,8 +66,7 @@ begin
         RenderStartTime := Timer;
 
         { draw animation frame }
-        glRasterPos2i(ScreenX0, ScreenY0);
-        BoardImage.Draw;
+        BoardImage.Draw(ScreenX0, ScreenY0);
 
         if Position <= 1 then
           Ball := Lerp(Position, Move.A, MoveWay.L[0]) else
@@ -81,7 +77,6 @@ begin
           Ball := Lerp(Position-Pos1, MoveWay.L[Pos1-1], MoveWay.L[Pos1]);
         end;
 
-        NonEmptyBFImages[BallsImageSet, BF].Alpha := acNone;
         NonEmptyBFImages[BallsImageSet, BF].Draw(
           Round(BoardFieldImage0X + BoardFieldWidth * Ball[0]),
           Round(BoardFieldImage0Y + BoardFieldHeight * Ball[1]));

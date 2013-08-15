@@ -148,14 +148,13 @@ procedure DrawHighscores;
 
   procedure Print(const s: string; x, y: Integer);
   begin
-   glRasterPos2i(x-LinesFont.TextWidth(s), y);
+   SetWindowPos(x-LinesFont.TextWidth(s), y);
    LinesFont.PrintAndMove(s);
   end;
 
 var i, RowY: Integer;
 begin
- glRasterPos2i(HighscrX0, HighscrY0);
- ImgHighscr.Draw;
+ ImgHighscr.Draw(HighscrX0, HighscrY0);
 
  glColorv(Vector3Byte(0, 168, 0));
 

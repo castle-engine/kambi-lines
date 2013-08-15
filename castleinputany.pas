@@ -97,9 +97,8 @@ var D: PWindowInputData;
 begin
  D := PWindowInputData(Window.UserData);
 
- glRasterPos2i(D^.ScreenX0, D^.ScreenY0);
- D^.Image.Draw;
- glRasterPos2i(D^.AnswerX0, D^.AnswerY0);
+ D^.Image.Draw(D^.ScreenX0, D^.ScreenY0);
+ SetWindowPos(D^.AnswerX0, D^.AnswerY0);
  D^.Font.Print(D^.Answer+'_');
 end;
 
@@ -217,7 +216,7 @@ begin
   Window.UserData := @Data;
   Window.OnPress := @PressAnyKey;
 
-  glRasterPos2i(RasterX, RasterY);
+  SetWindowPos(RasterX, RasterY);
   repeat Application.ProcessMessage(true, true) until Data.KeyPressed;
  finally SavedMode.Free end;
 end;
