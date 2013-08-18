@@ -146,27 +146,28 @@ end;
 
 procedure DrawHighscores;
 
-  procedure Print(const s: string; x, y: Integer);
+  procedure PrintRight(const x, y: Integer; const s: string);
   begin
     LinesFont.Print(x - LinesFont.TextWidth(s), y, s);
   end;
 
-var i, RowY: Integer;
+var
+  I, RowY: Integer;
 begin
- ImgHighscr.Draw(HighscrX0, HighscrY0);
+  ImgHighscr.Draw(HighscrX0, HighscrY0);
 
- glColorv(Vector3Byte(0, 168, 0));
+  glColorv(Vector3Byte(0, 168, 0));
 
- for i := 0 to MaxHighscoresCount-1 do
- begin
-  RowY := HighscrNameY(i);
-  Print(IntToStr(i+1)+'. ', HighscrNameX, RowY);
-  if i < Highscores.Count then
+  for i := 0 to MaxHighscoresCount-1 do
   begin
-   LinesFont.Print(Highscores.L[i].PlayerName);
-   Print(IntToStr(Highscores.L[i].Score), HighscrScoreX, RowY);
+    RowY := HighscrNameY(i);
+    PrintRight(HighscrNameX, RowY, IntToStr(i+1) + '. ');
+    if i < Highscores.Count then
+    begin
+      PrintRight(HighscrScoreX, RowY, IntToStr(Highscores.L[i].Score));
+      LinesFont.Print(HighscrNameX, RowY, Highscores.L[i].PlayerName);
+    end;
   end;
- end;
 end;
 
 procedure CheckAndMaybeAddToHighscore(AScore: Integer);
