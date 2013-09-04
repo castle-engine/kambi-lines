@@ -105,7 +105,7 @@ begin
  end;
 end;
 
-procedure AskQuit(Window: TCastleWindowBase);
+procedure AskQuit(Sender: TCastleWindowBase);
 begin
  if MessageYesNo(Window, 'Are you sure you want to quit ?') then
   Action := paQuit;
@@ -184,7 +184,7 @@ begin
  end;
 end;
 
-procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
+procedure Press(Sender: TCastleWindowBase; const Event: TInputPressRelease);
 
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 

@@ -22,7 +22,7 @@
 
 unit LinesWindow;
 
-{ zajmujemy sie tutaj naszym okienkiem TCastleWindowBase. Tutaj inicjujemy mu wszystkie
+{ zajmujemy sie tutaj naszym okienkiem TCastleWindowCustom. Tutaj inicjujemy mu wszystkie
   wlasciwosci, parsujemy jego parametry i robimy mu Init. Tutaj zajmujemy
   sie tez projection OpenGLa ktore bedzie jedno i takie samo przez caly czas
   gry.
@@ -44,7 +44,7 @@ interface
 uses CastleWindow, CastleVectors, CastleGLBitmapFonts;
 
 var
-  Window: TCastleWindowBase;
+  Window: TCastleWindowCustom;
   { LinesFont uzywany jest w wielu miejscach gry - w DrawGame (do tekstu
     przyciskow i score points), w kambi_lines.lpr ustawiamy go CastleMessages,
     i w Highscores w DrawHighscore; }
