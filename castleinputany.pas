@@ -157,7 +157,7 @@ begin
   Data.AnswerX0 := AnswerX0;
   Data.AnswerY0 := AnswerY0;
 
-  SavedMode := TGLMode.CreateReset(Window, 0, false, @Draw, nil, @NoClose);
+  SavedMode := TGLMode.CreateReset(Window, 0, @Draw, nil, @NoClose);
   try
     Window.UserData := @Data;
     Window.OnPress := @Press;
@@ -204,7 +204,7 @@ var
   Data: TInputAnyKeyData;
   savedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT, false,
+ SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT,
    @DrawGLAnyKey, nil, @NoClose);
  try
   Data.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or

@@ -47,7 +47,7 @@ implementation
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, CastleWindowModes, CastleUIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, CastleColors,
-  CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleOnScreenMenu;
+  CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleRectangles;
 
 var
   ButtonsRects: TRectangleList;
@@ -281,7 +281,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
   PlayerMoveWay: TVector2IntegerList): TPlayerAction;
 var SavedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, 0, false, @DrawGL, nil, @CloseQueryGL);
+ SavedMode := TGLMode.CreateReset(Window, 0, @DrawGL, nil, @CloseQueryGL);
  try
   Window.OnPress := @Press;
   Window.OnMouseMove := @MouseMoveGL;

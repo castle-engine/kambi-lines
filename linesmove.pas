@@ -53,7 +53,7 @@ begin
   DrawGame;
   BoardImage := SaveScreenToGL_noflush(0, 0, Window.Width, Window.Height, GL_BACK);
   try
-    SavedMode := TGLMode.CreateReset(Window, 0, false, nil, nil, @NoClose);
+    SavedMode := TGLMode.CreateReset(Window, 0, nil, nil, @NoClose);
     try
       { Dobra, teraz robimy animacje w OpenGLu przesuwajacej sie kulki.
         Najwazniejsza rzecza tutaj jest zmienna Position : przybiera ona
