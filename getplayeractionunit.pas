@@ -47,7 +47,8 @@ implementation
 uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, CastleWindowModes, CastleUIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, CastleColors,
-  CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleRectangles;
+  CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleRectangles,
+  CastleControls, CastleControlsImages;
 
 var
   ButtonsRects: TRectangleList;
@@ -97,11 +98,11 @@ begin
 
  if (Action = paMove) and (MoveState <> msNone) then
  begin
-  GLRectangleBorder(BoardField0X + Move.A[0] * BoardFieldWidth,
-                    BoardField0Y + Move.A[1] * BoardFieldHeight,
-                    BoardField0X + (Move.A[0]+1) * BoardFieldWidth,
-                    BoardField0Y + (Move.A[1]+1) * BoardFieldHeight,
-                    Yellow4Single, 3);
+   Theme.Draw(Rectangle(
+     BoardField0X + Move.A[0] * BoardFieldWidth,
+     BoardField0Y + Move.A[1] * BoardFieldHeight,
+     BoardFieldWidth,
+     BoardFieldHeight), tiActiveFrame);
  end;
 end;
 
@@ -325,6 +326,8 @@ initialization
  OnGLContextOpen.Add(@WindowOpen);
  MoveWay := TVector2IntegerList.Create;
  ButtonsRects := TRectangleList.Create;
+ Theme.Images[tiActiveFrame] := FrameYellow;
+ Theme.Corners[tiActiveFrame] := Vector4Integer(0, 0, 0, 0);
 finalization
  FreeAndNil(MoveWay);
  FreeAndNil(ButtonsRects);
