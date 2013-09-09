@@ -64,7 +64,7 @@ implementation
 
 uses SysUtils, LinesWindow, CastleWindow, CastleImages, CastleUIControls,
   HighscoresUnit, CastleUtils, CastleGLBitmapFonts, CastleBitmapFont_ChristmasCard_m24,
-  CastleBitmapFont_BVSans_Bold_m14;
+  CastleBitmapFont_BVSans_Bold_m14, CastleColors;
 
 var
   GameImage,
@@ -134,14 +134,12 @@ const
      BoardField0Y + BoardFieldHeight * BF[1]);
   end;
 
-  procedure DrawText(x, y: Integer; const s: string; const Color: TVector3Byte);
+  procedure DrawText(x, y: Integer; const s: string; const Color: TVector4Byte);
   begin
-   glColorv(Color);
-   SetWindowPos(x, y);
-   LinesFont.Print(s);
+   LinesFont.Print(X, Y, Color, s);
   end;
 
-  procedure DrawTextRPad(x, y: Integer; const s: string; const Color: TVector3Byte);
+  procedure DrawTextRPad(x, y: Integer; const s: string; const Color: TVector4Byte);
   begin
    DrawText(x-LinesFont.TextWidth(s), y, s, Color);
   end;
@@ -152,8 +150,7 @@ const
    { jezeli PlayerNamesFont.TextWidth(s) to x := 0. Nie bedzie to zbyt ladne,
      ale przynajmniej bedzie cos widac. }
    x := Max(MiddleX - PlayerNamesFont.TextWidth(s) div 2, 0);
-   glColor3ub(255, 255, 255);
-   PlayerNamesFont.Print(x, PlayerNamesY, s);
+   PlayerNamesFont.Print(x, PlayerNamesY, White, s);
   end;
 
 var ButtonsAndFramesX: Integer;
@@ -161,14 +158,12 @@ var ButtonsAndFramesX: Integer;
   procedure DrawButton(y: Integer; const s: string);
   begin
    ButtonImage.Draw(ButtonsAndFramesX, y);
-   glColor3ub(0, 0, 0);
-   SetWindowPos(ButtonsAndFramesX + (ImgButtonWidth -
-     ButtonCaptionFont.TextWidth(s)) div 2, y+7);
-   ButtonCaptionFont.Print(s);
+   ButtonCaptionFont.Print(ButtonsAndFramesX + (ImgButtonWidth -
+     ButtonCaptionFont.TextWidth(s)) div 2, y+7, Black, s);
    ButtonsAndFramesX += ImgButtonWidth;
   end;
 
-  procedure DrawFrame(const y: Integer; const s: string; const FrameTextColor: TVector3Byte);
+  procedure DrawFrame(const y: Integer; const s: string; const FrameTextColor: TCastleColor);
   const CaptionHorizMargin = 6;
   var x0, i: Integer;
   begin
@@ -187,7 +182,7 @@ var ButtonsAndFramesX: Integer;
   end;
 
   procedure DrawButtonAndFrame(const y: Integer;
-    const ButCaption, FrameCaption: string; const FrameTextColor: TVector3Byte);
+    const ButCaption, FrameCaption: string; const FrameTextColor: TCastleColor);
   begin
    DrawButton(y, ButCaption);
    ButtonsAndFramesX += 4;
@@ -195,14 +190,14 @@ var ButtonsAndFramesX: Integer;
    ButtonsAndFramesX += 10;
   end;
 
-  const
-    { w oryginalnych kulkach TextColors = TextOnOff[false], TextScoreColor =
-      TextOnOff[true] ale dla mnie TextOnOff[false] jest za ciemny a w ogole
-      to inne teksty nie powinny miec takich kolorow zeby user widzial ze to
-      nie sa teksty ktore reprezentuja cos co mozna wlaczyc/wylaczyc. }
-    TextOnOffColors: array[boolean]of TVector3Byte = ((84, 84, 84), (0, 168, 0));
-    TextColor: TVector3Byte = (230, 230, 230);
-    TextScoreColor: TVector3Byte = (230, 230, 230);
+const
+  { w oryginalnych kulkach TextColors = TextOnOff[false], TextScoreColor =
+    TextOnOff[true] ale dla mnie TextOnOff[false] jest za ciemny a w ogole
+    to inne teksty nie powinny miec takich kolorow zeby user widzial ze to
+    nie sa teksty ktore reprezentuja cos co mozna wlaczyc/wylaczyc. }
+  TextOnOffColors: array [boolean] of TCastleColor = ((84, 84, 84, 255), (0, 168, 0, 255));
+  TextColor: TCastleColor = (230, 230, 230, 255);
+  TextScoreColor: TCastleColor = (230, 230, 230, 255);
 
 var i, j: Integer;
 begin
@@ -267,7 +262,8 @@ begin
  DrawTextRPad(570, StatusUpTextY, IntToStr(PlayerScore), TextScoreColor);
 
  if BonusScoreMultiplier > 1 then
-  DrawText(18, 45, 'ACTIVE BONUS: x '+IntToStr(BonusScoreMultiplier), Vector3Byte(100, 255, 100));
+  DrawText(18, 45, 'ACTIVE BONUS: x '+IntToStr(BonusScoreMultiplier),
+    Vector4Byte(100, 255, 100, 255));
 
  DrawPlayerName(KingScore^.PlayerName, 80);
  DrawPlayerName('Pretender', 555);

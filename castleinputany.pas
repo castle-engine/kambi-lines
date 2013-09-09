@@ -73,7 +73,7 @@ procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
 
 implementation
 
-uses SysUtils, CastleKeysMouse;
+uses SysUtils, CastleKeysMouse, CastleColors;
 
 { window callbacks for Input ------------------------------------------------- }
 
@@ -98,8 +98,7 @@ begin
  D := PWindowInputData(Window.UserData);
 
  D^.Image.Draw(D^.ScreenX0, D^.ScreenY0);
- SetWindowPos(D^.AnswerX0, D^.AnswerY0);
- D^.Font.Print(D^.Answer+'_');
+ D^.Font.Print(D^.AnswerX0, D^.AnswerY0, White, D^.Answer+'_');
 end;
 
 procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
