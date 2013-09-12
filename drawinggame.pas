@@ -196,7 +196,7 @@ const
     to inne teksty nie powinny miec takich kolorow zeby user widzial ze to
     nie sa teksty ktore reprezentuja cos co mozna wlaczyc/wylaczyc. }
   TextOnOffColors: array [boolean] of TCastleColor = (
-    (84/255, 84/255, 84/255, 255/255), 
+    (84/255, 84/255, 84/255, 255/255),
     (0/255, 168/255, 0/255, 255/255));
   TextColor: TCastleColor = (230/255, 230/255, 230/255, 255/255);
   TextScoreColor: TCastleColor = (230/255, 230/255, 230/255, 255/255);
@@ -204,7 +204,7 @@ const
 var i, j: Integer;
 begin
  if (Window.Width > GameScreenWidth) or (Window.Height > GameScreenHeight) then
-  glClear(GL_COLOR_BUFFER_BIT);
+  GLClear([cbDepth], Black);
 
  GameImage.Draw(0, 0);
 

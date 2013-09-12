@@ -32,8 +32,7 @@ unit LinesWindow;
     a iloscia faktycznych pixeli na ekranie
   - moj kod powinien rysowac tylko po powierzchni OpenGLa w zakresie
     0..GameWidth, 0..GameHeight ograniczajac sie do wywolywania
-    glClear(GL_COLOR_BUFFER_BIT) aby wyczyscic reszte ekranu na domyslny
-    clear color
+    GLClear([cbDepth], ...) aby wyczyscic reszte ekranu
 
   Ten modul NIE zalezy od zadnego innego modulu sposrod modulow kulek.
   Ten modul jest na samym spodzie.

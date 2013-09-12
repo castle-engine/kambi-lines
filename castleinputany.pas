@@ -181,7 +181,7 @@ procedure DrawGLAnyKey(Window: TCastleWindowBase);
 var D: PInputAnyKeyData;
 begin
  D := PInputAnyKeyData(Window.UserData);
- if D^.DoClear then glClear(GL_COLOR_BUFFER_BIT);
+ if D^.DoClear then GLClear([cbColor], Black);
  D^.Image.Draw;
 end;
 
