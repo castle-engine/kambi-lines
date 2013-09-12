@@ -134,12 +134,12 @@ const
      BoardField0Y + BoardFieldHeight * BF[1]);
   end;
 
-  procedure DrawText(x, y: Integer; const s: string; const Color: TVector4Byte);
+  procedure DrawText(x, y: Integer; const s: string; const Color: TCastleColor);
   begin
    LinesFont.Print(X, Y, Color, s);
   end;
 
-  procedure DrawTextRPad(x, y: Integer; const s: string; const Color: TVector4Byte);
+  procedure DrawTextRPad(x, y: Integer; const s: string; const Color: TCastleColor);
   begin
    DrawText(x-LinesFont.TextWidth(s), y, s, Color);
   end;
@@ -195,9 +195,11 @@ const
     TextOnOff[true] ale dla mnie TextOnOff[false] jest za ciemny a w ogole
     to inne teksty nie powinny miec takich kolorow zeby user widzial ze to
     nie sa teksty ktore reprezentuja cos co mozna wlaczyc/wylaczyc. }
-  TextOnOffColors: array [boolean] of TCastleColor = ((84, 84, 84, 255), (0, 168, 0, 255));
-  TextColor: TCastleColor = (230, 230, 230, 255);
-  TextScoreColor: TCastleColor = (230, 230, 230, 255);
+  TextOnOffColors: array [boolean] of TCastleColor = (
+    (84/255, 84/255, 84/255, 255/255), 
+    (0/255, 168/255, 0/255, 255/255));
+  TextColor: TCastleColor = (230/255, 230/255, 230/255, 255/255);
+  TextScoreColor: TCastleColor = (230/255, 230/255, 230/255, 255/255);
 
 var i, j: Integer;
 begin
@@ -263,7 +265,7 @@ begin
 
  if BonusScoreMultiplier > 1 then
   DrawText(18, 45, 'ACTIVE BONUS: x '+IntToStr(BonusScoreMultiplier),
-    Vector4Byte(100, 255, 100, 255));
+    Vector4Single(0.4, 1.0, 0.4, 1.0));
 
  DrawPlayerName(KingScore^.PlayerName, 80);
  DrawPlayerName('Pretender', 555);
