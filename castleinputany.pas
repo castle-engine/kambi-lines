@@ -174,15 +174,17 @@ type
     DoClear: boolean;
     Image: TGLImage;
     KeyPressed: boolean;
+    X, Y: Integer;
   end;
   PInputAnyKeyData = ^TInputAnyKeyData;
 
 procedure DrawGLAnyKey(Window: TCastleWindowBase);
-var D: PInputAnyKeyData;
+var
+  D: PInputAnyKeyData;
 begin
- D := PInputAnyKeyData(Window.UserData);
- if D^.DoClear then GLClear([cbColor], Black);
- D^.Image.Draw;
+  D := PInputAnyKeyData(Window.UserData);
+  if D^.DoClear then GLClear([cbColor], Black);
+  D^.Image.Draw(D^.X, D^.Y);
 end;
 
 procedure PressAnyKey(Window: TCastleWindowBase; const Event: TInputPressRelease);
@@ -211,11 +213,12 @@ begin
   Data.Image := Image;
   Data.Image.Alpha := acNone;
   Data.KeyPressed := false;
+  Data.X := X;
+  Data.Y := Y;
 
   Window.UserData := @Data;
   Window.OnPress := @PressAnyKey;
 
-  SetWindowPos(X, Y);
   repeat Application.ProcessMessage(true, true) until Data.KeyPressed;
  finally SavedMode.Free end;
 end;
