@@ -26,7 +26,7 @@ unit DrawingGame;
 
 interface
 
-uses GL, CastleGLUtils, CastleVectors, LinesGame, LinesBoard, CastleGLImages;
+uses CastleGLUtils, CastleVectors, LinesGame, LinesBoard, CastleGLImages;
 
 { rysuje cala plansze gry (zajmujac cala powierzchnie window, nie tylko
   GameScreen). Stan Board, PlayerScore, NextColors i inne sa tutaj pokazywane.

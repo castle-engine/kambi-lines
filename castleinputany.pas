@@ -28,7 +28,7 @@ unit CastleInputAny;
 
 interface
 
-uses GL, GLU, CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, CastleUtils,
+uses CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, CastleUtils,
   CastleImages, CastleStringUtils, CastleGLImages;
 
 { Wait until user inputs a string (accept by Enter), displaying the static
@@ -205,8 +205,7 @@ var
   Data: TInputAnyKeyData;
   savedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, GL_COLOR_BUFFER_BIT,
-   @DrawGLAnyKey, nil, @NoClose);
+ SavedMode := TGLMode.CreateReset(Window, 0, @DrawGLAnyKey, nil, @NoClose);
  try
   Data.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or
                   (Cardinal(Window.Height) > BGImageHeight);
