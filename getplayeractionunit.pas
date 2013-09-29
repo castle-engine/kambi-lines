@@ -20,6 +20,7 @@
   ----------------------------------------------------------------------------
 }
 
+{ }
 unit GetPlayerActionUnit;
 
 interface
@@ -44,7 +45,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
 
 implementation
 
-uses SysUtils, GL, GLU, GLExt, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
+uses SysUtils, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, CastleWindowModes, CastleUIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, CastleColors,
   CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleRectangles,
@@ -254,13 +255,12 @@ begin
           DrawGame;
           DrawHighscores;
           { directly get screenshot now, without redrawing with Window.OnDraw }
-          GLImage := SaveScreenToGL_NoFlush(0, 0, Window.Width, Window.Height,
-            GL_BACK);
+          GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
           try
             InputAnyKey(Window, GLImage, ScreenX0, ScreenY0, Window.Width, Window.Height);
           finally FreeAndNil(GLImage) end;
          end;
-       'n':ShowNextColors := not ShowNextColors;
+       'n': ShowNextColors := not ShowNextColors;
        'i': BallsImageSet := ChangeIntCycle(BallsImageSet, 1, High(BallsImageSet));
        's': AllowSpecialBalls := not AllowSpecialBalls;
        else Exit;

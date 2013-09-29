@@ -71,7 +71,7 @@ procedure DrawHighscores;
 
 implementation
 
-uses CastleVectors, LinesWindow, CastleWindow, CastleMessages, GL, GLU, GLExt,
+uses CastleVectors, LinesWindow, CastleWindow, CastleMessages,
   CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
   CastleGLImages, CastleUIControls, CastleDownload, CastleURIUtils, CastleColors;
 
@@ -182,8 +182,7 @@ begin
   DrawHighscores;
 
   { directly get screenshot now, without redrawing with Window.OnDraw }
-  GLImage := SaveScreenToGL_NoFlush(0, 0, Window.Width, Window.Height,
-    GL_BACK);
+  GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
   try
     Highscores.L[Pos].PlayerName:=
       Input(Window, GLImage, LinesFont, ScreenX0, ScreenY0,

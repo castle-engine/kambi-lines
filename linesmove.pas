@@ -33,7 +33,7 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 
 implementation
 
-uses GL, GLU, GLExt, CastleWindow, CastleGLUtils, CastleWindowModes, CastleUtils, Math, DrawingGame,
+uses CastleWindow, CastleGLUtils, CastleWindowModes, CastleUtils, Math, DrawingGame,
   LinesWindow, LinesGame, CastleTimeUtils, CastleGLImages, SysUtils,
   CastleImages;
 
@@ -51,7 +51,7 @@ begin
   BF := Board[Move.A[0], Move.A[1]];
   Board[Move.A[0], Move.A[1]] := bfEmpty;
   DrawGame;
-  BoardImage := SaveScreenToGL_noflush(0, 0, Window.Width, Window.Height, GL_BACK);
+  BoardImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
   try
     SavedMode := TGLMode.CreateReset(Window, 0, nil, nil, @NoClose);
     try
