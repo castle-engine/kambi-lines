@@ -282,7 +282,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
   PlayerMoveWay: TVector2IntegerList): TPlayerAction;
 var SavedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, 0, @DrawGL, nil, @CloseQueryGL);
+ SavedMode := TGLMode.CreateReset(Window, @DrawGL, nil, @CloseQueryGL);
  try
   Window.OnPress := @Press;
   Window.OnMouseMove := @MouseMoveGL;
