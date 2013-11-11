@@ -311,10 +311,10 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure WindowOpen(const Container: IUIContainer);
+procedure ContextOpen;
 begin
  { dopiero w OpenGL inicjuj Rectangles, na wypadek gdybym kiedys zrobil odczytywanie
-   ImgButtonWidth/Height z pliku dopiero w DrawingGame.WindowOpen. }
+   ImgButtonWidth/Height z pliku dopiero w DrawingGame.ContextOpen. }
  ButtonsRects.Add(Rectangle( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
  ButtonsRects.Add(Rectangle(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
  ButtonsRects.Add(Rectangle(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
@@ -323,7 +323,7 @@ begin
 end;
 
 initialization
- OnGLContextOpen.Add(@WindowOpen);
+ OnGLContextOpen.Add(@ContextOpen);
  MoveWay := TVector2IntegerList.Create;
  ButtonsRects := TRectangleList.Create;
  Theme.Images[tiActiveFrame] := FrameYellow;

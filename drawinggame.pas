@@ -279,7 +279,7 @@ end;
 
 { glw open/close --------------------------------------------------------- }
 
-procedure WindowOpen(const Container: IUIContainer);
+procedure ContextOpen;
 const
   NonEmptyBFImageNames: array[TNonEmptyBF]of string=
   ('ball_brown', 'ball_yellow', 'ball_green', 'ball_white',
@@ -313,7 +313,7 @@ begin
  ButtonCaptionFont := TGLBitmapFont.Create(BitmapFont_BVSans_Bold_m14);
 end;
 
-procedure WindowClose(const Container: IUIContainer);
+procedure ContextClose;
 var
   bf: TNonEmptyBF;
   i: Integer;
@@ -339,7 +339,7 @@ begin
 end;
 
 initialization
- OnGLContextOpen.Add(@WindowOpen);
- OnGLContextClose.Add(@WindowClose);
+ OnGLContextOpen.Add(@ContextOpen);
+ OnGLContextClose.Add(@ContextClose);
 finalization
 end.

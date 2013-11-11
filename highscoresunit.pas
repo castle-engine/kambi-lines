@@ -241,12 +241,12 @@ end;
 
 { Open/Close GL --------------------------------------------------------------- }
 
-procedure WindowOpen(const Container: IUIContainer);
+procedure ContextOpen;
 begin
   ImgHighscr := TGLImage.Create(ImagesPath+'highscr.png', [TRGBImage]);
 end;
 
-procedure WindowClose(const Container: IUIContainer);
+procedure ContextClose;
 begin
   FreeAndNil(ImgHighscr);
 end;
@@ -256,8 +256,8 @@ end;
 initialization
   Highscores := THighscoresList.Create;
   LoadHighscores;
-  OnGLContextOpen.Add(@WindowOpen);
-  OnGLContextClose.Add(@WindowClose);
+  OnGLContextOpen.Add(@ContextOpen);
+  OnGLContextClose.Add(@ContextClose);
 finalization
   SaveHighscores;
   FreeAndNil(Highscores);
