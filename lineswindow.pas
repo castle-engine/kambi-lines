@@ -44,10 +44,6 @@ uses CastleWindow, CastleVectors, CastleGLBitmapFonts;
 
 var
   Window: TCastleWindowCustom;
-  { LinesFont uzywany jest w wielu miejscach gry - w DrawGame (do tekstu
-    przyciskow i score points), w kambi_lines.lpr ustawiamy go CastleMessages,
-    i w Highscores w DrawHighscore; }
-  LinesFont: TGLBitmapFont;
 
 function ImagesPath: string;
 
@@ -65,8 +61,7 @@ function ScreenY0: Integer;
 
 implementation
 
-uses SysUtils, CastleUtils, CastleGLUtils,
-  CastleBitmapFont_ArialCELatin2_m14, CastleParameters, CastleFilesUtils;
+uses SysUtils, CastleUtils, CastleGLUtils, CastleParameters, CastleFilesUtils;
 
 var
   FScreenX0, FScreenY0: Integer;
@@ -101,15 +96,12 @@ begin
 
  FScreenX0 := -FirstOverflowX;
  FScreenY0 := -FirstOverflowY;
-
- LinesFont := TGLBitmapFont.Create(BitmapFont_ArialCELatin2_m14);
 end;
 
 procedure CloseQueryGL(Window: TCastleWindowBase); begin end;
 
 procedure CloseGL(Window: TCastleWindowBase);
 begin
- FreeAndNil(LinesFont);
 end;
 
 { unit Init/Fini --------------------------------------------------------- }

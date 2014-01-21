@@ -50,9 +50,6 @@ program kambi_lines;
     NextColorsCount,
     LineLengthToMatch,
     BoardWidth/BoardHeight
-
-  LinesFont font could be larger. But then help text would be larger
-    then 3 screens. Free font "Arial CE / Latin 2" is quite awful.
 }
 
 {$apptype GUI}
@@ -116,11 +113,6 @@ begin
  Window.Open;
 
  try
-  { Init CastleMessages }
-  { For now don't change defaults of CastleMessages -- I like them. }
-  { messageCols.RectBorderCol := White3Single; }
-  { messageFont := LinesFont; }
-
   { go }
   InputAnyKey(Window, ImagesPath+ 'title.png', 0, 0, 0, 0);
 

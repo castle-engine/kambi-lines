@@ -63,8 +63,7 @@ var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 implementation
 
 uses SysUtils, LinesWindow, CastleWindow, CastleImages, CastleUIControls,
-  HighscoresUnit, CastleUtils, CastleGLBitmapFonts, CastleBitmapFont_ChristmasCard_m24,
-  CastleBitmapFont_BVSans_Bold_m14, CastleColors;
+  HighscoresUnit, CastleUtils, CastleColors, CastleControls;
 
 var
   GameImage,
@@ -78,7 +77,6 @@ var
   FrameLImage,
   FrameMImage,
   FrameRImage: TGLImage;
-  ButtonCaptionFont, PlayerNamesFont: TGLBitmapFont;
 
 procedure DrawGame(HighlightOneBF: boolean; const HighlightOneBFPos: TVector2Integer;
   HighlightBFs: TVector2IntegerList);
@@ -136,12 +134,12 @@ const
 
   procedure DrawText(x, y: Integer; const s: string; const Color: TCastleColor);
   begin
-   LinesFont.Print(X, Y, Color, s);
+   UIFontSmall.Print(X, Y, Color, s);
   end;
 
   procedure DrawTextRPad(x, y: Integer; const s: string; const Color: TCastleColor);
   begin
-   DrawText(x-LinesFont.TextWidth(s), y, s, Color);
+   DrawText(x-UIFontSmall.TextWidth(s), y, s, Color);
   end;
 
   procedure DrawPlayerName(const s: string; MiddleX: Integer);
@@ -149,8 +147,8 @@ const
   begin
    { jezeli PlayerNamesFont.TextWidth(s) to x := 0. Nie bedzie to zbyt ladne,
      ale przynajmniej bedzie cos widac. }
-   x := Max(MiddleX - PlayerNamesFont.TextWidth(s) div 2, 0);
-   PlayerNamesFont.Print(x, PlayerNamesY, White, s);
+   x := Max(MiddleX - UIFont.TextWidth(s) div 2, 0);
+   UIFont.Print(x, PlayerNamesY, White, s);
   end;
 
 var ButtonsAndFramesX: Integer;
@@ -158,8 +156,8 @@ var ButtonsAndFramesX: Integer;
   procedure DrawButton(y: Integer; const s: string);
   begin
    ButtonImage.Draw(ButtonsAndFramesX, y);
-   ButtonCaptionFont.Print(ButtonsAndFramesX + (ImgButtonWidth -
-     ButtonCaptionFont.TextWidth(s)) div 2, y+7, Black, s);
+   UIFontSmall.Print(ButtonsAndFramesX + (ImgButtonWidth -
+     UIFontSmall.TextWidth(s)) div 2, y+7, Black, s);
    ButtonsAndFramesX += ImgButtonWidth;
   end;
 
@@ -170,7 +168,7 @@ var ButtonsAndFramesX: Integer;
    x0 := ButtonsAndFramesX;
    FrameLImage.Draw(ButtonsAndFramesX, y);
    ButtonsAndFramesX += ImgFrameLWidth;
-   for i := 0 to LinesFont.TextWidth(s) + CaptionHorizMargin*2 do
+   for i := 0 to UIFontSmall.TextWidth(s) + CaptionHorizMargin*2 do
    begin
     FrameMImage.Draw(ButtonsAndFramesX, y);
     Inc(ButtonsAndFramesX);
@@ -308,9 +306,6 @@ begin
      NonEmptyBFImageNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
    NonEmptyBFImages[i, bf].Alpha := acSimpleYesNo;
   end;
-
- PlayerNamesFont := TGLBitmapFont.Create(BitmapFont_ChristmasCard_m24);
- ButtonCaptionFont := TGLBitmapFont.Create(BitmapFont_BVSans_Bold_m14);
 end;
 
 procedure ContextClose;
@@ -333,9 +328,6 @@ begin
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
    FreeAndNil(NonEmptyBFImages[i, bf]);
-
- FreeAndNil(PlayerNamesFont);
- FreeAndNil(ButtonCaptionFont);
 end;
 
 initialization

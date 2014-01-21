@@ -73,7 +73,8 @@ implementation
 
 uses CastleVectors, LinesWindow, CastleWindow, CastleMessages,
   CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
-  CastleGLImages, CastleUIControls, CastleDownload, CastleURIUtils, CastleColors;
+  CastleGLImages, CastleUIControls, CastleDownload, CastleURIUtils, CastleColors,
+  CastleControls;
 
 function CheckNewScore(AScore: Integer): Integer;
 { CheckNewScore sprawdza czy AScore jest na tyle wysoki ze gracz powinien
@@ -150,7 +151,7 @@ const
 
   procedure PrintRight(const x, y: Integer; const s: string);
   begin
-    LinesFont.Print(x - LinesFont.TextWidth(s), y, Color, s);
+    UIFontSmall.Print(x - UIFontSmall.TextWidth(s), y, Color, s);
   end;
 
 var
@@ -165,7 +166,7 @@ begin
     if i < Highscores.Count then
     begin
       PrintRight(HighscrScoreX, RowY, IntToStr(Highscores.L[i].Score));
-      LinesFont.Print(HighscrNameX, RowY, Color, Highscores.L[i].PlayerName);
+      UIFontSmall.Print(HighscrNameX, RowY, Color, Highscores.L[i].PlayerName);
     end;
   end;
 end;
@@ -185,7 +186,7 @@ begin
   GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
   try
     Highscores.L[Pos].PlayerName:=
-      Input(Window, GLImage, LinesFont, ScreenX0, ScreenY0,
+      Input(Window, GLImage, UIFontSmall, ScreenX0, ScreenY0,
         HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
   finally FreeAndNil(GLImage) end;
  end;
