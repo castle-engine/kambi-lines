@@ -40,7 +40,7 @@ unit LinesWindow;
 
 interface
 
-uses CastleWindow, CastleVectors, CastleGLBitmapFonts;
+uses CastleWindow, CastleVectors, CastleFonts;
 
 var
   Window: TCastleWindowCustom;

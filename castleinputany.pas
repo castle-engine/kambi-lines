@@ -28,7 +28,7 @@ unit CastleInputAny;
 
 interface
 
-uses CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, CastleUtils,
+uses CastleGLUtils, CastleWindow, CastleWindowModes, CastleFonts, CastleUtils,
   CastleImages, CastleStringUtils, CastleGLImages;
 
 { Wait until user inputs a string (accept by Enter), displaying the static
@@ -43,7 +43,7 @@ uses CastleGLUtils, CastleWindow, CastleWindowModes, CastleGLBitmapFonts, Castle
   cannot contain characters outside AnswerAllowedChars. }
 function Input(Window: TCastleWindowBase;
   Image: TGLImage;
-  Font: TGLBitmapFontAbstract;
+  Font: TCastleFont;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
   AnswerDefault: string = '';
   MinLength: Integer = 0;
@@ -83,7 +83,7 @@ type
     Image: TGLImage;
     MinLength, MaxLength: Integer;
     AnswerAllowedChars: TSetOfChars;
-    Font: TGLBitmapFontAbstract;
+    Font: TCastleFont;
     ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
 
     { input/output params }
@@ -133,7 +133,7 @@ end;
 
 function Input(Window: TCastleWindowBase;
   Image: TGLImage;
-  Font: TGLBitmapFontAbstract;
+  Font: TCastleFont;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
   AnswerDefault: string = '';
   MinLength: Integer = 0;
