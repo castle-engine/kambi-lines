@@ -81,7 +81,7 @@ begin
           Round(BoardFieldImage0X + BoardFieldWidth * Ball[0]),
           Round(BoardFieldImage0Y + BoardFieldHeight * Ball[1]));
 
-        { OnDraw nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
+        { OnRender nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
           na dotychczasowej zawartosci ekranu. }
         Window.PostRedisplay;
         Window.FlushRedisplay;

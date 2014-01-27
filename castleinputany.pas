@@ -19,7 +19,7 @@ unit CastleInputAny;
 {
   TODO
   - Input i InputAnyKey powinny byc scalone w jedno,
-    razem z ich callbackami, przynajmniej OnDraw.
+    razem z ich callbackami, przynajmniej OnRender.
     Musza byc w stanie dobrze zareagowac na wypadek gdyby user
     zrobil resize na okienku.
 }
@@ -92,7 +92,7 @@ type
   end;
   PWindowInputData = ^TWindowInputData;
 
-procedure Draw(Window: TCastleWindowBase);
+procedure Render(Window: TCastleWindowBase);
 var D: PWindowInputData;
 begin
  D := PWindowInputData(Window.UserData);
@@ -156,7 +156,7 @@ begin
   Data.AnswerX0 := AnswerX0;
   Data.AnswerY0 := AnswerY0;
 
-  SavedMode := TGLMode.CreateReset(Window, @Draw, nil, @NoClose);
+  SavedMode := TGLMode.CreateReset(Window, @Render, nil, @NoClose);
   try
     Window.UserData := @Data;
     Window.OnPress := @Press;
@@ -178,7 +178,7 @@ type
   end;
   PInputAnyKeyData = ^TInputAnyKeyData;
 
-procedure DrawGLAnyKey(Window: TCastleWindowBase);
+procedure RenderGLAnyKey(Window: TCastleWindowBase);
 var
   D: PInputAnyKeyData;
 begin
@@ -205,7 +205,7 @@ var
   Data: TInputAnyKeyData;
   savedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, @DrawGLAnyKey, nil, @NoClose);
+ SavedMode := TGLMode.CreateReset(Window, @RenderGLAnyKey, nil, @NoClose);
  try
   Data.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or
                   (Cardinal(Window.Height) > BGImageHeight);

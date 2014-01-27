@@ -73,11 +73,11 @@ var
   HighlightOneBF: boolean;
   HighlightOneBFPos: TVector2Integer;
 
-  { HighlightWay = true mowi zeby DrawGL wyswietlilo droge z Move.A do
+  { HighlightWay = true mowi zeby Render wyswietlilo droge z Move.A do
     HighlightWayPos. HighlightWay moze byc = true tylko
     gdy Action = paMove and MoveState = msSourceSelected.
 
-    Naturalnie spodziewamy sie ze DrawGL uzyje wersji cached CWayOnTheBoard
+    Naturalnie spodziewamy sie ze Render uzyje wersji cached CWayOnTheBoard
     zeby obliczyc sobie way w szybki i wygodny sposob. Chociaz
     zasadnicza optymalizacja nie jest tu zawarta w CWayOnTheBoard,
     zasadnicza optymalizacja jest ze PostRedisplay nie jest wywolywane
@@ -89,7 +89,7 @@ var
 
 { gl window callbacks -------------------------------------------------------- }
 
-procedure DrawGL(Window: TCastleWindowBase);
+procedure Render(Window: TCastleWindowBase);
 var HWay: TVector2IntegerList;
 begin
  if HighlightWay and CWayOnTheBoard(Move.A, HighlightWayPos) then
@@ -254,7 +254,7 @@ begin
          begin
           DrawGame;
           DrawHighscores;
-          { directly get screenshot now, without redrawing with Window.OnDraw }
+          { directly get screenshot now, without redrawing with Window.OnRender }
           GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
           try
             InputAnyKey(Window, GLImage, ScreenX0, ScreenY0, Window.Width, Window.Height);
@@ -282,7 +282,7 @@ function GetPlayerAction(var PlayerMove: TPlayerMove;
   PlayerMoveWay: TVector2IntegerList): TPlayerAction;
 var SavedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, @DrawGL, nil, @CloseQueryGL);
+ SavedMode := TGLMode.CreateReset(Window, @Render, nil, @CloseQueryGL);
  try
   Window.OnPress := @Press;
   Window.OnMouseMove := @MouseMoveGL;
@@ -314,7 +314,7 @@ end;
 procedure ContextOpen;
 begin
  { dopiero w OpenGL inicjuj Rectangles, na wypadek gdybym kiedys zrobil odczytywanie
-   ImgButtonWidth/Height z pliku dopiero w DrawingGame.ContextOpen. }
+   ImgButtonWidth/Height z pliku dopiero w RenderingGame.ContextOpen. }
  ButtonsRects.Add(Rectangle( 20, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
  ButtonsRects.Add(Rectangle(120, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));
  ButtonsRects.Add(Rectangle(256, StatusButtonsY, ImgButtonWidth, ImgButtonHeight));

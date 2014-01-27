@@ -182,7 +182,7 @@ begin
   AddToHighscores(Pos, '', AScore);
   DrawHighscores;
 
-  { directly get screenshot now, without redrawing with Window.OnDraw }
+  { directly get screenshot now, without redrawing with Window.OnRender }
   GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
   try
     Highscores.L[Pos].PlayerName:=
