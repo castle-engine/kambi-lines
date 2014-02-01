@@ -113,7 +113,7 @@ begin
       if Length(D^.Answer) > 0 then
       begin
         SetLength(D^.Answer, Length(D^.Answer)-1);
-        Window.PostRedisplay;
+        Window.Invalidate;
       end;
     CharEnter:
       if Between(Length(D^.Answer), D^.MinLength, D^.MaxLength) then
@@ -124,7 +124,7 @@ begin
          (Length(D^.Answer) < D^.MaxLength) then
       begin
         D^.Answer += Event.KeyCharacter;
-        Window.PostRedisplay;
+        Window.Invalidate;
       end;
   end;
 end;

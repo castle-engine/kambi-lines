@@ -80,7 +80,7 @@ var
     Naturalnie spodziewamy sie ze Render uzyje wersji cached CWayOnTheBoard
     zeby obliczyc sobie way w szybki i wygodny sposob. Chociaz
     zasadnicza optymalizacja nie jest tu zawarta w CWayOnTheBoard,
-    zasadnicza optymalizacja jest ze PostRedisplay nie jest wywolywane
+    zasadnicza optymalizacja jest ze Invalidate nie jest wywolywane
     zbyt czesto przez MouseMove, a dokladniej - tylko gdy jakies zmienne
     Highlight* ulegna zmianie.
   }
@@ -165,7 +165,7 @@ begin
   NewHighlightWay := true;
  end;
 
- { zrob PostRedisplay tylko jesli w New* cos sie zmienilo. W zasadzie
+ { zrob Invalidate tylko jesli w New* cos sie zmienilo. W zasadzie
    moglibysmy tu sprawdzac NewHighlightOneBFX <> HighlightOneBFX tylko jesli
    NewHighlightOneBF = true, ale powinnismy uaktualniac HighlightOneBFX
    na NewHighlightOneBFX nawet jesli nie NewHighlightOneBF = true,
@@ -182,7 +182,7 @@ begin
   HighlightOneBFPos := NewHighlightOneBFPos;
   HighlightWay := NewHighlightWay;
   HighlightWayPos := NewHighlightWayPos;
-  Window.PostRedisplay;
+  Window.Invalidate;
  end;
 end;
 
@@ -203,7 +203,7 @@ begin
     begin
       MoveState := msSourceSelected;
       Move.A := BoardPos;
-      Window.PostRedisplay;
+      Window.Invalidate;
     end else
     if (Action = paMove) and (MoveState = msSourceSelected) and
       MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) then
@@ -225,7 +225,7 @@ begin
           Beep;
       end else
         Move.A := BoardPos;
-      Window.PostRedisplay;
+      Window.Invalidate;
     end else
     begin
       { obslugujemy klikanie myszka na przyciskach ponizej }
@@ -267,7 +267,7 @@ begin
       end;
     end;
 
-    Window.PostRedisplay;
+    Window.Invalidate;
   end;
 end;
 

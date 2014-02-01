@@ -83,7 +83,7 @@ begin
 
         { OnRender nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
           na dotychczasowej zawartosci ekranu. }
-        Window.PostRedisplay;
+        Window.Invalidate;
         Window.FlushRedisplay;
 
         { We're not inside Update, so Window.Fps.UpdateSecondsPassed is not available.

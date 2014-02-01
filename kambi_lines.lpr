@@ -132,9 +132,9 @@ begin
         BallMove(PlayerMove, PlayerMoveWay);
         if not EndGameTurn then
         begin
-	 { Window.PostRedisplay zeby namalowal plansze gry z BallMove zakonczonym
+	 { Window.Invalidate zeby namalowal plansze gry z BallMove zakonczonym
 	   i byc moze dodanymi niektorymi kulkami sposrod NextColors. }
-         Window.PostRedisplay;
+         Window.Invalidate;
          MessageOK(Window, 'No more moves possible - game over !');
          break;
         end;
