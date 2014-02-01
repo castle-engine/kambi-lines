@@ -89,7 +89,7 @@ var
 
 { gl window callbacks -------------------------------------------------------- }
 
-procedure Render(Window: TCastleWindowBase);
+procedure Render(Container: TUIContainer);
 var HWay: TVector2IntegerList;
 begin
  if HighlightWay and CWayOnTheBoard(Move.A, HighlightWayPos) then
@@ -107,7 +107,7 @@ begin
  end;
 end;
 
-procedure AskQuit(Sender: TCastleWindowBase);
+procedure AskQuit(Window: TCastleWindowCustom);
 begin
  if MessageYesNo(Window, 'Are you sure you want to quit ?') then
   Action := paQuit;
@@ -143,7 +143,7 @@ begin
  result := true;
 end;
 
-procedure MouseMoveGL(Window: TCastleWindowBase; NewX, NewY: Integer);
+procedure MouseMoveGL(Container: TUIContainer; NewX, NewY: Integer);
 var NewHighlightOneBF: boolean;
     NewHighlightOneBFPos, BoardPos: TVector2Integer;
     NewHighlightWay: boolean;
@@ -186,7 +186,7 @@ begin
  end;
 end;
 
-procedure Press(Sender: TCastleWindowBase; const Event: TInputPressRelease);
+procedure Press(Container: TUIContainer; const Event: TInputPressRelease);
 
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 
@@ -232,11 +232,11 @@ begin
       RectangleIndex := ButtonsRects.FindRectangle(WindowMouseXToOurX(Window.MouseX),
         WindowMouseYToOurY(Window.MouseY));
       case RectangleIndex of
-        0: Window.EventPress(InputKey(K_F1, #0));
-        1: Window.EventPress(InputKey(K_None, 'i'));
-        2: Window.EventPress(InputKey(K_None, 's'));
-        3: Window.EventPress(InputKey(K_None, 'n'));
-        4: Window.EventPress(InputKey(K_None, 'r'));
+        0: Window.Container.EventPress(InputKey(K_F1, #0));
+        1: Window.Container.EventPress(InputKey(K_None, 'i'));
+        2: Window.Container.EventPress(InputKey(K_None, 's'));
+        3: Window.Container.EventPress(InputKey(K_None, 'n'));
+        4: Window.Container.EventPress(InputKey(K_None, 'r'));
       end;
     end;
   end else
@@ -257,7 +257,7 @@ begin
           { directly get screenshot now, without redrawing with Window.OnRender }
           GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
           try
-            InputAnyKey(Window, GLImage, ScreenX0, ScreenY0, Window.Width, Window.Height);
+            InputAnyKey(GLImage, ScreenX0, ScreenY0, Window.Width, Window.Height);
           finally FreeAndNil(GLImage) end;
          end;
        'n': ShowNextColors := not ShowNextColors;
@@ -271,7 +271,7 @@ begin
   end;
 end;
 
-procedure CloseQueryGL(Window: TCastleWindowBase);
+procedure CloseQueryGL(Container: TUIContainer);
 begin
  AskQuit(Window);
 end;

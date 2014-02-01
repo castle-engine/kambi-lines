@@ -114,7 +114,7 @@ begin
 
  try
   { go }
-  InputAnyKey(Window, ImagesPath+ 'title.png', 0, 0, 0, 0);
+  InputAnyKey(ImagesPath+ 'title.png', 0, 0, 0, 0);
 
   PlayerMoveWay := TVector2IntegerList.Create;
   repeat

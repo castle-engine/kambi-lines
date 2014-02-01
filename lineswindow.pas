@@ -76,7 +76,7 @@ begin result := ApplicationData('images/') end;
 
 { gl window callbacks --------------------------------------------------------- }
 
-procedure OpenGL(Window: TCastleWindowBase);
+procedure OpenGL(Container: TUIContainer);
 var OverflowX, FirstOverflowX, SecondOverflowX,
     OverflowY, FirstOverflowY, SecondOverflowY: Integer;
 begin
@@ -98,9 +98,9 @@ begin
  FScreenY0 := -FirstOverflowY;
 end;
 
-procedure CloseQueryGL(Window: TCastleWindowBase); begin end;
+procedure CloseQueryGL(Container: TUIContainer); begin end;
 
-procedure CloseGL(Window: TCastleWindowBase);
+procedure CloseGL(Container: TUIContainer);
 begin
 end;
 

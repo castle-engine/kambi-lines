@@ -13,7 +13,7 @@
   ----------------------------------------------------------------------------
 }
 
-{ Waiting for user input, keeping static image displayed on TCastleWindowBase. }
+{ Waiting for user input, keeping static image displayed on TCastleWindowCustom. }
 unit CastleInputAny;
 
 {
@@ -41,7 +41,7 @@ uses CastleGLUtils, CastleWindow, CastleWindowModes, CastleFonts, CastleUtils,
   AnswerDefault, MinLength, MaxLength and AnswerAllowedChars
   have the same meaning as in CastleMessages unit. Initial Answer
   cannot contain characters outside AnswerAllowedChars. }
-function Input(Window: TCastleWindowBase;
+function Input(
   Image: TGLImage;
   Font: TCastleFont;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
@@ -63,17 +63,17 @@ function Input(Window: TCastleWindowBase;
   OpenGL clear color will be used.
 
   @groupBegin }
-procedure InputAnyKey(Window: TCastleWindowBase; const ImgURL: string;
+procedure InputAnyKey(const ImgURL: string;
   ResizeX, ResizeY, X, Y: Integer); overload;
-procedure InputAnyKey(Window: TCastleWindowBase; const Img: TCastleImage;
+procedure InputAnyKey(const Img: TCastleImage;
   X, Y: Integer); overload;
-procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
+procedure InputAnyKey(Image: TGLImage;
   X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal); overload;
 { @groupEnd }
 
 implementation
 
-uses SysUtils, CastleKeysMouse, CastleColors;
+uses SysUtils, CastleKeysMouse, CastleColors, LinesWindow;
 
 { window callbacks for Input ------------------------------------------------- }
 
@@ -92,7 +92,7 @@ type
   end;
   PWindowInputData = ^TWindowInputData;
 
-procedure Render(Window: TCastleWindowBase);
+procedure Render(Container: TUIContainer);
 var D: PWindowInputData;
 begin
  D := PWindowInputData(Window.UserData);
@@ -101,7 +101,7 @@ begin
  D^.Font.Print(D^.AnswerX0, D^.AnswerY0, White, D^.Answer+'_');
 end;
 
-procedure Press(Window: TCastleWindowBase; const Event: TInputPressRelease);
+procedure Press(Container: TUIContainer; const Event: TInputPressRelease);
 var D: PWindowInputData;
 begin
   if Event.EventType <> itKey then Exit;
@@ -131,7 +131,7 @@ end;
 
 { Input ---------------------------------------------------------------------- }
 
-function Input(Window: TCastleWindowBase;
+function Input(
   Image: TGLImage;
   Font: TCastleFont;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
@@ -178,7 +178,7 @@ type
   end;
   PInputAnyKeyData = ^TInputAnyKeyData;
 
-procedure RenderGLAnyKey(Window: TCastleWindowBase);
+procedure RenderGLAnyKey(Container: TUIContainer);
 var
   D: PInputAnyKeyData;
 begin
@@ -187,7 +187,7 @@ begin
   D^.Image.Draw(D^.X, D^.Y);
 end;
 
-procedure PressAnyKey(Window: TCastleWindowBase; const Event: TInputPressRelease);
+procedure PressAnyKey(Container: TUIContainer; const Event: TInputPressRelease);
 var D: PInputAnyKeyData;
 begin
   if Event.EventType = itKey then
@@ -199,7 +199,7 @@ end;
 
 { InputAnyKey ---------------------------------------------------------------- }
 
-procedure InputAnyKey(Window: TCastleWindowBase; Image: TGLImage;
+procedure InputAnyKey(Image: TGLImage;
   X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal);
 var
   Data: TInputAnyKeyData;
@@ -222,18 +222,18 @@ begin
  finally SavedMode.Free end;
 end;
 
-procedure InputAnyKey(Window: TCastleWindowBase; const Img: TCastleImage;
+procedure InputAnyKey(const Img: TCastleImage;
   X, Y: Integer);
 var
   I: TGLImage;
 begin
   I := TGLImage.Create(Img);
   try
-    InputAnyKey(Window, I, X, Y, Img.Width, Img.Height);
+    InputAnyKey(I, X, Y, Img.Width, Img.Height);
   finally FreeAndNil(I) end;
 end;
 
-procedure InputAnyKey(Window: TCastleWindowBase; const ImgURL: string;
+procedure InputAnyKey(const ImgURL: string;
   ResizeX, ResizeY, X, Y: Integer);
 var
   GLImage: TGLImage;
@@ -247,7 +247,7 @@ begin
     GLImage := TGLImage.Create(Image);
   finally FreeAndNil(Image) end;
   try
-    InputAnyKey(Window, GLImage, X, Y, BGImageWidth, BGImageHeight);
+    InputAnyKey(GLImage, X, Y, BGImageWidth, BGImageHeight);
   finally FreeAndNil(GLImage) end;
 end;
 
