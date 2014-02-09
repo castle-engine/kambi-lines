@@ -115,12 +115,12 @@ end;
 
 function WindowMouseXToOurX(MouseX: Integer): Integer;
 begin
- result := MouseX + ScreenX0;
+ result := MouseX;
 end;
 
 function WindowMouseYToOurY(MouseY: Integer): Integer;
 begin
- result := Window.Height-MouseY + ScreenY0;
+ result := Window.Height - MouseY;
 end;
 
 function MousePosToBoard(MouseX, MouseY: Integer; var BoardPos: TVector2Integer): boolean;
@@ -257,7 +257,7 @@ begin
           { directly get screenshot now, without redrawing with Window.OnRender }
           GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
           try
-            InputAnyKey(GLImage, ScreenX0, ScreenY0, Window.Width, Window.Height);
+            InputAnyKey(GLImage, 0, 0, Window.Width, Window.Height);
           finally FreeAndNil(GLImage) end;
          end;
        'n': ShowNextColors := not ShowNextColors;

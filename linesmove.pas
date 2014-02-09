@@ -66,7 +66,7 @@ begin
         RenderStartTime := Timer;
 
         { draw animation frame }
-        BoardImage.Draw(ScreenX0, ScreenY0);
+        BoardImage.Draw(0, 0);
 
         if Position <= 1 then
           Ball := Lerp(Position, Move.A, MoveWay.L[0]) else

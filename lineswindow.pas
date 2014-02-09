@@ -51,60 +51,42 @@ const
   GameScreenWidth = 640;
   GameScreenHeight = 350;
 
-{ pozycje lewego dolnego rogu ekranu we wspolrzednych OpenGL'a.
-  Beda zawsze <= 0 - jezeli wymiary GameScreen sa rowne wymiarom window
-  to beda rowne 0 ale moga byc mniejsze od zera jezeli window bedzie
-  wieksze niz GameScreen. Ustalane dopiero w czasie initializing the OpenGL context
-  of the window. }
-function ScreenX0: Integer;
-function ScreenY0: Integer;
-
 implementation
 
-uses SysUtils, CastleUtils, CastleGLUtils, CastleParameters, CastleFilesUtils;
-
-var
-  FScreenX0, FScreenY0: Integer;
-
-function ScreenX0: Integer; begin result := FScreenX0 end;
-function ScreenY0: Integer; begin result := FScreenY0 end;
-
-{ cos do Images ------------------------------------------------------------ }
+uses SysUtils, CastleUtils, CastleGLUtils, CastleParameters, CastleFilesUtils,
+  CastleWindowModes;
 
 function ImagesPath: string;
 begin result := ApplicationData('images/') end;
 
-{ gl window callbacks --------------------------------------------------------- }
+(* We used to have here a code that was adjusting 2D projection
+   to scale everything to screen size.
+   It is not used anymore, our 2D controls depend on a pixel-per-pixel
+   2D projection that is set automatically.
 
 procedure OpenGL(Container: TUIContainer);
 var OverflowX, FirstOverflowX, SecondOverflowX,
     OverflowY, FirstOverflowY, SecondOverflowY: Integer;
 begin
- { musi byc , moj kod na tym polega. Ponizsze projection stara sie umiescic
-   GameScreenWidth, GameScreenHeight na srodku Window.Width, Window.Height.
- }
- OverflowX := Window.Width-GameScreenWidth;
- FirstOverflowX := OverflowX div 2;
- SecondOverflowX := OverflowX - FirstOverflowX;
+  { place GameScreenWidth, GameScreenHeight in the midle of Window.Width, Window.Height. }
 
- OverflowY := Window.Height-GameScreenHeight;
- FirstOverflowY := OverflowY div 2;
- SecondOverflowY := OverflowY - FirstOverflowY;
+  OverflowX := Window.Width-GameScreenWidth;
+  FirstOverflowX := OverflowX div 2;
+  SecondOverflowX := OverflowX - FirstOverflowX;
 
- OrthoProjection(-FirstOverflowX, GameScreenWidth + SecondOverflowX,
-                 -FirstOverflowY, GameScreenHeight + SecondOverflowY);
+  OverflowY := Window.Height-GameScreenHeight;
+  FirstOverflowY := OverflowY div 2;
+  SecondOverflowY := OverflowY - FirstOverflowY;
 
- FScreenX0 := -FirstOverflowX;
- FScreenY0 := -FirstOverflowY;
+  OrthoProjection(-FirstOverflowX, GameScreenWidth + SecondOverflowX,
+                  -FirstOverflowY, GameScreenHeight + SecondOverflowY);
+
+  FScreenX0 := -FirstOverflowX;
+  FScreenY0 := -FirstOverflowY;
 end;
+*)
 
-procedure CloseQueryGL(Container: TUIContainer); begin end;
-
-procedure CloseGL(Container: TUIContainer);
-begin
-end;
-
-{ unit Init/Fini --------------------------------------------------------- }
+{ initialize ----------------------------------------------------------------- }
 
 var WasParam_Fullscreen: boolean;
 
@@ -112,51 +94,49 @@ const
   Options: array[0..0]of TOption =
   ( (Short:#0; Long:'fullscreen'; Argument: oaNone) );
 
-  procedure OptionProc(ParamNum: Integer; HasArgument: boolean;
-    const Argument: string; const SeparateArgs: TSeparateArgs; Data: Pointer);
-  begin
-   WasParam_Fullscreen := true;
-  end;
+procedure OptionProc(ParamNum: Integer; HasArgument: boolean;
+  const Argument: string; const SeparateArgs: TSeparateArgs; Data: Pointer);
+begin
+  WasParam_Fullscreen := true;
+end;
 
 procedure Open;
 begin
- Window := TCastleWindowCustom.Create(nil);
+  Window := TCastleWindowCustom.Create(nil);
 
- { parse params }
- WasParam_Fullscreen := false;
- Parameters.Parse(Options, @OptionProc, nil, true);
+  { parse params }
+  WasParam_Fullscreen := false;
+  Parameters.Parse(Options, @OptionProc, nil, true);
 
- { setup Window parameters Width, Height, Fullscreen, ResizeAllowed
-   + Application.VideoResize* }
- if WasParam_Fullscreen then
- begin
-  Application.VideoResize := true;
-  Application.VideoResizeWidth := 640;
-  Application.VideoResizeHeight := 480;
-  Application.VideoChange(true);
+  { setup Window parameters Width, Height, Fullscreen, ResizeAllowed
+    + Application.VideoResize* }
+  if WasParam_Fullscreen then
+  begin
+    Application.VideoResize := true;
+    Application.VideoResizeWidth := 640;
+    Application.VideoResizeHeight := 480;
+    Application.VideoChange(true);
 
-  Window.Width := Application.VideoResizeWidth;
-  Window.Height := Application.VideoResizeHeight;
-  Window.FullScreen := true;
- end else
- begin
-  Window.Width := GameScreenWidth;
-  Window.Height := GameScreenHeight;
- end;
+    Window.Width := Application.VideoResizeWidth;
+    Window.Height := Application.VideoResizeHeight;
+    Window.FullScreen := true;
+  end else
+  begin
+    Window.Width := GameScreenWidth;
+    Window.Height := GameScreenHeight;
+  end;
 
- Window.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
+  Window.ResizeAllowed := raNotAllowed; { so no OnResize callback is needed }
 
- { open glw window (samo Window.Open przerzucamy do zasadniczego kambi_lines.lpr,
-   lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
-   fpc cos sie w tym pieprzy) }
- Window.Caption := 'Kambi Lines';
- Window.OnCloseQuery := @CloseQueryGL;
- Window.OnOpen := @OpenGL;
- Window.OnClose := @CloseGL;
+  { open glw window (samo Window.Open przerzucamy do zasadniczego kambi_lines.lpr,
+    lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
+    fpc cos sie w tym pieprzy) }
+  Window.Caption := 'Kambi Lines';
+  Window.OnCloseQuery := @NoClose;
 end;
 
 initialization
- Open;
+  Open;
 finalization
- FreeAndNil(Window);
+  FreeAndNil(Window);
 end.
