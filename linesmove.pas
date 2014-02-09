@@ -81,10 +81,9 @@ begin
           Round(BoardFieldImage0X + BoardFieldWidth * Ball[0]),
           Round(BoardFieldImage0Y + BoardFieldHeight * Ball[1]));
 
-        { OnRender nie ma, wiec nie zrobi nic. FlushRedisplay zrobi tylko swap buffers
-          na dotychczasowej zawartosci ekranu. }
+        { make redraw }
         Window.Invalidate;
-        Window.FlushRedisplay;
+        Application.ProcessAllMessages;
 
         { We're not inside Update, so Window.Fps.UpdateSecondsPassed is not available.
           So we just calculate SecondsPassed ourselves below. }
