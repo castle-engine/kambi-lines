@@ -81,7 +81,7 @@ var
     zeby obliczyc sobie way w szybki i wygodny sposob. Chociaz
     zasadnicza optymalizacja nie jest tu zawarta w CWayOnTheBoard,
     zasadnicza optymalizacja jest ze Invalidate nie jest wywolywane
-    zbyt czesto przez MouseMove, a dokladniej - tylko gdy jakies zmienne
+    zbyt czesto przez Motion, a dokladniej - tylko gdy jakies zmienne
     Highlight* ulegna zmianie.
   }
   HighlightWay: boolean;
@@ -113,37 +113,29 @@ begin
   Action := paQuit;
 end;
 
-function WindowMouseXToOurX(MouseX: Integer): Integer;
-begin
- result := MouseX;
-end;
-
-function WindowMouseYToOurY(MouseY: Integer): Integer;
-begin
- result := Window.Height - MouseY;
-end;
-
-function MousePosToBoard(MouseX, MouseY: Integer; var BoardPos: TVector2Integer): boolean;
+function MousePosToBoard(const Position: TVector2Single; var BoardPos: TVector2Integer): boolean;
 { funkcja pomocnicza, oblicza nad jakim polem Board jest pozycje MouseX, MouseY
   podawana w konwencji MouseX, MouseY z Window. }
-var TryPos: TVector2Integer;
+var
+  TryPos: TVector2Integer;
+  MouseX, MouseY: Integer;
 begin
- MouseX := WindowMouseXToOurX(MouseX);
- MouseY := WindowMouseYToOurY(MouseY);
+  MouseX := Round(Position[0]);
+  MouseY := Round(Position[1]);
 
- if (MouseX < BoardField0X) or (MouseY < BoardField0Y) then Exit(false);
+  if (MouseX < BoardField0X) or (MouseY < BoardField0Y) then Exit(false);
 
- TryPos[0]:=(MouseX-BoardField0X) div BoardFieldWidth;
- if TryPos[0] >= BoardWidth then Exit(false);
+  TryPos[0]:=(MouseX-BoardField0X) div BoardFieldWidth;
+  if TryPos[0] >= BoardWidth then Exit(false);
 
- TryPos[1]:=(MouseY-BoardField0Y) div BoardFieldHeight;
- if TryPos[1] >= BoardHeight then Exit(false);
+  TryPos[1]:=(MouseY-BoardField0Y) div BoardFieldHeight;
+  if TryPos[1] >= BoardHeight then Exit(false);
 
- BoardPos := TryPos;
- result := true;
+  BoardPos := TryPos;
+  result := true;
 end;
 
-procedure MouseMoveGL(Container: TUIContainer; NewX, NewY: Integer);
+procedure Motion(Container: TUIContainer; const Event: TInputMotion);
 var NewHighlightOneBF: boolean;
     NewHighlightOneBFPos, BoardPos: TVector2Integer;
     NewHighlightWay: boolean;
@@ -153,13 +145,13 @@ begin
  NewHighlightWay := false;
 
  if (Action = paMove) and (MoveState = msNone) and
-   MousePosToBoard(NewX, NewY, BoardPos) then
+   MousePosToBoard(Event.Position, BoardPos) then
  begin
   NewHighlightOneBFPos := BoardPos;
   NewHighlightOneBF := true;
  end else
  if (Action = paMove) and (MoveState = msSourceSelected) and
-   MousePosToBoard(NewX, NewY, BoardPos) then
+   MousePosToBoard(Event.Position, BoardPos) then
  begin
   NewHighlightWayPos := BoardPos;
   NewHighlightWay := true;
@@ -198,7 +190,7 @@ begin
   if Event.IsMouseButton(mbLeft) then
   begin
     if (Action = paMove) and (MoveState = msNone) and
-      MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) and
+      MousePosToBoard(Window.MousePosition, BoardPos) and
       (Board[BoardPos[0], BoardPos[1]] <> bfEmpty) then
     begin
       MoveState := msSourceSelected;
@@ -206,7 +198,7 @@ begin
       Window.Invalidate;
     end else
     if (Action = paMove) and (MoveState = msSourceSelected) and
-      MousePosToBoard(Window.MouseX, Window.MouseY, BoardPos) then
+      MousePosToBoard(Window.MousePosition, BoardPos) then
     begin
       { jezeli kliknal na pustym to znaczy ze wybiera target.
         Wpp. znaczy ze wybiera ponownie source. }
@@ -229,8 +221,7 @@ begin
     end else
     begin
       { obslugujemy klikanie myszka na przyciskach ponizej }
-      RectangleIndex := ButtonsRects.FindRectangle(WindowMouseXToOurX(Window.MouseX),
-        WindowMouseYToOurY(Window.MouseY));
+      RectangleIndex := ButtonsRects.FindRectangle(Window.MousePosition);
       case RectangleIndex of
         0: Window.Container.EventPress(InputKey(K_F1, #0));
         1: Window.Container.EventPress(InputKey(K_None, 'i'));
@@ -285,7 +276,7 @@ begin
  SavedMode := TGLMode.CreateReset(Window, @Render, nil, @CloseQueryGL);
  try
   Window.OnPress := @Press;
-  Window.OnMouseMove := @MouseMoveGL;
+  Window.OnMotion := @Motion;
 
   CWayClearCache;
   HighlightOneBF := false;
