@@ -114,8 +114,6 @@ begin
 end;
 
 function MousePosToBoard(const Position: TVector2Single; var BoardPos: TVector2Integer): boolean;
-{ funkcja pomocnicza, oblicza nad jakim polem Board jest pozycje MouseX, MouseY
-  podawana w konwencji MouseX, MouseY z Window. }
 var
   TryPos: TVector2Integer;
   MouseX, MouseY: Integer;
