@@ -221,11 +221,11 @@ begin
       { obslugujemy klikanie myszka na przyciskach ponizej }
       RectangleIndex := ButtonsRects.FindRectangle(Window.MousePosition);
       case RectangleIndex of
-        0: Window.Container.EventPress(InputKey(K_F1, #0));
-        1: Window.Container.EventPress(InputKey(K_None, 'i'));
-        2: Window.Container.EventPress(InputKey(K_None, 's'));
-        3: Window.Container.EventPress(InputKey(K_None, 'n'));
-        4: Window.Container.EventPress(InputKey(K_None, 'r'));
+        0: Window.Container.EventPress(InputKey(Window.MousePosition, K_F1, #0));
+        1: Window.Container.EventPress(InputKey(Window.MousePosition, K_None, 'i'));
+        2: Window.Container.EventPress(InputKey(Window.MousePosition, K_None, 's'));
+        3: Window.Container.EventPress(InputKey(Window.MousePosition, K_None, 'n'));
+        4: Window.Container.EventPress(InputKey(Window.MousePosition, K_None, 'r'));
       end;
     end;
   end else
