@@ -1,17 +1,12 @@
-.PHONY: compile
-compile:
-	./compile.sh
+# This Makefile uses "castle-engine" build tool for most operations
+# (like compilation).
+# See https://sourceforge.net/p/castle-engine/wiki/Build%20tool/
+# for instructions how to install/use this build tool.
 
-# Simple install.
-# You may as well symlink to /usr/local/share/kambi_lines,
-# for system-wide install.
-install:
-	rm -f $(HOME)/.local/share/kambi_lines
-	ln -s $(shell pwd) $(HOME)/.local/share/kambi_lines
+.PHONY: standalone
+standalone:
+	castle-engine compile $(CASTLE_ENGINE_TOOL_OPTIONS)
 
-# Run also "dircleaner . clean" here to really clean
 .PHONY: clean
 clean:
-	rm -f kambi_lines kambi_lines.exe
-	rm -Rf kambi_lines.app
-	rm -f KAMBI_LINES.hsc KAMBI_LINES.ini
+	castle-engine clean
