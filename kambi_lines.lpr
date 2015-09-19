@@ -83,11 +83,11 @@ begin
           [GameScreenWidth, GameScreenHeight]) +nl+
         nl+
         SCastleEngineProgramHelpSuffix(DisplayApplicationName, Version, true));
-      ProgramBreak;
+      Halt;
      end;
   1: begin
       WritelnStr(Version);
-      ProgramBreak;
+      Halt;
      end;
   else raise EInternalError.Create('OptionProc');
  end;
