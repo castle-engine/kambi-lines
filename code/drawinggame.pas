@@ -63,7 +63,8 @@ var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
 implementation
 
 uses SysUtils, LinesWindow, CastleWindow, CastleImages, CastleUIControls,
-  HighscoresUnit, CastleUtils, CastleColors, CastleControls;
+  HighscoresUnit, CastleUtils, CastleColors, CastleControls,
+  CastleApplicationProperties;
 
 var
   GameImage,
@@ -331,7 +332,7 @@ begin
 end;
 
 initialization
- OnGLContextOpen.Add(@ContextOpen);
- OnGLContextClose.Add(@ContextClose);
+ ApplicationProperties.OnGLContextOpen.Add(@ContextOpen);
+ ApplicationProperties.OnGLContextClose.Add(@ContextClose);
 finalization
 end.

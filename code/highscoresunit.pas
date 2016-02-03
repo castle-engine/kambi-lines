@@ -74,7 +74,7 @@ implementation
 uses CastleVectors, LinesWindow, CastleWindow, CastleMessages,
   CastleGLUtils, CastleImages, CastleInputAny, CastleStringUtils, CastleFilesUtils,
   CastleGLImages, CastleUIControls, CastleDownload, CastleURIUtils, CastleColors,
-  CastleControls;
+  CastleControls, CastleApplicationProperties;
 
 function CheckNewScore(AScore: Integer): Integer;
 { CheckNewScore sprawdza czy AScore jest na tyle wysoki ze gracz powinien
@@ -257,8 +257,8 @@ end;
 initialization
   Highscores := THighscoresList.Create;
   LoadHighscores;
-  OnGLContextOpen.Add(@ContextOpen);
-  OnGLContextClose.Add(@ContextClose);
+  ApplicationProperties.OnGLContextOpen.Add(@ContextOpen);
+  ApplicationProperties.OnGLContextClose.Add(@ContextClose);
 finalization
   SaveHighscores;
   FreeAndNil(Highscores);

@@ -49,7 +49,7 @@ uses SysUtils, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, CastleWindowModes, CastleUIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, CastleColors,
   CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleRectangles,
-  CastleControls, CastleControlsImages;
+  CastleControls, CastleControlsImages, CastleApplicationProperties;
 
 var
   ButtonsRects: TRectangleList;
@@ -312,7 +312,7 @@ begin
 end;
 
 initialization
- OnGLContextOpen.Add(@ContextOpen);
+ ApplicationProperties.OnGLContextOpen.Add(@ContextOpen);
  MoveWay := TVector2IntegerList.Create;
  ButtonsRects := TRectangleList.Create;
  Theme.Images[tiActiveFrame] := FrameYellow;

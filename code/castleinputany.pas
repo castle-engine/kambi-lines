@@ -227,7 +227,7 @@ procedure InputAnyKey(const Img: TCastleImage;
 var
   I: TGLImage;
 begin
-  I := TGLImage.Create(Img);
+  I := TGLImage.Create(Img, false);
   try
     InputAnyKey(I, X, Y, Img.Width, Img.Height);
   finally FreeAndNil(I) end;
@@ -244,7 +244,7 @@ begin
   try
     BGImageWidth  := Image.Width ;
     BGImageHeight := Image.Height;
-    GLImage := TGLImage.Create(Image);
+    GLImage := TGLImage.Create(Image, false);
   finally FreeAndNil(Image) end;
   try
     InputAnyKey(GLImage, X, Y, BGImageWidth, BGImageHeight);
