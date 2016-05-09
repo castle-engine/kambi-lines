@@ -41,7 +41,7 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
   BF: TNonEmptyBF;
   SavedMode: TGLMode;
-  BoardImage: TGLImage;
+  BoardImage: TGLImageCore;
   Position: Single;
   Ball: TVector2Single;
   Pos1: Integer;

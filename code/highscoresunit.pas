@@ -174,7 +174,7 @@ end;
 procedure CheckAndMaybeAddToHighscore(AScore: Integer);
 var
   Pos: Integer;
-  GLImage: TGLImage;
+  GLImage: TGLImageCore;
 begin
  Pos := CheckNewScore(AScore);
  if Pos >= 0 then

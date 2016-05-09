@@ -42,7 +42,7 @@ uses CastleGLUtils, CastleWindow, CastleWindowModes, CastleFonts, CastleUtils,
   have the same meaning as in CastleMessages unit. Initial Answer
   cannot contain characters outside AnswerAllowedChars. }
 function Input(
-  Image: TGLImage;
+  Image: TGLImageCore;
   Font: TCastleFont;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
   AnswerDefault: string = '';
@@ -67,7 +67,7 @@ procedure InputAnyKey(const ImgURL: string;
   ResizeX, ResizeY, X, Y: Integer); overload;
 procedure InputAnyKey(const Img: TCastleImage;
   X, Y: Integer); overload;
-procedure InputAnyKey(Image: TGLImage;
+procedure InputAnyKey(Image: TGLImageCore;
   X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal); overload;
 { @groupEnd }
 
@@ -80,7 +80,7 @@ uses SysUtils, CastleKeysMouse, CastleColors, LinesWindow;
 type
   TWindowInputData = record
     { input params }
-    Image: TGLImage;
+    Image: TGLImageCore;
     MinLength, MaxLength: Integer;
     AnswerAllowedChars: TSetOfChars;
     Font: TCastleFont;
@@ -132,7 +132,7 @@ end;
 { Input ---------------------------------------------------------------------- }
 
 function Input(
-  Image: TGLImage;
+  Image: TGLImageCore;
   Font: TCastleFont;
   ScreenX0, ScreenY0, AnswerX0, AnswerY0: Integer;
   AnswerDefault: string = '';
@@ -172,7 +172,7 @@ end;
 type
   TInputAnyKeyData = record
     DoClear: boolean;
-    Image: TGLImage;
+    Image: TGLImageCore;
     KeyPressed: boolean;
     X, Y: Integer;
   end;
@@ -199,7 +199,7 @@ end;
 
 { InputAnyKey ---------------------------------------------------------------- }
 
-procedure InputAnyKey(Image: TGLImage;
+procedure InputAnyKey(Image: TGLImageCore;
   X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal);
 var
   Data: TInputAnyKeyData;

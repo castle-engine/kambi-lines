@@ -183,7 +183,7 @@ procedure Press(Container: TUIContainer; const Event: TInputPressRelease);
 var
   BoardPos: TVector2Integer;
   RectangleIndex: Integer;
-  GLImage: TGLImage;
+  GLImage: TGLImageCore;
 begin
   if Event.IsMouseButton(mbLeft) then
   begin
