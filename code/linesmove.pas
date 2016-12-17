@@ -87,7 +87,7 @@ begin
 
         { We're not inside Update, so Window.Fps.UpdateSecondsPassed is not available.
           So we just calculate SecondsPassed ourselves below. }
-        SecondsPassed := (Timer - RenderStartTime) / TimerFrequency;
+        SecondsPassed := TimerSeconds(Timer, RenderStartTime);
 
         Position += 10 * SecondsPassed;
       end;

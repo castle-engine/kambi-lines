@@ -305,7 +305,7 @@ begin
   begin
    NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
      NonEmptyBFImageNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
-   NonEmptyBFImages[i, bf].Alpha := acSimpleYesNo;
+   NonEmptyBFImages[i, bf].Alpha := acTest;
   end;
 end;
 
