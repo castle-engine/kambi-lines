@@ -32,12 +32,6 @@ uses SysUtils, CastleUtils, CastleVectors, CastleGenericLists;
 
 { typy --------------------------------------------------------------------- }
 
-type
-  TVector2IntegerList = class(specialize TGenericStructList<TVector2Integer>)
-    procedure Reverse;
-    procedure AddList(Source: TVector2IntegerList);
-  end;
-
 const
   { BoardWidth/Height musza byc <= High(Byte). Ponadto w rzeczywistosci powinny
     byc DUZO mniejsze zeby dalo sie je sensownie wyswietlac na ekranie.  }
@@ -105,29 +99,6 @@ function CWayOnTheBoard(const A, B: TVector2Integer): boolean;
 procedure CWayClearCache;
 
 implementation
-
-{ TVector2IntegerList ---------------------------------------------------- }
-
-procedure TVector2IntegerList.Reverse;
-var
-  I: Integer;
-begin
-  { Need to specially check for Count = 0 case, since (0-1) div 2 = -1 div 2 = 0
-    which means that loop would try invalid Exchange(0, -1). }
-  if Count = 0 then Exit;
-  for I := 0 to (Count - 1) div 2 do
-    Exchange(I, Count - 1 - I);
-end;
-
-procedure TVector2IntegerList.AddList(Source: TVector2IntegerList);
-var
-  OldCount: Integer;
-begin
-  OldCount := Count;
-  Count := Count + Source.Count;
-  if Source.Count <> 0 then
-    System.Move(Source.L[0], L[OldCount], SizeOf(TVector2Integer) * Source.Count);
-end;
 
 { WayOnTheBoard* ------------------------------------------------------------ }
 
