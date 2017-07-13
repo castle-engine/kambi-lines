@@ -25,7 +25,8 @@ unit HighscoresUnit;
 
 interface
 
-uses SysUtils, CastleUtils, Classes, CastleGenericLists;
+uses SysUtils, Classes, Generics.Collections,
+  CastleUtils;
 
 const MaxPlayerNameLength = 10;
 type
@@ -35,7 +36,7 @@ type
   end;
   PHighscore = ^THighscore;
 
-  THighscoresList = specialize TGenericStructList<THighscore>;
+  THighscoresList = specialize TStructList<THighscore>;
 
 const
   MaxHighscoresCount = 10; { musi byc > 0 }

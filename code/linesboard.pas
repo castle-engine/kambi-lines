@@ -28,7 +28,8 @@ unit LinesBoard;
 
 interface
 
-uses SysUtils, CastleUtils, CastleVectors, CastleGenericLists;
+uses SysUtils,
+  CastleUtils, CastleVectors;
 
 { typy --------------------------------------------------------------------- }
 
