@@ -148,7 +148,7 @@ end;
 
 procedure DrawHighscores;
 const
-  Color: TCastleColor = (0, 168/255, 0, 1.0);
+  Color: TCastleColor = (Data: (0, 168/255, 0, 1.0));
 
   procedure PrintRight(const x, y: Integer; const s: string);
   begin

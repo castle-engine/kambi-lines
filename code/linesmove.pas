@@ -37,13 +37,19 @@ uses CastleWindow, CastleGLUtils, CastleWindowModes, CastleUtils, Math, DrawingG
   LinesWindow, LinesGame, CastleTimeUtils, CastleGLImages, SysUtils,
   CastleImages;
 
+function Lerp(const A: Single; const V1, V2: TVector2Integer): TVector2;
+begin
+  Result.Data[0] := V1.Data[0] + A * (V2.Data[0] - V1.Data[0]);
+  Result.Data[1] := V1.Data[1] + A * (V2.Data[1] - V1.Data[1]);
+end;
+
 procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
   BF: TNonEmptyBF;
   SavedMode: TGLMode;
   BoardImage: TGLImageCore;
   Position: Single;
-  Ball: TVector2Single;
+  Ball: TVector2;
   Pos1: Integer;
   SecondsPassed: Single;
   RenderStartTime: TTimerResult;

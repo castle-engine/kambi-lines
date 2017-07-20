@@ -183,7 +183,7 @@ var
   D: PInputAnyKeyData;
 begin
   D := PInputAnyKeyData(Window.UserData);
-  if D^.DoClear then GLClear([cbColor], Black);
+  if D^.DoClear then RenderContext.Clear([cbColor], Black);
   D^.Image.Draw(D^.X, D^.Y);
 end;
 

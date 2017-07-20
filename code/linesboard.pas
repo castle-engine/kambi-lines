@@ -68,6 +68,9 @@ const
 var
   Board: array[0..BoardWidth-1, 0..BoardHeight-1]of TBoardField;
 
+type
+  TVector2IntegerList = specialize TStructList<TVector2Integer>;
+
 { funkcje ----------------------------------------------------------------- }
 
 { sprawdza czy istnieje droga z A do B na planszy po wolnych polach.
@@ -122,7 +125,12 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
         1-ki zmienialo kierunek o 90 stopni. }
       TDir = (dirUp, dirLeft, dirDown, dirRight);
     const
-      DirToDXY: array[TDir]of TVector2Integer= ((0, 1), (-1, 0), (0, -1), (1, 0));
+      DirToDXY: array [TDir] of TVector2Integer= (
+        (Data: (0, 1)),
+        (Data: (-1, 0)),
+        (Data: (0, -1)),
+        (Data: (1, 0))
+      );
 
     function TryNeighbour(x, y: Integer): boolean; overload;
     begin
@@ -133,7 +141,10 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
 
     function TryNeighbour(Dir: TDir): boolean; overload;
     begin
-     result := TryNeighbour(x+DirToDXY[Dir, 0], y+DirToDXY[Dir, 1]);
+      Result := TryNeighbour(
+        x + DirToDXY[Dir].Data[0],
+        y + DirToDXY[Dir].Data[1]
+      );
     end;
 
   var Pref: array[1..4]of TDir;
@@ -190,8 +201,8 @@ begin
 end;
 
 var
-  CWayA: TVector2Integer = (-1, -1);
-  CWayB: TVector2Integer = (-1, -1);
+  CWayA: TVector2Integer = (Data: (-1, -1));
+  CWayB: TVector2Integer = (Data: (-1, -1));
   CWayResult: boolean;
 
 function CWayOnTheBoard(const A, B: TVector2Integer): boolean;

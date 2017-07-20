@@ -195,15 +195,16 @@ const
     to inne teksty nie powinny miec takich kolorow zeby user widzial ze to
     nie sa teksty ktore reprezentuja cos co mozna wlaczyc/wylaczyc. }
   TextOnOffColors: array [boolean] of TCastleColor = (
-    (84/255, 84/255, 84/255, 255/255),
-    (0/255, 168/255, 0/255, 255/255));
-  TextColor: TCastleColor = (230/255, 230/255, 230/255, 255/255);
-  TextScoreColor: TCastleColor = (230/255, 230/255, 230/255, 255/255);
+    (Data: (84/255, 84/255 , 84/255, 255/255)),
+    (Data: (0/255 , 168/255, 0/255 , 255/255))
+  );
+  TextColor: TCastleColor = (Data: (230/255, 230/255, 230/255, 255/255));
+  TextScoreColor: TCastleColor = (Data: (230/255, 230/255, 230/255, 255/255));
 
 var i, j: Integer;
 begin
  if (Window.Width > GameScreenWidth) or (Window.Height > GameScreenHeight) then
-  GLClear([cbDepth], Black);
+  RenderContext.Clear([cbDepth], Black);
 
  GameImage.Draw(0, 0);
 
@@ -264,14 +265,14 @@ begin
 
  if BonusScoreMultiplier > 1 then
   DrawText(18, 45, 'ACTIVE BONUS: x '+IntToStr(BonusScoreMultiplier),
-    Vector4Single(0.4, 1.0, 0.4, 1.0));
+    Vector4(0.4, 1.0, 0.4, 1.0));
 
  DrawPlayerName(KingScore^.PlayerName, 80);
  DrawPlayerName('Pretender', 555);
 end;
 
 procedure DrawGame;
-const DummyBoardPos: TVector2Integer = (0, 0);
+const DummyBoardPos: TVector2Integer = (Data: (0, 0));
 begin
  DrawGame(false, DummyBoardPos, nil);
 end;
