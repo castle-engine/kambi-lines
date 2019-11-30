@@ -33,7 +33,7 @@ uses CastleGLUtils, CastleVectors, LinesGame, LinesBoard, CastleGLImages;
   Podswietla pola HighlightOneBFPos (o ile HighlightOneBF)
   i HighlightBFs (o ile HighlightBFs <> nil). }
 procedure DrawGame(HighlightOneBF: boolean; const HighlightOneBFPos: TVector2Integer;
-  HighlightBFs: TVector2IntegerList); overload;
+  const HighlightBFs: TVector2IntegerList); overload;
 procedure DrawGame; overload;
 
 const
@@ -58,7 +58,7 @@ const
 
 { Balls images, with alpha test. The first array index usually comes from
   BallsImageSet. }
-var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TGLImage;
+var NonEmptyBFImages: array [TBallsImageSet, TNonEmptyBF] of TDrawableImage;
 
 implementation
 
@@ -78,10 +78,10 @@ var
   ButtonImage,
   FrameLImage,
   FrameMImage,
-  FrameRImage: TGLImage;
+  FrameRImage: TDrawableImage;
 
 procedure DrawGame(HighlightOneBF: boolean; const HighlightOneBFPos: TVector2Integer;
-  HighlightBFs: TVector2IntegerList);
+  const HighlightBFs: TVector2IntegerList);
 const
   { pozycje zsynchronizowane z game.png }
   ColrowY0 = 119;
@@ -119,7 +119,7 @@ const
   ImgFrameHeight = 21;
 
   procedure DisplayColumn(ColrowCount, ColrowX0, TopImageX0: integer;
-    TopImage: TGLImage);
+    TopImage: TDrawableImage);
   var i: integer;
   begin
    for i := 0 to ColrowCount-1 do
@@ -127,29 +127,29 @@ const
    TopImage.Draw(TopImageX0, ColrowY0 + ColrowCount*ImgColrowHeight);
   end;
 
-  procedure Highlight(BF: TVector2Integer);
+  procedure Highlight(const BF: TVector2Integer);
   begin
    HighlightOneBFImage.Draw(
      BoardField0X + BoardFieldWidth * BF[0],
      BoardField0Y + BoardFieldHeight * BF[1]);
   end;
 
-  procedure DrawText(x, y: Integer; const s: string; const Color: TCastleColor);
+  procedure DrawText(x, y: Single; const s: string; const Color: TCastleColor);
   begin
    UIFontSmall.Print(X, Y, Color, s);
   end;
 
-  procedure DrawTextRPad(x, y: Integer; const s: string; const Color: TCastleColor);
+  procedure DrawTextRPad(x, y: Single; const s: string; const Color: TCastleColor);
   begin
    DrawText(x-UIFontSmall.TextWidth(s), y, s, Color);
   end;
 
   procedure DrawPlayerName(const s: string; MiddleX: Integer);
-  var x: Integer;
+  var x: Single;
   begin
    { jezeli PlayerNamesFont.TextWidth(s) to x := 0. Nie bedzie to zbyt ladne,
      ale przynajmniej bedzie cos widac. }
-   x := Max(MiddleX - UIFont.TextWidth(s) div 2, 0);
+   x := Max(MiddleX - UIFont.TextWidth(s) / 2, 0);
    UIFont.Print(x, PlayerNamesY, White, s);
   end;
 
@@ -159,7 +159,7 @@ var ButtonsAndFramesX: Integer;
   begin
    ButtonImage.Draw(ButtonsAndFramesX, y);
    UIFontSmall.Print(ButtonsAndFramesX + (ImgButtonWidth -
-     UIFontSmall.TextWidth(s)) div 2, y+7, Black, s);
+     UIFontSmall.TextWidth(s)) / 2, y+7, Black, s);
    ButtonsAndFramesX += ImgButtonWidth;
   end;
 
@@ -170,7 +170,7 @@ var ButtonsAndFramesX: Integer;
    x0 := ButtonsAndFramesX;
    FrameLImage.Draw(ButtonsAndFramesX, y);
    ButtonsAndFramesX += ImgFrameLWidth;
-   for i := 0 to UIFontSmall.TextWidth(s) + CaptionHorizMargin*2 do
+   for i := 0 to Round(UIFontSmall.TextWidth(s) + CaptionHorizMargin*2) do
    begin
     FrameMImage.Draw(ButtonsAndFramesX, y);
     Inc(ButtonsAndFramesX);
@@ -290,22 +290,22 @@ var
   bf: TNonEmptyBF;
   i: Integer;
 begin
- GameImage := TGLImage.Create(ImagesPath +'game.png', [TRGBImage]);
- ColrowImage := TGLImage.Create(ImagesPath +'colrow.png', [TRGBImage]);
- MasterImage := TGLImage.Create(ImagesPath +'master.png', [TRGBImage]);
- PretenderImage := TGLImage.Create(ImagesPath +'pretender.png', [TRGBImage]);
- MasterAltImage := TGLImage.Create(ImagesPath +'master_alt.png', [TRGBImage]);
- PretenderAltImage := TGLImage.Create(ImagesPath +'pretender_alt.png', [TRGBImage]);
- HighlightOneBFImage := TGLImage.Create(ImagesPath +'bf_highlight.png', [TRGBImage]);
- ButtonImage := TGLImage.Create(ImagesPath +'button.png', [TRGBImage]);
- FrameLImage := TGLImage.Create(ImagesPath +'frame_l.png', [TRGBImage]);
- FrameMImage := TGLImage.Create(ImagesPath +'frame_m.png', [TRGBImage]);
- FrameRImage := TGLImage.Create(ImagesPath +'frame_r.png', [TRGBImage]);
+ GameImage := TDrawableImage.Create(ImagesPath +'game.png', [TRGBImage]);
+ ColrowImage := TDrawableImage.Create(ImagesPath +'colrow.png', [TRGBImage]);
+ MasterImage := TDrawableImage.Create(ImagesPath +'master.png', [TRGBImage]);
+ PretenderImage := TDrawableImage.Create(ImagesPath +'pretender.png', [TRGBImage]);
+ MasterAltImage := TDrawableImage.Create(ImagesPath +'master_alt.png', [TRGBImage]);
+ PretenderAltImage := TDrawableImage.Create(ImagesPath +'pretender_alt.png', [TRGBImage]);
+ HighlightOneBFImage := TDrawableImage.Create(ImagesPath +'bf_highlight.png', [TRGBImage]);
+ ButtonImage := TDrawableImage.Create(ImagesPath +'button.png', [TRGBImage]);
+ FrameLImage := TDrawableImage.Create(ImagesPath +'frame_l.png', [TRGBImage]);
+ FrameMImage := TDrawableImage.Create(ImagesPath +'frame_m.png', [TRGBImage]);
+ FrameRImage := TDrawableImage.Create(ImagesPath +'frame_r.png', [TRGBImage]);
 
  for i := 0 to High(TBallsImageSet) do
   for bf := LowNonEmptyBF to HighNonEmptyBF do
   begin
-   NonEmptyBFImages[i, bf] := TGLImage.Create(ImagesPath +
+   NonEmptyBFImages[i, bf] := TDrawableImage.Create(ImagesPath +
      NonEmptyBFImageNames[bf]+'_'+IntToStr(i)+'.png', [TRGBAlphaImage]);
    NonEmptyBFImages[i, bf].Alpha := acTest;
   end;

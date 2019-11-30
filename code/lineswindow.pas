@@ -22,7 +22,7 @@
 
 unit LinesWindow;
 
-{ zajmujemy sie tutaj naszym okienkiem TCastleWindowCustom. Tutaj inicjujemy mu wszystkie
+{ zajmujemy sie tutaj naszym okienkiem TCastleWindowBase. Tutaj inicjujemy mu wszystkie
   wlasciwosci, parsujemy jego parametry i robimy mu Init. Tutaj zajmujemy
   sie tez projection OpenGLa ktore bedzie jedno i takie samo przez caly czas
   gry.
@@ -43,7 +43,7 @@ interface
 uses CastleWindow, CastleVectors, CastleFonts;
 
 var
-  Window: TCastleWindowCustom;
+  Window: TCastleWindowBase;
 
 function ImagesPath: string;
 
@@ -57,7 +57,7 @@ uses SysUtils, CastleUtils, CastleGLUtils, CastleParameters, CastleFilesUtils,
   CastleWindowModes;
 
 function ImagesPath: string;
-begin result := ApplicationData('images/') end;
+begin result := 'castle-data:/images/' end;
 
 (* We used to have here a code that was adjusting 2D projection
    to scale everything to screen size.
@@ -102,7 +102,9 @@ end;
 
 procedure Open;
 begin
-  Window := TCastleWindowCustom.Create(nil);
+  Window := TCastleWindowBase.Create(nil);
+  // this background would cover our LinesMove rendering
+  Window.Container.BackgroundEnable := false;
 
   { parse params }
   WasParam_Fullscreen := false;

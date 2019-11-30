@@ -316,7 +316,7 @@ initialization
  MoveWay := TVector2IntegerList.Create;
  ButtonsRects := TRectangleList.Create;
  Theme.Images[tiActiveFrame] := FrameYellow;
- Theme.Corners[tiActiveFrame] := Vector4Integer(0, 0, 0, 0);
+ Theme.Corners[tiActiveFrame] := Vector4(0, 0, 0, 0);
 finalization
  FreeAndNil(MoveWay);
  FreeAndNil(ButtonsRects);

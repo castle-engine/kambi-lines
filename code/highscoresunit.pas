@@ -132,7 +132,7 @@ begin result := PHighscore(Highscores.List) end;
 { displaying functions ------------------------------------------------------- }
 
 var
-  ImgHighscr: TGLImage;
+  ImgHighscr: TDrawableImage;
 
 const
   HighscrX0 = (640-235) div 2 + 3;
@@ -175,7 +175,7 @@ end;
 procedure CheckAndMaybeAddToHighscore(AScore: Integer);
 var
   Pos: Integer;
-  GLImage: TGLImageCore;
+  GLImage: TDrawableImage;
 begin
  Pos := CheckNewScore(AScore);
  if Pos >= 0 then
@@ -245,7 +245,7 @@ end;
 
 procedure ContextOpen;
 begin
-  ImgHighscr := TGLImage.Create(ImagesPath+'highscr.png', [TRGBImage]);
+  ImgHighscr := TDrawableImage.Create(ImagesPath+'highscr.png', [TRGBImage]);
 end;
 
 procedure ContextClose;
