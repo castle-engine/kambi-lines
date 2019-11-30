@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="kambi_lines" standalone_source="code/kambi_lines.lpr">
-<!-- TODO: compile with -dCASTLE_WINDOW_BEST_NOGUI.
-     Actually, we should make CastleEngineBackendBestNoGUI unit,
-     it should not be a compilation option. -->
 </project>
