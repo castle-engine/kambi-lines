@@ -73,7 +73,9 @@ procedure InputAnyKey(Image: TDrawableImage;
 
 implementation
 
-uses SysUtils, CastleKeysMouse, CastleColors, LinesWindow;
+uses SysUtils,
+  CastleKeysMouse, CastleColors, CastleRenderContext,
+  LinesWindow;
 
 { window callbacks for Input ------------------------------------------------- }
 

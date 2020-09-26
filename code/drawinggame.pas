@@ -65,7 +65,7 @@ implementation
 uses SysUtils, Math,
   LinesWindow, CastleWindow, CastleImages, CastleUIControls,
   HighscoresUnit, CastleUtils, CastleColors, CastleControls,
-  CastleApplicationProperties;
+  CastleApplicationProperties, CastleRenderContext;
 
 var
   GameImage,
