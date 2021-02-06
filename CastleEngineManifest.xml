@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="kambi_lines" standalone_source="code/kambi_lines.lpr">
+  <package>
+    <include path="README.md" />
+    <include path="COPYING.GPL2.txt" />
+    <include path="kambi_lines_fullscreen.bat" />
+    <include path="kambi_lines_fullscreen.sh" />
+  </package>
 </project>
