@@ -187,7 +187,7 @@ begin
   GLImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
   try
     Highscores.L[Pos].PlayerName:=
-      Input(GLImage, UIFontSmall, 0, 0,
+      Input(GLImage, FallbackFont, 0, 0,
         HighscrNameX, HighscrNameY(Pos), '', 0, MaxPlayerNameLength, AllChars);
   finally FreeAndNil(GLImage) end;
  end;
