@@ -1,5 +1,5 @@
 {
-  Copyright 2003-2017 Michalis Kamburelis.
+  Copyright 2003-2022 Michalis Kamburelis.
 
   This file is part of "kambi_lines".
 
@@ -148,7 +148,7 @@ end;
 
 procedure DrawHighscores;
 const
-  Color: TCastleColor = (Data: (0, 168/255, 0, 1.0));
+  Color: TCastleColor = (X: 0; Y: 0.65; Z: 0; W: 1.0);
 
   procedure PrintRight(const x, y: Integer; const s: string);
   begin

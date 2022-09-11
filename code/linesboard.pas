@@ -1,5 +1,5 @@
 {
-  Copyright 2003-2017 Michalis Kamburelis.
+  Copyright 2003-2022 Michalis Kamburelis.
 
   This file is part of "kambi_lines".
 
@@ -126,10 +126,10 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
       TDir = (dirUp, dirLeft, dirDown, dirRight);
     const
       DirToDXY: array [TDir] of TVector2Integer= (
-        (Data: (0, 1)),
-        (Data: (-1, 0)),
-        (Data: (0, -1)),
-        (Data: (1, 0))
+        (X: 0; Y: 1),
+        (X: -1; Y: 0),
+        (X: 0; Y: -1),
+        (X: 1; Y: 0)
       );
 
     function TryNeighbour(x, y: Integer): boolean; overload;
@@ -142,8 +142,8 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
     function TryNeighbour(Dir: TDir): boolean; overload;
     begin
       Result := TryNeighbour(
-        x + DirToDXY[Dir].Data[0],
-        y + DirToDXY[Dir].Data[1]
+        x + DirToDXY[Dir].X,
+        y + DirToDXY[Dir].Y
       );
     end;
 
@@ -154,7 +154,7 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
     result := false else
    begin
     Visited[x, y] := true;
-    if (x = B[0]) and (y = B[1]) then
+    if (x = B.X) and (y = B.Y) then
     begin
      result := true;
      if Way <> nil then Way.Count := 0;
@@ -172,9 +172,9 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
        jest wieksza. Trzeci Pref to odwrocony drugi kierunke
        (w ten sposob drugi i trzeci kierunek sa najblizszymi kierunkami
        do pierwszego). }
-     if x <= B[0] then HorizPrefDir := dirRight else HorizPrefDir := dirLeft;
-     if y <= B[1] then VertPrefDir := dirUp     else VertPrefDir := dirDown;
-     if Abs(x-B[0]) > Abs(y-B[1]) then
+     if x <= B.X then HorizPrefDir := dirRight else HorizPrefDir := dirLeft;
+     if y <= B.Y then VertPrefDir := dirUp     else VertPrefDir := dirDown;
+     if Abs(x-B.X) > Abs(y-B.Y) then
      begin
       Pref[1] := HorizPrefDir;
       Pref[2] := VertPrefDir;
@@ -196,19 +196,19 @@ var Visited: array[0..BoardWidth-1, 0..BoardHeight-1]of boolean;
 
 begin
  FillChar(Visited, SizeOf(Visited), 0);
- result := FindWay(A[0], A[1]);
+ result := FindWay(A.X, A.Y);
  if result and (Way <> nil) then Way.Reverse;
 end;
 
 var
-  CWayA: TVector2Integer = (Data: (-1, -1));
-  CWayB: TVector2Integer = (Data: (-1, -1));
+  CWayA: TVector2Integer = (X: -1; Y: -1);
+  CWayB: TVector2Integer = (X: -1; Y: -1);
   CWayResult: boolean;
 
 function CWayOnTheBoard(const A, B: TVector2Integer): boolean;
 begin
- if (A[0] = CWayA[0]) and (A[1] = CWayA[1]) and
-    (B[0] = CWayB[0]) and (B[1] = CWayB[1]) then
+ if (A.X = CWayA.X) and (A.Y = CWayA.Y) and
+    (B.X = CWayB.X) and (B.Y = CWayB.Y) then
   result := CWayResult else
  begin
   CWayResult := WayOnTheBoard(A, B, CWayResultWay);
@@ -220,10 +220,10 @@ end;
 
 procedure CWayClearCache;
 begin
- CWayA[0] := -1;
- CWayA[1] := -1;
- CWayB[0] := -1;
- CWayB[1] := -1;
+ CWayA.X := -1;
+ CWayA.Y := -1;
+ CWayB.X := -1;
+ CWayB.Y := -1;
 end;
 
 initialization

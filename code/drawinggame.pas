@@ -1,5 +1,5 @@
 {
-  Copyright 2003-2017 Michalis Kamburelis.
+  Copyright 2003-2022 Michalis Kamburelis.
 
   This file is part of "kambi_lines".
 
@@ -196,11 +196,11 @@ const
     to inne teksty nie powinny miec takich kolorow zeby user widzial ze to
     nie sa teksty ktore reprezentuja cos co mozna wlaczyc/wylaczyc. }
   TextOnOffColors: array [boolean] of TCastleColor = (
-    (Data: (84/255, 84/255 , 84/255, 255/255)),
-    (Data: (0/255 , 168/255, 0/255 , 255/255))
+    (X: 0.32; Y: 0.32 ; Z: 0.32; W: 1),
+    (X: 0 ; Y: 0.65; Z: 0 ; W: 1)
   );
-  TextColor: TCastleColor = (Data: (230/255, 230/255, 230/255, 255/255));
-  TextScoreColor: TCastleColor = (Data: (230/255, 230/255, 230/255, 255/255));
+  TextColor: TCastleColor = (X: 0.9; Y: 0.9; Z: 0.9; W: 1);
+  TextScoreColor: TCastleColor = (X: 0.9; Y: 0.9; Z: 0.9; W: 1);
 
 var i, j: Integer;
 begin
@@ -273,7 +273,7 @@ begin
 end;
 
 procedure DrawGame;
-const DummyBoardPos: TVector2Integer = (Data: (0, 0));
+const DummyBoardPos: TVector2Integer = (X: 0; Y: 0);
 begin
  DrawGame(false, DummyBoardPos, nil);
 end;

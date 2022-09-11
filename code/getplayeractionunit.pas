@@ -1,5 +1,5 @@
 {
-  Copyright 2003-2017 Michalis Kamburelis.
+  Copyright 2003-2022 Michalis Kamburelis.
 
   This file is part of "kambi_lines".
 
@@ -49,7 +49,7 @@ uses SysUtils, LinesWindow, CastleWindow, CastleGLUtils, CastleUtils,
   CastleImages, CastleMessages, Classes, HighscoresUnit, CastleWindowModes, CastleUIControls,
   DrawingGame, LinesGame, CastleInputAny, LinesHelp, CastleColors,
   CastleStringUtils, CastleGLImages, CastleKeysMouse, CastleRectangles,
-  CastleControls, CastleControlsImages, CastleApplicationProperties;
+  CastleControls, CastleApplicationProperties, CastleInternalControlsImages;
 
 var
   ButtonsRects: TRectangleList;
@@ -100,34 +100,34 @@ begin
  if (Action = paMove) and (MoveState <> msNone) then
  begin
    Theme.Draw(Rectangle(
-     BoardField0X + Move.A[0] * BoardFieldWidth,
-     BoardField0Y + Move.A[1] * BoardFieldHeight,
+     BoardField0X + Move.A.X * BoardFieldWidth,
+     BoardField0Y + Move.A.Y * BoardFieldHeight,
      BoardFieldWidth,
      BoardFieldHeight), tiActiveFrame);
  end;
 end;
 
-procedure AskQuit(Window: TCastleWindowCustom);
+procedure AskQuit(Window: TCastleWindow);
 begin
  if MessageYesNo(Window, 'Are you sure you want to quit ?') then
   Action := paQuit;
 end;
 
-function MousePosToBoard(const Position: TVector2Single; var BoardPos: TVector2Integer): boolean;
+function MousePosToBoard(const Position: TVector2; var BoardPos: TVector2Integer): boolean;
 var
   TryPos: TVector2Integer;
   MouseX, MouseY: Integer;
 begin
-  MouseX := Round(Position[0]);
-  MouseY := Round(Position[1]);
+  MouseX := Round(Position.X);
+  MouseY := Round(Position.Y);
 
   if (MouseX < BoardField0X) or (MouseY < BoardField0Y) then Exit(false);
 
-  TryPos[0]:=(MouseX-BoardField0X) div BoardFieldWidth;
-  if TryPos[0] >= BoardWidth then Exit(false);
+  TryPos.X:=(MouseX-BoardField0X) div BoardFieldWidth;
+  if TryPos.X >= BoardWidth then Exit(false);
 
-  TryPos[1]:=(MouseY-BoardField0Y) div BoardFieldHeight;
-  if TryPos[1] >= BoardHeight then Exit(false);
+  TryPos.Y:=(MouseY-BoardField0Y) div BoardFieldHeight;
+  if TryPos.Y >= BoardHeight then Exit(false);
 
   BoardPos := TryPos;
   result := true;
@@ -183,13 +183,13 @@ procedure Press(Container: TUIContainer; const Event: TInputPressRelease);
 var
   BoardPos: TVector2Integer;
   RectangleIndex: Integer;
-  GLImage: TGLImageCore;
+  GLImage: TDrawableImage;
 begin
-  if Event.IsMouseButton(mbLeft) then
+  if Event.IsMouseButton(buttonLeft) then
   begin
     if (Action = paMove) and (MoveState = msNone) and
       MousePosToBoard(Window.MousePosition, BoardPos) and
-      (Board[BoardPos[0], BoardPos[1]] <> bfEmpty) then
+      (Board[BoardPos.X, BoardPos.Y] <> bfEmpty) then
     begin
       MoveState := msSourceSelected;
       Move.A := BoardPos;
@@ -200,7 +200,7 @@ begin
     begin
       { jezeli kliknal na pustym to znaczy ze wybiera target.
         Wpp. znaczy ze wybiera ponownie source. }
-      if Board[BoardPos[0], BoardPos[1]] = bfEmpty then
+      if Board[BoardPos.X, BoardPos.Y] = bfEmpty then
       begin
         if CWayOnTheBoard(Move.A, BoardPos) then
         begin
