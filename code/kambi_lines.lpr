@@ -109,7 +109,7 @@ begin
  if Parameters.High > 0 then
   raise EInvalidParams.Create('Invalid parameter "'+Parameters[1]+'"');
 
- { open glw (everything else about initing glw is done in LinesWindow) }
+ { open Window (everything else about initializing Window is done in LinesWindow) }
  Window.Open;
 
  try

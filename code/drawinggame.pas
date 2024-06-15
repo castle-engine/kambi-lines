@@ -136,12 +136,12 @@ const
 
   procedure DrawText(x, y: Single; const s: string; const Color: TCastleColor);
   begin
-   UIFontSmall.Print(X, Y, Color, s);
+   FallbackFont.Print(X, Y, Color, s);
   end;
 
   procedure DrawTextRPad(x, y: Single; const s: string; const Color: TCastleColor);
   begin
-   DrawText(x-UIFontSmall.TextWidth(s), y, s, Color);
+   DrawText(x-FallbackFont.TextWidth(s), y, s, Color);
   end;
 
   procedure DrawPlayerName(const s: string; MiddleX: Integer);
@@ -158,8 +158,8 @@ var ButtonsAndFramesX: Integer;
   procedure DrawButton(y: Integer; const s: string);
   begin
    ButtonImage.Draw(ButtonsAndFramesX, y);
-   UIFontSmall.Print(ButtonsAndFramesX + (ImgButtonWidth -
-     UIFontSmall.TextWidth(s)) / 2, y+7, Black, s);
+   FallbackFont.Print(ButtonsAndFramesX + (ImgButtonWidth -
+     FallbackFont.TextWidth(s)) / 2, y+7, Black, s);
    ButtonsAndFramesX += ImgButtonWidth;
   end;
 
@@ -170,7 +170,7 @@ var ButtonsAndFramesX: Integer;
    x0 := ButtonsAndFramesX;
    FrameLImage.Draw(ButtonsAndFramesX, y);
    ButtonsAndFramesX += ImgFrameLWidth;
-   for i := 0 to Round(UIFontSmall.TextWidth(s) + CaptionHorizMargin*2) do
+   for i := 0 to Round(FallbackFont.TextWidth(s) + CaptionHorizMargin*2) do
    begin
     FrameMImage.Draw(ButtonsAndFramesX, y);
     Inc(ButtonsAndFramesX);

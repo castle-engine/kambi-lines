@@ -103,6 +103,9 @@ end;
 procedure Open;
 begin
   Window := TCastleWindowBase.Create(nil);
+
+  Application.MainWindow := Window;
+
   // this background would cover our LinesMove rendering
   Window.Container.BackgroundEnable := false;
 

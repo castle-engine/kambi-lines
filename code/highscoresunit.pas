@@ -152,7 +152,7 @@ const
 
   procedure PrintRight(const x, y: Integer; const s: string);
   begin
-    UIFontSmall.Print(x - UIFontSmall.TextWidth(s), y, Color, s);
+    FallbackFont.Print(x - FallbackFont.TextWidth(s), y, Color, s);
   end;
 
 var
@@ -167,7 +167,7 @@ begin
     if i < Highscores.Count then
     begin
       PrintRight(HighscrScoreX, RowY, IntToStr(Highscores.L[i].Score));
-      UIFontSmall.Print(HighscrNameX, RowY, Color, Highscores.L[i].PlayerName);
+      FallbackFont.Print(HighscrNameX, RowY, Color, Highscores.L[i].PlayerName);
     end;
   end;
 end;
