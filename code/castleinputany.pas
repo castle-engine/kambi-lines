@@ -13,16 +13,8 @@
   ----------------------------------------------------------------------------
 }
 
-{ Waiting for user input, keeping static image displayed on TCastleWindowBase. }
+{ Waiting for user input, keeping static image displayed. }
 unit CastleInputAny;
-
-{
-  TODO
-  - Input i InputAnyKey powinny byc scalone w jedno,
-    razem z ich callbackami, przynajmniej OnRender.
-    Musza byc w stanie dobrze zareagowac na wypadek gdyby user
-    zrobil resize na okienku.
-}
 
 {$I castleconf.inc}
 
@@ -51,7 +43,7 @@ function Input(
   const AnswerAllowedChars: TSetOfChars = AllChars
   ): string;
 
-{ Wait until user presses a key.
+{ Wait until user presses a key or mouse button.
 
   Displays a given image on the screen while waiting.
   You can give image URL, or ready TCastleImage instance
@@ -74,13 +66,17 @@ procedure InputAnyKey(Image: TDrawableImage;
 implementation
 
 uses SysUtils,
-  CastleKeysMouse, CastleColors, CastleRenderContext,
+  CastleKeysMouse, CastleColors, CastleRenderContext, CastleUiControls,
   LinesWindow;
 
-{ window callbacks for Input ------------------------------------------------- }
+{ TODO: merge Input and InputAnyKey implementations into one,
+  merge TInputView and TInputAnyKeyView into one class. }
+
+{ View for Input ------------------------------------------------------------- }
 
 type
-  TWindowInputData = record
+  TInputView = class(TCastleView)
+  public
     { input params }
     Image: TDrawableImage;
     MinLength, MaxLength: Integer;
@@ -91,41 +87,41 @@ type
     { input/output params }
     Answer: string;
     Answered: boolean;
+
+    procedure Render; override;
+    function Press(const Event: TInputPressRelease): Boolean; override;
   end;
-  PWindowInputData = ^TWindowInputData;
 
-procedure Render(Container: TUIContainer);
-var D: PWindowInputData;
+procedure TInputView.Render;
 begin
- D := PWindowInputData(Window.UserData);
-
- D^.Image.Draw(D^.ScreenX0, D^.ScreenY0);
- D^.Font.Print(D^.AnswerX0, D^.AnswerY0, White, D^.Answer+'_');
+  inherited;
+  Image.Draw(ScreenX0, ScreenY0);
+  Font.Print(AnswerX0, AnswerY0, White, Answer+'_');
 end;
 
-procedure Press(Container: TUIContainer; const Event: TInputPressRelease);
-var D: PWindowInputData;
+function TInputView.Press(const Event: TInputPressRelease): Boolean;
 begin
-  if Event.EventType <> itKey then Exit;
+  Result := inherited;
+  if Result then Exit;
 
-  D := PWindowInputData(Window.UserData);
+  if Event.EventType <> itKey then Exit;
 
   case Event.KeyCharacter of
     CharBackSpace:
-      if Length(D^.Answer) > 0 then
+      if Length(Answer) > 0 then
       begin
-        SetLength(D^.Answer, Length(D^.Answer)-1);
+        SetLength(Answer, Length(Answer)-1);
         Window.Invalidate;
       end;
     CharEnter:
-      if Between(Length(D^.Answer), D^.MinLength, D^.MaxLength) then
-        D^.Answered := true;
+      if Between(Length(Answer), MinLength, MaxLength) then
+        Answered := true;
     else
       if (Event.KeyCharacter <> #0) and
-         (Event.KeyCharacter in D^.AnswerAllowedChars) and
-         (Length(D^.Answer) < D^.MaxLength) then
+         (Event.KeyCharacter in AnswerAllowedChars) and
+         (Length(Answer) < MaxLength) then
       begin
-        D^.Answer += Event.KeyCharacter;
+        Answer += Event.KeyCharacter;
         Window.Invalidate;
       end;
   end;
@@ -144,58 +140,63 @@ function Input(
   ): string;
 var
   SavedMode: TGLMode;
-  Data: TWindowInputData;
+  View: TInputView;
 begin
-  Data.Image := Image;
-  Data.Answer := AnswerDefault;
-  Data.MinLength := MinLength;
-  Data.MaxLength := MaxLength;
-  Data.AnswerAllowedChars := AnswerAllowedChars;
-  Data.Answered := false;
-  Data.Font := Font;
-  Data.ScreenX0 := ScreenX0;
-  Data.ScreenY0 := ScreenY0;
-  Data.AnswerX0 := AnswerX0;
-  Data.AnswerY0 := AnswerY0;
-
-  SavedMode := TGLMode.CreateReset(Window, @Render, nil, @NoClose);
+  View := TInputView.Create(nil);
   try
-    Window.UserData := @Data;
-    Window.OnPress := @Press;
+    View.Image := Image;
+    View.Answer := AnswerDefault;
+    View.MinLength := MinLength;
+    View.MaxLength := MaxLength;
+    View.AnswerAllowedChars := AnswerAllowedChars;
+    View.Answered := false;
+    View.Font := Font;
+    View.ScreenX0 := ScreenX0;
+    View.ScreenY0 := ScreenY0;
+    View.AnswerX0 := AnswerX0;
+    View.AnswerY0 := AnswerY0;
 
-    repeat Application.ProcessMessage(true, true) until Data.Answered;
-
-    result := Data.Answer;
-  finally SavedMode.Free end;
+    SavedMode := TGLMode.CreateReset(Window);
+    try
+      Window.Container.PushView(View);
+      repeat
+        Application.ProcessMessage(true, true)
+      until View.Answered;
+      Result := View.Answer;
+      Window.Container.PopView(View);
+    finally FreeAndNil(SavedMode) end;
+  finally FreeAndNil(View) end;
 end;
 
 { window callbacks for InputAnyKey ------------------------------------------- }
 
 type
-  TInputAnyKeyData = record
+  TInputAnyKeyView = class(TCastleView)
+  public
     DoClear: boolean;
     Image: TDrawableImage;
     KeyPressed: boolean;
     X, Y: Integer;
-  end;
-  PInputAnyKeyData = ^TInputAnyKeyData;
 
-procedure RenderGLAnyKey(Container: TUIContainer);
-var
-  D: PInputAnyKeyData;
+    procedure Render; override;
+    function Press(const Event: TInputPressRelease): Boolean; override;
+  end;
+
+procedure TInputAnyKeyView.Render;
 begin
-  D := PInputAnyKeyData(Window.UserData);
-  if D^.DoClear then RenderContext.Clear([cbColor], Black);
-  D^.Image.Draw(D^.X, D^.Y);
+  inherited;
+  if DoClear then RenderContext.Clear([cbColor], Black);
+  Image.Draw(X, Y);
 end;
 
-procedure PressAnyKey(Container: TUIContainer; const Event: TInputPressRelease);
-var D: PInputAnyKeyData;
+function TInputAnyKeyView.Press(const Event: TInputPressRelease): Boolean;
 begin
-  if Event.EventType = itKey then
+  Result := inherited;
+  if Result then Exit;
+
+  if Event.EventType in [itKey, itMouseButton] then
   begin
-    D := PInputAnyKeyData(Window.UserData);
-    D^.KeyPressed := true;
+    KeyPressed := true;
   end;
 end;
 
@@ -204,24 +205,28 @@ end;
 procedure InputAnyKey(Image: TDrawableImage;
   X, Y: Integer; BGImageWidth, BGImageHeight: Cardinal);
 var
-  Data: TInputAnyKeyData;
+  View: TInputAnyKeyView;
   savedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, @RenderGLAnyKey, nil, @NoClose);
- try
-  Data.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or
-                  (Cardinal(Window.Height) > BGImageHeight);
-  Data.Image := Image;
-  Data.Image.Alpha := acNone;
-  Data.KeyPressed := false;
-  Data.X := X;
-  Data.Y := Y;
+  View := TInputAnyKeyView.Create(nil);
+  try
+    SavedMode := TGLMode.Create(Window);
+    try
+      View.DoClear := (Cardinal(Window.Width ) > BGImageWidth ) or
+                      (Cardinal(Window.Height) > BGImageHeight);
+      View.Image := Image;
+      View.Image.Alpha := acNone;
+      View.KeyPressed := false;
+      View.X := X;
+      View.Y := Y;
 
-  Window.UserData := @Data;
-  Window.OnPress := @PressAnyKey;
-
-  repeat Application.ProcessMessage(true, true) until Data.KeyPressed;
- finally SavedMode.Free end;
+      Window.Container.PushView(View);
+      repeat
+        Application.ProcessMessage(true, true);
+      until View.KeyPressed;
+      Window.Container.PopView(View);
+    finally FreeAndNil(SavedMode) end;
+  finally FreeAndNil(View) end;
 end;
 
 procedure InputAnyKey(const Img: TCastleImage;

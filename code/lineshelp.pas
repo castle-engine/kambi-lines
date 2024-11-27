@@ -28,17 +28,19 @@ procedure ShowHelp;
 
 implementation
 
-uses SysUtils, LinesWindow, CastleUtils, CastleMessages, LinesGame;
+uses SysUtils,
+  CastleUtils, CastleMessages, CastleApplicationProperties,
+  LinesWindow, LinesGame;
 
 procedure ShowHelp;
 begin
- MessageOK(Window,
-   'Keys: besides the keys listed at the bottom of the screen, ' +
-   'also available are:' + nl +
-   '  H = show highscores' + nl +
-   '  Escape = exit' + nl +
-   nl+
-   SCastleEngineProgramHelpSuffix(DisplayApplicationName, Version, false));
+  MessageOK(Window,
+    'Keys: besides the keys listed at the bottom of the screen, ' +
+    'also available are:' + nl +
+    '  H = show highscores' + nl +
+    '  Escape = exit' + nl +
+    nl+
+    ApplicationProperties.Description);
 end;
 
 end.

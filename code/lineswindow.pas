@@ -137,7 +137,6 @@ begin
     lepiej nie polegac na kolejnosci wywolywania Initialization modulow,
     fpc cos sie w tym pieprzy) }
   Window.Caption := 'Kambi Lines';
-  Window.OnCloseQuery := @NoClose;
 end;
 
 initialization

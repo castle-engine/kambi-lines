@@ -127,7 +127,7 @@ begin
 end;
 
 function KingScore: PHighscore;
-begin result := PHighscore(Highscores.List) end;
+begin result := PHighscore(Highscores.Ptr(0)) end;
 
 { displaying functions ------------------------------------------------------- }
 

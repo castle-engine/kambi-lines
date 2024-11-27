@@ -87,11 +87,21 @@ var
   HighlightWay: boolean;
   HighlightWayPos: TVector2Integer;
 
-{ gl window callbacks -------------------------------------------------------- }
+{ view ----------------------------------------------------------------------- }
 
-procedure Render(Container: TUIContainer);
+type
+  { View to contain whole UI and to handle events, like key press. }
+  TMyView = class(TCastleView)
+    procedure Render; override;
+    function Motion(const Event: TInputMotion): Boolean; override;
+    function Press(const Event: TInputPressRelease): Boolean; override;
+  end;
+
+procedure TMyView.Render;
 var HWay: TVector2IntegerList;
 begin
+  inherited;
+
  if HighlightWay and CWayOnTheBoard(Move.A, HighlightWayPos) then
   HWay := CWayResultWay else
   HWay := nil;;
@@ -133,12 +143,15 @@ begin
   result := true;
 end;
 
-procedure Motion(Container: TUIContainer; const Event: TInputMotion);
+function TMyView.Motion(const Event: TInputMotion): Boolean;
 var NewHighlightOneBF: boolean;
     NewHighlightOneBFPos, BoardPos: TVector2Integer;
     NewHighlightWay: boolean;
     NewHighlightWayPos: TVector2Integer;
 begin
+  Result := inherited;
+  if Result then Exit;
+
  NewHighlightOneBF := false;
  NewHighlightWay := false;
 
@@ -176,7 +189,7 @@ begin
  end;
 end;
 
-procedure Press(Container: TUIContainer; const Event: TInputPressRelease);
+function TMyView.Press(const Event: TInputPressRelease): Boolean;
 
   {$ifdef LINUX} procedure Beep; begin Write(#7) end; {$endif}
 
@@ -185,10 +198,13 @@ var
   RectangleIndex: Integer;
   GLImage: TDrawableImage;
 begin
+  Result := inherited;
+  if Result then Exit;
+
   if Event.IsMouseButton(buttonLeft) then
   begin
     if (Action = paMove) and (MoveState = msNone) and
-      MousePosToBoard(Window.MousePosition, BoardPos) and
+      MousePosToBoard(Container.MousePosition, BoardPos) and
       (Board[BoardPos.X, BoardPos.Y] <> bfEmpty) then
     begin
       MoveState := msSourceSelected;
@@ -196,7 +212,7 @@ begin
       Window.Invalidate;
     end else
     if (Action = paMove) and (MoveState = msSourceSelected) and
-      MousePosToBoard(Window.MousePosition, BoardPos) then
+      MousePosToBoard(Container.MousePosition, BoardPos) then
     begin
       { jezeli kliknal na pustym to znaczy ze wybiera target.
         Wpp. znaczy ze wybiera ponownie source. }
@@ -219,13 +235,13 @@ begin
     end else
     begin
       { obslugujemy klikanie myszka na przyciskach ponizej }
-      RectangleIndex := ButtonsRects.FindRectangle(Window.MousePosition);
+      RectangleIndex := ButtonsRects.FindRectangle(Container.MousePosition);
       case RectangleIndex of
-        0: Window.Container.EventPress(InputKey(Window.MousePosition, keyF1, #0));
-        1: Window.Container.EventPress(InputKey(Window.MousePosition, keyNone, 'i'));
-        2: Window.Container.EventPress(InputKey(Window.MousePosition, keyNone, 's'));
-        3: Window.Container.EventPress(InputKey(Window.MousePosition, keyNone, 'n'));
-        4: Window.Container.EventPress(InputKey(Window.MousePosition, keyNone, 'r'));
+        0: Window.Container.EventPress(InputKey(Container.MousePosition, keyF1, #0, []));
+        1: Window.Container.EventPress(InputKey(Container.MousePosition, keyNone, 'i', []));
+        2: Window.Container.EventPress(InputKey(Container.MousePosition, keyNone, 's', []));
+        3: Window.Container.EventPress(InputKey(Container.MousePosition, keyNone, 'n', []));
+        4: Window.Container.EventPress(InputKey(Container.MousePosition, keyNone, 'r', []));
       end;
     end;
   end else
@@ -260,42 +276,42 @@ begin
   end;
 end;
 
-procedure CloseQueryGL(Container: TUIContainer);
-begin
- AskQuit(Window);
-end;
-
 { zasadnicze GetPlayerMove ------------------------------------------------- }
 
 function GetPlayerAction(var PlayerMove: TPlayerMove;
   PlayerMoveWay: TVector2IntegerList): TPlayerAction;
-var SavedMode: TGLMode;
+var
+  View: TMyView;
+  SavedMode: TGLMode;
 begin
- SavedMode := TGLMode.CreateReset(Window, @Render, nil, @CloseQueryGL);
- try
-  Window.OnPress := @Press;
-  Window.OnMotion := @Motion;
+  View := TMyView.Create(nil);
+  try
+    SavedMode := TGLMode.CreateReset(Window);
+    try
+      CWayClearCache;
+      HighlightOneBF := false;
+      HighlightWay := false;
+      MoveState := msNone;
+      Action := paMove;
 
-  CWayClearCache;
-  HighlightOneBF := false;
-  HighlightWay := false;
-  MoveState := msNone;
-  Action := paMove;
-  repeat
-   Application.ProcessMessage(true, true);
-  until (Action <> paMove) or (MoveState = msTargetSelected);
+      Window.Container.PushView(View);
+      repeat
+        Application.ProcessMessage(true, true);
+      until (Action <> paMove) or (MoveState = msTargetSelected);
+      Window.Container.PopView(View);
 
-  result := Action;
-  if result = paMove then
-  begin
-   PlayerMove := Move;
-   if PlayerMoveWay <> nil then
-   begin
-    PlayerMoveWay.Count := 0;
-    PlayerMoveWay.AddRange(MoveWay);
-   end;
-  end;
- finally SavedMode.Free end;
+      result := Action;
+      if result = paMove then
+      begin
+        PlayerMove := Move;
+        if PlayerMoveWay <> nil then
+        begin
+          PlayerMoveWay.Count := 0;
+          PlayerMoveWay.AddRange(MoveWay);
+        end;
+      end;
+    finally SavedMode.Free end;
+  finally View.Free end;
 end;
 
 { glw open/close --------------------------------------------------------- }
@@ -315,8 +331,9 @@ initialization
  ApplicationProperties.OnGLContextOpen.Add(@ContextOpen);
  MoveWay := TVector2IntegerList.Create;
  ButtonsRects := TRectangleList.Create;
- Theme.Images[tiActiveFrame] := FrameYellow;
- Theme.Corners[tiActiveFrame] := Vector4(0, 0, 0, 0);
+ Theme.ImagesPersistent[tiActiveFrame].Image := FrameYellow;
+ Theme.ImagesPersistent[tiActiveFrame].OwnsImage := false;
+ Theme.ImagesPersistent[tiActiveFrame].ProtectedSides.AllSides := 0;
 finalization
  FreeAndNil(MoveWay);
  FreeAndNil(ButtonsRects);

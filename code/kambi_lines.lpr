@@ -57,7 +57,7 @@ program kambi_lines;
 uses SysUtils, CastleWindow, LinesWindow, CastleUtils, HighscoresUnit,
   GetPlayerActionUnit, CastleMessages, CastleGLUtils, LinesBoard,
   CastleVectors, LinesMove, LinesGame, CastleInputAny,
-  CastleParameters, CastleClassUtils;
+  CastleParameters, CastleClassUtils, CastleApplicationProperties;
 
 { params ------------------------------------------------------------ }
 
@@ -75,14 +75,14 @@ begin
       InfoWrite(DisplayApplicationName +
         ': small game based on an old DOS game "Color lines".' +nl+
         'Accepted command-line options:' +nl+
-        HelpOptionHelp+ nl+
-        VersionOptionHelp +nl+
+        OptionDescription('-h / --help', 'Print this help message and exit.') + NL +
+        OptionDescription('-v / --version', 'Print the version number and exit.') + NL +
         '  --fullscreen          Try to resize the screen to 640x480 and then' +nl+
         '                        run game in fullscreen window' +nl+
         Format('By default, game will run in window sized %dx%d.',
           [GameScreenWidth, GameScreenHeight]) +nl+
         nl+
-        SCastleEngineProgramHelpSuffix(DisplayApplicationName, Version, true));
+        ApplicationProperties.Description);
       Halt;
      end;
   1: begin

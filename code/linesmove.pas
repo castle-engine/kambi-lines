@@ -47,7 +47,7 @@ procedure BallMove(const Move: TPlayerMove; MoveWay: TVector2IntegerList);
 var
   BF: TNonEmptyBF;
   SavedMode: TGLMode;
-  BoardImage: TGLImageCore;
+  BoardImage: TDrawableImage;
   Position: Single;
   Ball: TVector2;
   Pos1: Integer;
@@ -59,7 +59,7 @@ begin
   DrawGame;
   BoardImage := SaveScreenToGL_NoFlush(Window.Rect, Window.SaveScreenBuffer);
   try
-    SavedMode := TGLMode.CreateReset(Window, nil, nil, @NoClose);
+    SavedMode := TGLMode.CreateReset(Window);
     try
       { Dobra, teraz robimy animacje w OpenGLu przesuwajacej sie kulki.
         Najwazniejsza rzecza tutaj jest zmienna Position : przybiera ona
